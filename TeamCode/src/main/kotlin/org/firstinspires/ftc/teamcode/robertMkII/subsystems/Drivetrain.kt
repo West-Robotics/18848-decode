@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
-import org.firstinspires.ftc.teamcode.GoBildaPinpointDriver
 import org.firstinspires.ftc.teamcode.robertMkII.hardware.NgMotor
+import org.firstinspires.ftc.teamcode.robertmkII.hardware.GoBildaPinpointDriver
 import java.util.Locale
 
 class Drivetrain(hardwareMap: HardwareMap) {
@@ -16,7 +16,7 @@ class Drivetrain(hardwareMap: HardwareMap) {
     private val frontRight = NgMotor(hardwareMap, "frontRight", DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.BRAKE)
     private val backLeft = NgMotor(hardwareMap, "backLeft", DcMotorSimple.Direction.REVERSE, DcMotor.ZeroPowerBehavior.BRAKE)
     private val backRight = NgMotor(hardwareMap, "backRight", DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.BRAKE)
-    val pinpoint: GoBildaPinpointDriver = hardwareMap.get("pinpoint") as GoBildaPinpointDriver
+    val pinpoint: GoBildaPinpointDriver = hardwareMap.get(GoBildaPinpointDriver::class.java, "pinpoint")
 
     init {
         pinpoint.setOffsets(0.0, 0.0, DistanceUnit.MM) // TODO: fill in actual offsets

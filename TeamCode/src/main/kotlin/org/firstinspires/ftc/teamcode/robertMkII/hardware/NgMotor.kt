@@ -27,6 +27,9 @@ class NgMotor(
     fun write() { motor.power = effort }
     fun getCurrent() = motor.getCurrent(CurrentUnit.AMPS)
 
+    val current: Double
+        get() = motor.getCurrent(CurrentUnit.AMPS)
+
     init {
         motor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
         motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
