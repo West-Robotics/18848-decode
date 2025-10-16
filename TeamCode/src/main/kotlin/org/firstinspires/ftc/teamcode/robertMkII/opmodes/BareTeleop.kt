@@ -32,8 +32,8 @@ class BareTeleop: LinearOpMode() {
         }
 
         waitForStart()
-        looptime.reset()
         while (opModeIsActive()) {
+            looptime.reset()
             driver.update()
             operator.update()
 
