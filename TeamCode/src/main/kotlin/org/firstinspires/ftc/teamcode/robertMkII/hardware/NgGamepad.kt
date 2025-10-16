@@ -39,6 +39,8 @@ class NgGamepad(private val gamepad: Gamepad) {
     var left_stick_y: Double = 0.0
     var right_stick_x: Double = 0.0
     var right_stick_y: Double = 0.0
+    var left_trigger: Double = 0.0
+    var right_trigger: Double = 0.0
 
     fun update() {
         buttons[GamepadButton.A]!!.update(gamepad.a)
@@ -55,6 +57,8 @@ class NgGamepad(private val gamepad: Gamepad) {
         left_stick_y = gamepad.left_stick_y.toDouble()
         right_stick_x = gamepad.right_stick_x.toDouble()
         right_stick_y = gamepad.right_stick_y.toDouble()
+        left_trigger = gamepad.left_trigger.toDouble()
+        right_trigger = gamepad.right_trigger.toDouble()
     }
 
     fun once(button: GamepadButton) = buttons[button]!!.once

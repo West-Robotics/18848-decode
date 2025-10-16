@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.robertMkII.hardware
 
+import com.jakewharton.threetenabp.AndroidThreeTen.init
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior
 import com.qualcomm.robotcore.hardware.DcMotorEx
@@ -16,7 +17,8 @@ class NgMotor(
     val eps: Double = 0.005
 ) {
     private val motor = hardwareMap.dcMotor.get(name) as DcMotorEx
-    private var _effort = 0.0;
+    private var _effort = 0.0
+    private var lasteffort = 9999.0
 
     var effort
         get() = _effort
@@ -24,8 +26,12 @@ class NgMotor(
             _effort = value
         } else Unit
 
-    fun write() { motor.power = effort }
-    fun getCurrent() = motor.getCurrent(CurrentUnit.AMPS)
+    fun write() {
+        if (abs(lasteffort - effort) > eps) {
+            motor.power = effort
+            lasteffort = effort
+        }
+    }
 
     val current: Double
         get() = motor.getCurrent(CurrentUnit.AMPS)
