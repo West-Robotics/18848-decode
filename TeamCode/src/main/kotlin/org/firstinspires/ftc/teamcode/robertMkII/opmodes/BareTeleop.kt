@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.robertMkII.hardware.NgGamepad
 import org.firstinspires.ftc.teamcode.robertMkII.subsystems.Drivetrain
+import org.firstinspires.ftc.teamcode.robertMkII.subsystems.Launcher
 
 /*
 TODO:
@@ -23,6 +24,7 @@ class BareTeleop: LinearOpMode() {
         val operator = NgGamepad(gamepad2)
 
         val drivetrain = Drivetrain(hardwareMap)
+        val launcher = Launcher(hardwareMap)
 
         val looptime = ElapsedTime()
 
@@ -47,8 +49,11 @@ class BareTeleop: LinearOpMode() {
                 -driver.right_stick_x
             )
 
+            launcher.speed = driver.right_trigger
+
 
             drivetrain.write()
+            launcher.write()
 
 //            if (debug) {
 //            }
