@@ -68,7 +68,7 @@ class Teleop : LinearOpMode() {
                 intake.setSpinSpeed(Intake.Position.LOW, 1.0)
                 intake.setSpinSpeed(Intake.Position.HIGH, 1.0)
             }
-            .transitionTimed(1, IntakeState.STALL)
+            .transitionTimed(1.0, IntakeState.STALL)
             .state(IntakeState.INTAKE)
             .onEnter {intake.setSpinSpeed(Intake.Position.LOW, 1.0)}
             .transition(
