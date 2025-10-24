@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.robertMkII.hardware.GamepadButton
 import org.firstinspires.ftc.teamcode.robertMkII.subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.robertMkII.subsystems.Intake
 import org.firstinspires.ftc.teamcode.robertMkII.subsystems.Launcher
-import org.sfdev.assembly.state.StateMachineBuilder
+import com.sfdev.assembly.state.StateMachineBuilder
 // }}}
 
 enum class IntakeState {
@@ -29,8 +29,6 @@ class Teleop : LinearOpMode() {
         val drivetrain = Drivetrain(hardwareMap)
         val launcher = Launcher(hardwareMap)
         val intake = Intake(hardwareMap)
-
-        var state = IntakeState.STALL
 
         val looptime = ElapsedTime()
 
