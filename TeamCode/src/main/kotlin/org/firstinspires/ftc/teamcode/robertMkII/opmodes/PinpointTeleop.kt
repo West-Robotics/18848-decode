@@ -58,9 +58,9 @@ class PinpointTeleop: LinearOpMode() {
 
 //            if (debug) {
 //            }
-//            drivetrain.showPos(telemetry)
-//            telemetry.addData("Pinpoint Status", drivetrain.pinpoint.deviceStatus)
-//            telemetry.addData("Pinpoint Frequency", drivetrain.pinpoint.frequency)
+            drivetrain.showPos(telemetry)
+            telemetry.addData("Pinpoint Status", drivetrain.pinpoint.deviceStatus)
+            telemetry.addData("Pinpoint Frequency", drivetrain.pinpoint.frequency)
             telemetry.addData("Rev Hub Frequency", 1/looptime.seconds())
             telemetry.update()
         }
