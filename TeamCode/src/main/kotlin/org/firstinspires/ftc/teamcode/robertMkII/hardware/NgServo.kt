@@ -22,7 +22,7 @@ class NgServo(
     hardwareMap: HardwareMap,
     name: String,
     pwm: ModelPWM,
-    private var thresh: Double = 0.002,
+    var thresh: Double = 0.002,
     usFrame: Double = 5000.0,
 ) {
     /**
@@ -43,31 +43,17 @@ class NgServo(
         servo.pwmRange = PwmControl.PwmRange(pwm.min, pwm.max, usFrame)
     }
 
-    fun direction(direction: Servo.Direction) {
-        servo.direction = direction
-    }
-
-    fun thresh(thresh: Double) {
-        this.thresh = thresh
-    }
-
-    fun position(position: Double) {
-        if (abs(position - lastPosition) > thresh) {
-            servo.setPosition(position)
-            lastPosition = position
+    var direction: Servo.Direction
+        get() = servo.direction
+        set(value: Servo.Direction) {
+            servo.direction = value
         }
-    }
 
-    /**
-     * @param convertToPosition convert position argument to servo's 0-1 range
-     */
-    fun position(position: Double, convertToPosition: (Double) -> Double) {
-        val convertedPosition = convertToPosition(position)
-        if (abs(convertedPosition - lastPosition) > thresh) {
-            servo.setPosition(convertedPosition)
-            lastPosition = convertedPosition
-        }
-    }
+    var position: Double
+        get() = servo.position
+        set(value: Double) = if (abs(value - lastPosition) > thresh) {
+            servo.position = value
+            lastPosition = value
+        } else Unit
 
-    fun getPosition() = servo.position
 }

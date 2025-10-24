@@ -24,7 +24,7 @@ class BareTeleop: LinearOpMode() {
         val operator = NgGamepad(gamepad2)
 
         val drivetrain = Drivetrain(hardwareMap)
-        val launcher = Launcher(hardwareMap)
+//        val launcher = Launcher(hardwareMap)
 
         val looptime = ElapsedTime()
 
@@ -49,11 +49,11 @@ class BareTeleop: LinearOpMode() {
                 -driver.right_stick_x
             )
 
-            launcher.speed = driver.right_trigger
+//            launcher.speed = driver.right_trigger
 
 
             drivetrain.write()
-            launcher.write()
+//            launcher.write()
 
 //            if (debug) {
 //            }
