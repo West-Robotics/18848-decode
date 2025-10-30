@@ -17,11 +17,11 @@ class LeaveAuto : LinearOpMode() {
         val drivetrain = Drivetrain(hardwareMap)
         val fsm = StateMachineBuilder()
             .state(OpStates.MOVEFORWARD)
-                .onEnter { drivetrain.setSpeed(0.0,0.2,0.0) }
+                .onEnter { drivetrain.setSpeed(0.0,0.5,0.0) }
                 .transitionTimed(1.0, OpStates.MOVELEFT)
             .state(OpStates.MOVELEFT)
-                .onEnter { drivetrain.setSpeed(-0.2,0.0,0.0) }
-                .transitionTimed(0.5, OpStates.OFF)
+                .onEnter { drivetrain.setSpeed(0.5,0.0,0.0) }
+                .transitionTimed(1.5, OpStates.OFF)
             .state(OpStates.OFF)
                 .onEnter { drivetrain.setSpeed(0.0,0.0,0.0)}
             .build()

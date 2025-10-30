@@ -14,7 +14,7 @@ TODO:
  - add subsystems for robot
  */
 
-@TeleOp(name = "drivetrain")
+@TeleOp(name = "pinpoint")
 class PinpointTeleop: LinearOpMode() {
 
     override fun runOpMode() {

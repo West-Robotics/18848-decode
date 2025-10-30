@@ -8,13 +8,14 @@ import org.firstinspires.ftc.teamcode.robertMkII.hardware.NgServo
 class Intake(hardwareMap: HardwareMap) {
 
     enum class Position(val value: Double) {
+        NIL(0.0),
         LOW(0.0,),
         HIGH(0.3,),
     }
 
     class Lift(hardwareMap: HardwareMap, name: String, pwm: NgServo.ModelPWM = NgServo.ModelPWM.AXON_MINI, startPos: Position = Position.LOW) {
         private val servo = NgServo(hardwareMap, name, pwm)
-        private lateinit var lastposition: Position
+        private var lastposition = Position.NIL
         var position = startPos
 
         fun write() {
@@ -25,12 +26,13 @@ class Intake(hardwareMap: HardwareMap) {
         }
 
     }
-    private val lowspinner = NgCRServo(hardwareMap, "lowspinner", NgCRServo.ModelPWM.CR_AXON_MINI, DcMotorSimple.Direction.FORWARD)
+    private val lowspinner = NgCRServo(hardwareMap, "lowspinner", NgCRServo.ModelPWM.CR_AXON_MINI, DcMotorSimple.Direction.REVERSE)
     private val highspinner = NgCRServo(hardwareMap, "highspinner", NgCRServo.ModelPWM.CR_AXON_MINI, DcMotorSimple.Direction.FORWARD)
 
     private val lifts: List<Lift> = listOf(Lift(hardwareMap, "lift1"), Lift(hardwareMap, "lift2"), Lift(hardwareMap, "lift3"))
 
     fun setPos(liftnum: Int, pos: Position) {
+        if (liftnum > lifts.size - 1 || liftnum < 0) return
         lifts[liftnum].position = pos
     }
 

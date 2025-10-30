@@ -9,16 +9,16 @@ import java.util.Locale
 
 class Drivetrain(hardwareMap: HardwareMap) {
 
-    private val frontLeft = NgMotor(hardwareMap, "frontLeft", DcMotorSimple.Direction.REVERSE, DcMotor.ZeroPowerBehavior.BRAKE)
+    private val frontLeft = NgMotor(hardwareMap, "frontLeft", DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.BRAKE)
     private val frontRight = NgMotor(hardwareMap, "frontRight", DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.BRAKE)
     private val backLeft = NgMotor(hardwareMap, "backLeft", DcMotorSimple.Direction.REVERSE, DcMotor.ZeroPowerBehavior.BRAKE)
     private val backRight = NgMotor(hardwareMap, "backRight", DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.BRAKE)
 
     fun setSpeed(x: Double, y:Double, turn: Double) {
-        frontLeft.effort = y - x - turn
-        frontRight.effort = y + x + turn
-        backLeft.effort = y + x - turn
-        backRight.effort = y - x + turn
+        frontLeft.effort = y - x + turn
+        frontRight.effort = y + x - turn
+        backLeft.effort = y + x + turn
+        backRight.effort = y - x - turn
     }
 
     fun write() {

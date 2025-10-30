@@ -113,6 +113,16 @@ class Teleop : LinearOpMode() {
             launcher.speed = driver.right_trigger
 
             fsm.update()
+
+            drivetrain.write()
+            launcher.write()
+            intake.write()
+
+
+            telemetry.addData("looptime", looptime.seconds())
+            telemetry.addData("IntakeState", fsm.state)
+            launcher.logCurrent(telemetry)
+            telemetry.update()
         }
     }
 }
