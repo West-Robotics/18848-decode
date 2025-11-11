@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode.robertMkII.hardware
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D
+import org.firstinspires.ftc.robotcore.external.navigation.UnnormalizedAngleUnit
 import org.firstinspires.ftc.teamcode.robertmkII.hardware.GoBildaPinpointDriver
 
 class Pinpoint(
@@ -20,7 +23,26 @@ class Pinpoint(
             _pinpoint!!.setOffsets(xOffset, yOffset, DistanceUnit.MM)
             _pinpoint!!.setEncoderResolution(encoderResolution)
             _pinpoint!!.setEncoderDirections(xDirection, yDirection)
+            _pinpoint!!.resetPosAndIMU()
         }
         return _pinpoint!!
     }
+    val pos: Pose2D
+        get() = Pose2D(
+            DistanceUnit.MM,
+            pinpoint.getPosX(DistanceUnit.MM),
+            pinpoint.getPosY(DistanceUnit.MM),
+            AngleUnit.DEGREES,
+            pinpoint.getHeading(AngleUnit.DEGREES)
+        )
+
+    val vel: Pose2D
+        get() = Pose2D(
+            DistanceUnit.MM,
+            pinpoint.getVelX(DistanceUnit.MM),
+            pinpoint.getVelY(DistanceUnit.MM),
+            AngleUnit.DEGREES,
+            pinpoint.getHeadingVelocity(UnnormalizedAngleUnit.DEGREES)
+        )
 }
+
