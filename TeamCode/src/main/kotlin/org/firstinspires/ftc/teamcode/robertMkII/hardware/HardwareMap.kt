@@ -28,7 +28,7 @@ object HardwareMap {
     val lowspinner = crservo(1)
     val highspinner = crservo(3)
 
-    val pinpoint = pinpoint(0)
+    val pinpoint = gobuildapinpoint(0)
 
 
 
@@ -103,7 +103,7 @@ object HardwareMap {
             encoderResolution: GoBildaPinpointDriver.GoBildaOdometryPods = GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD,
         ): Pinpoint
     }
-    private fun pinpoint(port: Int) = object : PinpointConstructor {
+    private fun gobuildapinpoint(port: Int) = object : PinpointConstructor {
         override operator fun invoke(
             xOffset: Double,
             yOffset: Double,
