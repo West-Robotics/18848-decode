@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.ServoImplEx
+import org.firstinspires.ftc.teamcode.robertmkII.hardware.GoBildaPinpointDriver
 import kotlin.jvm.java
 
 // TODO: add actual ports in and configure robot correctly
@@ -26,6 +27,8 @@ object HardwareMap {
 
     val lowspinner = crservo(1)
     val highspinner = crservo(3)
+
+    val pinpoint = pinpoint(0)
 
 
 
@@ -88,6 +91,32 @@ object HardwareMap {
             dir,
             eps,
             currentThresh,
+        )
+    }
+
+    interface PinpointConstructor {
+        operator fun invoke(
+            xOffset: Double = 0.0,
+            yOffset: Double = 0.0,
+            xDirection: GoBildaPinpointDriver.EncoderDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD,
+            yDirection: GoBildaPinpointDriver.EncoderDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD,
+            encoderResolution: GoBildaPinpointDriver.GoBildaOdometryPods = GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD,
+        ): Pinpoint
+    }
+    private fun pinpoint(port: Int) = object : PinpointConstructor {
+        override operator fun invoke(
+            xOffset: Double,
+            yOffset: Double,
+            xDirection: GoBildaPinpointDriver.EncoderDirection,
+            yDirection: GoBildaPinpointDriver.EncoderDirection,
+            encoderResolution: GoBildaPinpointDriver.GoBildaOdometryPods
+        ): Pinpoint = Pinpoint(
+            {hardwareMap?.get(GoBildaPinpointDriver::class.java, "i$port")},
+            xOffset,
+            yOffset,
+            xDirection,
+            yDirection,
+            encoderResolution,
         )
     }
 }
