@@ -2,13 +2,12 @@ package org.firstinspires.ftc.teamcode.robertMkII.subsystems
 
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorSimple
-import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.Telemetry
-import org.firstinspires.ftc.teamcode.robertMkII.hardware.NgMotor
+import org.firstinspires.ftc.teamcode.robertMkII.hardware.HardwareMap
 
-class Launcher(hardwareMap: HardwareMap) {
-    private val spinnerLeft = NgMotor(hardwareMap, "spinnerLeft", DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.FLOAT)
-    private val spinnerRight = NgMotor(hardwareMap, "spinnerRight", DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.FLOAT)
+object Launcher {
+    private val spinnerLeft = HardwareMap.spinnerLeft(DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.FLOAT)
+    private val spinnerRight = HardwareMap.spinnerRight(DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.FLOAT)
 
     var speed: Double
         get() = spinnerLeft.effort

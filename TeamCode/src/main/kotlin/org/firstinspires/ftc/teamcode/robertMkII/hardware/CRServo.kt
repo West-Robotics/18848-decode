@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.robertMkII.hardware
 
 import com.qualcomm.robotcore.hardware.CRServoImplEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
-import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.PwmControl
 import kotlin.math.abs
 
@@ -12,11 +11,10 @@ import kotlin.math.abs
  * @param pwm servo model, used to determine pwm range
  * @param currentThresh minimum change in commanded power to necessitate a hardware write
  */
-class NgCRServo(
-    hardwareMap: HardwareMap,
-    name: String,
-    pwm: ModelPWM,
-    dir: DcMotorSimple.Direction,
+class CRServo(
+    private val deviceSupplier: () -> CRServoImplEx?,
+    private val pwm: ModelPWM,
+    private val dir: DcMotorSimple.Direction,
     val eps: Double = 0.005,
     private var currentThresh: Double = 0.005
 ) {
@@ -25,7 +23,17 @@ class NgCRServo(
         CR_GOBILDA_TORQUE(900.0, 2100.0), CR_GOBILDA_SPEED(1000.0, 2000.0), CR_GOBILDA_SUPER(1000.0, 2000.0),
     }
 
-    private val crServo = hardwareMap.crservo.get(name) as CRServoImplEx
+    private var _crservo: CRServoImplEx? = null
+    private val crservo: CRServoImplEx get() {
+        if (_crservo == null) {
+            _crservo = deviceSupplier() ?: error(
+                "tryed to access a device before OpMode init"
+            )
+            _crservo!!.pwmRange = PwmControl.PwmRange(pwm.min, pwm.max)
+            _crservo!!.direction = dir
+        }
+        return _crservo!!
+    }
     private var _effort = 0.0
 
     var effort
@@ -34,22 +42,17 @@ class NgCRServo(
             _effort = value
         } else Unit
 
-    fun position(direction: DcMotorSimple.Direction) {
-    }
-
     fun thresh(thresh: Double) {
         this.currentThresh = thresh
     }
 
-    fun commandedPower() = crServo.power
+    fun commandedPower() = crservo.power
 
     /**
      * Perform hardware write
      */
-    fun write() { crServo.power = effort }
+    fun write() { crservo.power = effort }
 
     init {
-        crServo.pwmRange = PwmControl.PwmRange(pwm.min, pwm.max)
-        crServo.direction = dir
     }
 }

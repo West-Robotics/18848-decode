@@ -1,51 +1,40 @@
 package org.firstinspires.ftc.teamcode.robertMkII.subsystems
 
 import com.qualcomm.robotcore.hardware.DcMotorSimple
-import com.qualcomm.robotcore.hardware.HardwareMap
-import org.firstinspires.ftc.teamcode.robertMkII.hardware.NgCRServo
-import org.firstinspires.ftc.teamcode.robertMkII.hardware.NgServo
+import org.firstinspires.ftc.teamcode.robertMkII.hardware.CRServo
+import org.firstinspires.ftc.teamcode.robertMkII.hardware.HardwareMap
+import org.firstinspires.ftc.teamcode.robertMkII.hardware.Servo
 
-class Intake(hardwareMap: HardwareMap) {
+
+object Intake {
 
     enum class Position(val value: Double) {
-        NIL(0.0),
         LOW(0.0,),
         HIGH(0.3,),
     }
 
-    class Lift(hardwareMap: HardwareMap, name: String, pwm: NgServo.ModelPWM = NgServo.ModelPWM.AXON_MINI, startPos: Position = Position.LOW) {
-        private val servo = NgServo(hardwareMap, name, pwm)
-        private var lastposition = Position.NIL
-        var position = startPos
+    private val lifts: List<Servo> = listOf(
+        HardwareMap.lift1(Servo.ModelPWM.AXON_MINI),
+        HardwareMap.lift2(Servo.ModelPWM.AXON_MINI),
+        HardwareMap.lift3(Servo.ModelPWM.AXON_MINI),
+    )
 
-        fun write() {
-            if (position != lastposition) {
-                lastposition = position
-                servo.position = position.value
-            }
-        }
+    private val lowspinner = HardwareMap.lowspinner(CRServo.ModelPWM.CR_AXON_MINI, DcMotorSimple.Direction.FORWARD)
+    private val highspinner = HardwareMap.highspinner(CRServo.ModelPWM.CR_AXON_MINI, DcMotorSimple.Direction.FORWARD)
 
-    }
-    private val lowspinner = NgCRServo(hardwareMap, "lowspinner", NgCRServo.ModelPWM.CR_AXON_MINI, DcMotorSimple.Direction.REVERSE)
-    private val highspinner = NgCRServo(hardwareMap, "highspinner", NgCRServo.ModelPWM.CR_AXON_MINI, DcMotorSimple.Direction.FORWARD)
-
-    private val lifts: List<Lift> = listOf(Lift(hardwareMap, "lift1"), Lift(hardwareMap, "lift2"), Lift(hardwareMap, "lift3"))
-
-    fun setPos(liftnum: Int, pos: Position) {
+    fun setPos(liftnum: Int, pos: Intake.Position) {
         if (liftnum > lifts.size - 1 || liftnum < 0) return
-        lifts[liftnum].position = pos
+        lifts[liftnum].position = pos.value
     }
 
-    fun resetLifts(pos: Position = Position.LOW) {
-        for (lift in lifts) {
-            lift.position = pos
-        }
+    fun resetLifts(pos: Intake.Position = Intake.Position.LOW) {
+        lifts.forEach { it.position = pos.value }
     }
 
-    fun setSpinSpeed(spinner: Position, effort: Double) {
-        if (spinner == Position.LOW) {
+    fun setSpinSpeed(spinner: Intake.Position, effort: Double) {
+        if (spinner == Intake.Position.LOW) {
             lowspinner.effort = effort
-        } else if (spinner == Position.HIGH) {
+        } else if (spinner == Intake.Position.HIGH) {
             highspinner.effort = effort
         }
     }
@@ -53,8 +42,6 @@ class Intake(hardwareMap: HardwareMap) {
     fun write() {
         lowspinner.write()
         highspinner.write()
-        for (lift in lifts) {
-            lift.write()
-        }
+        lifts.forEach { it.write() }
     }
 }

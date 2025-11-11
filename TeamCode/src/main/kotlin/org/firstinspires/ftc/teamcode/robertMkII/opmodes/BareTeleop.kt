@@ -1,12 +1,16 @@
 package org.firstinspires.ftc.teamcode.robertMkII.opmodes
 
+import com.acmerobotics.dashboard.FtcDashboard
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.qualcomm.hardware.lynx.LynxModule
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.util.ElapsedTime
+import org.firstinspires.ftc.teamcode.robertMkII.hardware.HardwareMap
 import org.firstinspires.ftc.teamcode.robertMkII.hardware.NgGamepad
-import org.firstinspires.ftc.teamcode.robertMkII.subsystems.Drivetrain
+import org.firstinspires.ftc.teamcode.robertMkII.subsystems.TankDrivetrain
 import org.firstinspires.ftc.teamcode.robertMkII.subsystems.Launcher
+import kotlin.jvm.java
 
 /*
 TODO:
@@ -18,20 +22,16 @@ TODO:
 class BareTeleop: LinearOpMode() {
 
     override fun runOpMode() {
-//        val telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
+        val telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
+        HardwareMap.init(hardwareMap)
 
         val driver = NgGamepad(gamepad1)
         val operator = NgGamepad(gamepad2)
 
-        val drivetrain = Drivetrain(hardwareMap)
-//        val launcher = Launcher(hardwareMap)
-
         val looptime = ElapsedTime()
 
         val allHubs: List<LynxModule> = hardwareMap.getAll(LynxModule::class.java)
-        for (hub in allHubs) {
-            hub.bulkCachingMode = LynxModule.BulkCachingMode.MANUAL
-        }
+        allHubs.forEach { it.bulkCachingMode = LynxModule.BulkCachingMode.MANUAL }
 
         waitForStart()
         while (opModeIsActive()) {
@@ -39,11 +39,9 @@ class BareTeleop: LinearOpMode() {
             driver.update()
             operator.update()
 
-            for (hub in allHubs) {
-                hub.clearBulkCache()
-            }
+            allHubs.forEach { it.clearBulkCache() }
 
-            drivetrain.setSpeed(
+            TankDrivetrain.setSpeed(
                 -driver.left_stick_x,
                 -driver.left_stick_y,
                 -driver.right_stick_x
@@ -52,7 +50,7 @@ class BareTeleop: LinearOpMode() {
 //            launcher.speed = driver.right_trigger
 
 
-            drivetrain.write()
+            TankDrivetrain.write()
 //            launcher.write()
 
 //            if (debug) {
