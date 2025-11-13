@@ -72,12 +72,14 @@ class Auto : LinearOpMode() {
         waitForStart()
         fsm.start()
         while (opModeIsActive()) {
+
+            fsm.update()
+
             TankDrivetrain.write()
             Intake.write()
-            fsm.update()
+
             telemetry.addData("Current State", fsm.state)
             telemetry.update()
         }
     }
-
 }
