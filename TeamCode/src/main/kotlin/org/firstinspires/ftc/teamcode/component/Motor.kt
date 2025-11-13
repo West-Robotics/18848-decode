@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.robertMkII.hardware
+package org.firstinspires.ftc.teamcode.component
 
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior

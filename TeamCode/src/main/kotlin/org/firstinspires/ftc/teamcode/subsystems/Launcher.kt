@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.robertMkII.subsystems
+package org.firstinspires.ftc.teamcode.subsystems
 
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import org.firstinspires.ftc.robotcore.external.Telemetry
-import org.firstinspires.ftc.teamcode.robertMkII.hardware.HardwareMap
+import org.firstinspires.ftc.teamcode.hardware.HardwareMap
 
 object Launcher {
     private val spinnerLeft = HardwareMap.spinnerLeft(DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.FLOAT)

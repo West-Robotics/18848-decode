@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.robertMkII.hardware
+package org.firstinspires.ftc.teamcode.hardware
 
 import com.qualcomm.robotcore.hardware.CRServoImplEx
 import com.qualcomm.robotcore.hardware.DcMotor
@@ -6,6 +6,10 @@ import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.ServoImplEx
+import org.firstinspires.ftc.teamcode.component.CRServo
+import org.firstinspires.ftc.teamcode.component.Motor
+import org.firstinspires.ftc.teamcode.component.Pinpoint
+import org.firstinspires.ftc.teamcode.component.Servo
 import org.firstinspires.ftc.teamcode.robertmkII.hardware.GoBildaPinpointDriver
 import kotlin.jvm.java
 
@@ -45,7 +49,7 @@ object HardwareMap {
             dir: DcMotorSimple.Direction,
             zpb: DcMotor.ZeroPowerBehavior
         ) = Motor(
-            {hardwareMap?.get(DcMotorEx::class.java, "m$port")},
+            { hardwareMap?.get(DcMotorEx::class.java, "m$port") },
             dir,
             zpb
         )
@@ -64,7 +68,7 @@ object HardwareMap {
             thresh: Double,
             usFrame: Double,
         ) = Servo(
-            {hardwareMap?.get(ServoImplEx::class.java, "s$port")},
+            { hardwareMap?.get(ServoImplEx::class.java, "s$port") },
             pwm,
             thresh,
             usFrame,
@@ -86,7 +90,7 @@ object HardwareMap {
             eps: Double,
             currentThresh: Double,
         ) = CRServo(
-            {hardwareMap?.get(CRServoImplEx::class.java, "s$port")},
+            { hardwareMap?.get(CRServoImplEx::class.java, "s$port") },
             pwm,
             dir,
             eps,
@@ -111,7 +115,7 @@ object HardwareMap {
             yDirection: GoBildaPinpointDriver.EncoderDirection,
             encoderResolution: GoBildaPinpointDriver.GoBildaOdometryPods
         ): Pinpoint = Pinpoint(
-            {hardwareMap?.get(GoBildaPinpointDriver::class.java, "i$port")},
+            { hardwareMap?.get(GoBildaPinpointDriver::class.java, "i$port") },
             xOffset,
             yOffset,
             xDirection,

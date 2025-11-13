@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.robertMkII.opmodes
+package org.firstinspires.ftc.teamcode.opmodes
 
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
@@ -6,10 +6,9 @@ import com.qualcomm.hardware.lynx.LynxModule
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.util.ElapsedTime
-import org.firstinspires.ftc.teamcode.robertMkII.hardware.HardwareMap
-import org.firstinspires.ftc.teamcode.robertMkII.hardware.NgGamepad
-import org.firstinspires.ftc.teamcode.robertMkII.subsystems.TankDrivetrain
-import org.firstinspires.ftc.teamcode.robertMkII.subsystems.Launcher
+import org.firstinspires.ftc.teamcode.component.NgGamepad
+import org.firstinspires.ftc.teamcode.hardware.HardwareMap
+import org.firstinspires.ftc.teamcode.subsystems.TankDrivetrain
 import kotlin.jvm.java
 
 /*

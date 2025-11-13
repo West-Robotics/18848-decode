@@ -1,8 +1,8 @@
-package org.firstinspires.ftc.teamcode.robertMkII.opmodes
+package org.firstinspires.ftc.teamcode.opmodes
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import org.firstinspires.ftc.teamcode.robertMkII.subsystems.TankDrivetrain
+import org.firstinspires.ftc.teamcode.subsystems.TankDrivetrain
 
 @Autonomous(name = "manually controlled auto")
 class ForwardAuto : LinearOpMode() {

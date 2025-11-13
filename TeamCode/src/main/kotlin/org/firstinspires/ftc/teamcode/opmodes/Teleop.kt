@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.robertMkII.opmodes
+package org.firstinspires.ftc.teamcode.opmodes
 
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.config.Config
@@ -7,11 +7,11 @@ import com.qualcomm.hardware.lynx.LynxModule
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.util.ElapsedTime
-import org.firstinspires.ftc.teamcode.robertMkII.hardware.NgGamepad
-import org.firstinspires.ftc.teamcode.robertMkII.hardware.GamepadButton
-import org.firstinspires.ftc.teamcode.robertMkII.subsystems.TankDrivetrain
-import org.firstinspires.ftc.teamcode.robertMkII.subsystems.Intake
-import org.firstinspires.ftc.teamcode.robertMkII.subsystems.Launcher
+import org.firstinspires.ftc.teamcode.component.NgGamepad
+import org.firstinspires.ftc.teamcode.component.GamepadButton
+import org.firstinspires.ftc.teamcode.subsystems.TankDrivetrain
+import org.firstinspires.ftc.teamcode.subsystems.Intake
+import org.firstinspires.ftc.teamcode.subsystems.Launcher
 import com.sfdev.assembly.state.StateMachineBuilder
 
 @Config object TeleopConf {
@@ -46,17 +46,17 @@ class Teleop : LinearOpMode() {
             .transition(
                 {driver.once(GamepadButton.X)},
                 IntakeState.SENDING,
-                {Intake.setPos(1, Intake.Position.HIGH)}
+                { Intake.setPos(1, Intake.Position.HIGH)}
             )
             .transition(
                 {driver.once(GamepadButton.Y)},
                 IntakeState.SENDING,
-                {Intake.setPos(2, Intake.Position.HIGH)}
+                { Intake.setPos(2, Intake.Position.HIGH)}
             )
             .transition(
                 {driver.once(GamepadButton.B)},
                 IntakeState.SENDING,
-                {Intake.setPos(3, Intake.Position.HIGH)}
+                { Intake.setPos(3, Intake.Position.HIGH)}
             )
             .transition(
                 {driver.once(GamepadButton.A)},
@@ -69,21 +69,21 @@ class Teleop : LinearOpMode() {
             }
             .transitionTimed(1.0, IntakeState.STALL)
             .state(IntakeState.INTAKE)
-            .onEnter {Intake.setSpinSpeed(Intake.Position.LOW, 1.0)}
+            .onEnter { Intake.setSpinSpeed(Intake.Position.LOW, 1.0)}
             .transition(
                 {driver.once(GamepadButton.X)},
                 IntakeState.SENDING,
-                {Intake.setPos(1, Intake.Position.HIGH)}
+                { Intake.setPos(1, Intake.Position.HIGH)}
             )
             .transition(
                 {driver.once(GamepadButton.Y)},
                 IntakeState.SENDING,
-                {Intake.setPos(2, Intake.Position.HIGH)}
+                { Intake.setPos(2, Intake.Position.HIGH)}
             )
             .transition(
                 {driver.once(GamepadButton.B)},
                 IntakeState.SENDING,
-                {Intake.setPos(3, Intake.Position.HIGH)}
+                { Intake.setPos(3, Intake.Position.HIGH)}
             )
             .transition(
                 {driver.once(GamepadButton.A)},

@@ -1,6 +1,5 @@
-package org.firstinspires.ftc.teamcode.robertMkII.hardware
+package org.firstinspires.ftc.teamcode.component
 
-import android.R.attr.value
 import com.qualcomm.robotcore.hardware.PwmControl
 import com.qualcomm.robotcore.hardware.Servo
 import com.qualcomm.robotcore.hardware.ServoImplEx

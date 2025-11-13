@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.robertMkII.subsystems
+package org.firstinspires.ftc.teamcode.subsystems
 
 import com.qualcomm.robotcore.hardware.DcMotorSimple
-import org.firstinspires.ftc.teamcode.robertMkII.hardware.CRServo
-import org.firstinspires.ftc.teamcode.robertMkII.hardware.HardwareMap
-import org.firstinspires.ftc.teamcode.robertMkII.hardware.Servo
+import org.firstinspires.ftc.teamcode.component.CRServo
+import org.firstinspires.ftc.teamcode.component.Servo
+import org.firstinspires.ftc.teamcode.hardware.HardwareMap
 
 
 object Intake {
@@ -22,19 +22,19 @@ object Intake {
     private val lowspinner = HardwareMap.lowspinner(CRServo.ModelPWM.CR_AXON_MINI, DcMotorSimple.Direction.FORWARD)
     private val highspinner = HardwareMap.highspinner(CRServo.ModelPWM.CR_AXON_MINI, DcMotorSimple.Direction.FORWARD)
 
-    fun setPos(liftnum: Int, pos: Intake.Position) {
+    fun setPos(liftnum: Int, pos: Position) {
         if (liftnum > lifts.size - 1 || liftnum < 0) return
         lifts[liftnum].position = pos.value
     }
 
-    fun resetLifts(pos: Intake.Position = Intake.Position.LOW) {
+    fun resetLifts(pos: Position = Position.LOW) {
         lifts.forEach { it.position = pos.value }
     }
 
-    fun setSpinSpeed(spinner: Intake.Position, effort: Double) {
-        if (spinner == Intake.Position.LOW) {
+    fun setSpinSpeed(spinner: Position, effort: Double) {
+        if (spinner == Position.LOW) {
             lowspinner.effort = effort
-        } else if (spinner == Intake.Position.HIGH) {
+        } else if (spinner == Position.HIGH) {
             highspinner.effort = effort
         }
     }
