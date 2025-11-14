@@ -5,7 +5,10 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.qualcomm.hardware.lynx.LynxModule
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
+import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.util.ElapsedTime
+import org.firstinspires.ftc.teamcode.component.CRServo
+import org.firstinspires.ftc.teamcode.component.GamepadButton
 import org.firstinspires.ftc.teamcode.component.NgGamepad
 import org.firstinspires.ftc.teamcode.hardware.HardwareMap
 import org.firstinspires.ftc.teamcode.subsystems.Launcher
@@ -19,7 +22,7 @@ TODO:
  */
 
 @TeleOp(name = "cooper is a hardware guy now")
-class BareTeleop: LinearOpMode() {
+class ScrimTeleop: LinearOpMode() {
 
     override fun runOpMode() {
         val telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
@@ -27,6 +30,9 @@ class BareTeleop: LinearOpMode() {
 
         val driver = NgGamepad(gamepad1)
         val operator = NgGamepad(gamepad2)
+
+        val kicker = HardwareMap.highspinner(CRServo.ModelPWM.CR_AXON_MINI, DcMotorSimple.Direction.FORWARD)
+        val kickerspeed = 0.5
 
         val looptime = ElapsedTime()
 
@@ -47,12 +53,21 @@ class BareTeleop: LinearOpMode() {
                 -driver.right_stick_x
             )
 
+            if (driver.down(GamepadButton.A)) {
+                kicker.effort = kickerspeed
+            } else if (driver.down(GamepadButton.B)) {
+                kicker.effort = -kickerspeed
+            } else {
+                kicker.effort = 0.0
+            }
+
 
             Launcher.speed = driver.right_trigger - driver.left_trigger
 
 
             TankDrivetrain.write()
             Launcher.write()
+            kicker.write()
 
 //            if (debug) {
 //            }

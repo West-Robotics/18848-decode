@@ -18,7 +18,7 @@ TODO:
  */
 
 @TeleOp(name = "drivetrain")
-class ScrimTeleop: LinearOpMode() {
+class BareTeleop: LinearOpMode() {
 
     override fun runOpMode() {
         val telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
