@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.component.NgGamepad
 import org.firstinspires.ftc.teamcode.hardware.HardwareMap
+import org.firstinspires.ftc.teamcode.subsystems.Launcher
 import org.firstinspires.ftc.teamcode.subsystems.TankDrivetrain
 import kotlin.jvm.java
 
@@ -17,8 +18,8 @@ TODO:
  - add subsystems for robot
  */
 
-@TeleOp(name = "drivetrain")
-class ScrimTeleop: LinearOpMode() {
+@TeleOp(name = "cooper is a hardware guy now")
+class BareTeleop: LinearOpMode() {
 
     override fun runOpMode() {
         val telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
@@ -46,11 +47,12 @@ class ScrimTeleop: LinearOpMode() {
                 -driver.right_stick_x
             )
 
-//            launcher.speed = driver.right_trigger
+
+            Launcher.speed = driver.right_trigger - driver.left_trigger
 
 
             TankDrivetrain.write()
-//            launcher.write()
+            Launcher.write()
 
 //            if (debug) {
 //            }

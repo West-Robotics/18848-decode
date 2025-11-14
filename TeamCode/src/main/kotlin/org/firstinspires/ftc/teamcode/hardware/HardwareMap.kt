@@ -22,8 +22,8 @@ object HardwareMap {
     val backLeft = motor(2)
     val backRight = motor(3)
 
-    val spinnerLeft = motor(4)
-    val spinnerRight = motor(5)
+    val spinnerLeft = motor(0)
+    val spinnerRight = motor(1)
 
     val lift1 = servo(0)
     val lift2 = servo(2)

@@ -6,7 +6,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.hardware.HardwareMap
 
 object Launcher {
-    private val spinnerLeft = HardwareMap.spinnerLeft(DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.FLOAT)
+    private val spinnerLeft = HardwareMap.spinnerLeft(DcMotorSimple.Direction.REVERSE, DcMotor.ZeroPowerBehavior.FLOAT)
     private val spinnerRight = HardwareMap.spinnerRight(DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.FLOAT)
 
     var speed: Double
