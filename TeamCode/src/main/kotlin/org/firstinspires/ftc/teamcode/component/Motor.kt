@@ -48,9 +48,12 @@ class Motor(
             _effort = value
         } else Unit
 
-    override fun write() {
+    fun write() {
         if (abs(lasteffort - effort) > eps) {
-            motor.power = effort * direction.dir
+            motor.power = effort * when (direction) {
+                Direction.FORWARD -> 1
+                Direction.REVERSE -> -1
+            }
             lasteffort = effort
         }
     }

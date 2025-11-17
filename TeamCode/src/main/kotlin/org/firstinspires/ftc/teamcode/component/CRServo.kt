@@ -1,13 +1,17 @@
 package org.firstinspires.ftc.teamcode.component
 
-import android.R.attr.direction
-import com.qualcomm.robotcore.hardware.ServoImplEx
+import com.qualcomm.robotcore.hardware.CRServoImplEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.PwmControl
+import com.qualcomm.robotcore.hardware.ServoImplEx
+import org.firstinspires.ftc.teamcode.component.Component.Direction
+import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry
+import org.firstinspires.ftc.robotcore.external.Telemetry
+import java.util.Optional
 import kotlin.math.abs
 
 /**
- * Servo wrapper with cached writes, built in servo pwm ranges, and less functions
+ * CRServo wrapper with cached writes, built in servo pwm ranges, and less functions
  *
  * @param pwm servo model, used to determine pwm range
  * @param currentThresh minimum change in commanded power to necessitate a hardware write
