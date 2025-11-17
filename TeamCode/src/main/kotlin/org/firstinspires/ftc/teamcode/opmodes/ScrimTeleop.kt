@@ -14,6 +14,8 @@ import org.firstinspires.ftc.teamcode.hardware.HardwareMap
 import org.firstinspires.ftc.teamcode.subsystems.Launcher
 import org.firstinspires.ftc.teamcode.subsystems.TankDrivetrain
 import kotlin.jvm.java
+import kotlin.math.pow
+import kotlin.math.sign
 
 /*
 TODO:
@@ -31,7 +33,7 @@ class ScrimTeleop: LinearOpMode() {
         val driver = NgGamepad(gamepad1)
         val operator = NgGamepad(gamepad2)
 
-        val kicker = HardwareMap.highspinner(CRServo.ModelPWM.CR_AXON_MINI, DcMotorSimple.Direction.FORWARD)
+        val kicker = HardwareMap.highspinner(DcMotorSimple.Direction.FORWARD)
         val kickerspeed = 0.5
 
         val looptime = ElapsedTime()
@@ -48,9 +50,9 @@ class ScrimTeleop: LinearOpMode() {
             allHubs.forEach { it.clearBulkCache() }
 
             TankDrivetrain.setSpeed(
-                -driver.left_stick_x,
-                -driver.left_stick_y,
-                -driver.right_stick_x
+                -sign(driver.left_stick_x)*driver.left_stick_x.pow(2),
+                -sign(driver.left_stick_y)*driver.left_stick_y.pow(2),
+                -sign(driver.right_stick_x)*driver.right_stick_x.pow(2),
             )
 
             if (driver.down(GamepadButton.A)) {
@@ -63,6 +65,7 @@ class ScrimTeleop: LinearOpMode() {
 
 
             Launcher.speed = driver.right_trigger - driver.left_trigger
+            if (driver.down(GamepadButton.RIGHT_BUMPER)) Launcher.speed = 0.7
 
 
             TankDrivetrain.write()
@@ -74,6 +77,8 @@ class ScrimTeleop: LinearOpMode() {
 //            drivetrain.showPos(telemetry)
 //            telemetry.addData("Pinpoint Status", drivetrain.pinpoint.deviceStatus)
 //            telemetry.addData("Pinpoint Frequency", drivetrain.pinpoint.frequency)
+            telemetry.addData("kicker", kicker.effort)
+            telemetry.addData("launcher speed", Launcher.speed)
             telemetry.addData("Rev Hub Frequency", 1/looptime.seconds())
             telemetry.update()
         }

@@ -19,8 +19,8 @@ object Intake {
         HardwareMap.lift3(Servo.ModelPWM.AXON_MINI),
     )
 
-    private val lowspinner = HardwareMap.lowspinner(CRServo.ModelPWM.CR_AXON_MINI, DcMotorSimple.Direction.FORWARD)
-    private val highspinner = HardwareMap.highspinner(CRServo.ModelPWM.CR_AXON_MINI, DcMotorSimple.Direction.FORWARD)
+    private val lowspinner = HardwareMap.lowspinner(DcMotorSimple.Direction.FORWARD)
+    private val highspinner = HardwareMap.highspinner(DcMotorSimple.Direction.FORWARD)
 
     fun setPos(liftnum: Int, pos: Position) {
         if (liftnum > lifts.size - 1 || liftnum < 0) return

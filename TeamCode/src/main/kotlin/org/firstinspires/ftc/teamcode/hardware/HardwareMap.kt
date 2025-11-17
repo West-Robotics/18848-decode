@@ -22,15 +22,15 @@ object HardwareMap {
     val backLeft = motor(2)
     val backRight = motor(3)
 
-    val spinnerLeft = motor(0)
-    val spinnerRight = motor(1)
+    val spinnerLeft = motor(4)
+    val spinnerRight = motor(5)
 
-    val lift1 = servo(0)
+    val lift1 = servo(4)
     val lift2 = servo(2)
     val lift3 = servo(6)
 
-    val lowspinner = crservo(1)
-    val highspinner = crservo(3)
+    val lowspinner = crservo(3)
+    val highspinner = crservo(0)
 
     val pinpoint = gobuildapinpoint(0)
 
@@ -49,7 +49,7 @@ object HardwareMap {
             dir: DcMotorSimple.Direction,
             zpb: DcMotor.ZeroPowerBehavior
         ) = Motor(
-            { hardwareMap?.get(DcMotorEx::class.java, "m$port") },
+            { hardwareMap?.get(DcMotorEx::class.java,"m$port") },
             dir,
             zpb
         )
@@ -77,24 +77,24 @@ object HardwareMap {
 
     interface CRServoConstructor {
         operator fun invoke(
-            pwm: CRServo.ModelPWM,
+//            pwm: CRServo.ModelPWM,
             dir: DcMotorSimple.Direction,
             eps: Double = 0.005,
-            currentThresh: Double = 0.005,
+//            currentThresh: Double = 0.005,
         ): CRServo
     }
     private fun crservo(port: Int) = object : CRServoConstructor {
         override operator fun invoke(
-            pwm: CRServo.ModelPWM,
+//            pwm: CRServo.ModelPWM,
             dir: DcMotorSimple.Direction,
             eps: Double,
-            currentThresh: Double,
+//            currentThresh: Double,
         ) = CRServo(
             { hardwareMap?.get(CRServoImplEx::class.java, "s$port") },
-            pwm,
+//            pwm,
             dir,
             eps,
-            currentThresh,
+//            currentThresh,
         )
     }
 

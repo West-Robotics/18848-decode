@@ -9,7 +9,7 @@ import kotlin.math.abs
 
 class Motor(
     private val deviceSupplier: () -> DcMotorEx?,
-    private val dir: Direction,
+    var dir: Direction,
     private val zpb: ZeroPowerBehavior,
     val eps: Double = 0.005
 ) {
@@ -20,7 +20,7 @@ class Motor(
                 "tryed to access device before OpMode init"
             )
             _motor!!.zeroPowerBehavior = zpb
-            _motor!!.direction = dir
+//            _motor!!.direction = dir
             _motor!!.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
             _motor!!.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
         }
@@ -37,7 +37,10 @@ class Motor(
 
     fun write() {
         if (abs(lasteffort - effort) > eps) {
-            motor.power = effort
+            motor.power = effort * when (dir) {
+                Direction.FORWARD -> 1
+                Direction.REVERSE -> -1
+            }
             lasteffort = effort
         }
     }

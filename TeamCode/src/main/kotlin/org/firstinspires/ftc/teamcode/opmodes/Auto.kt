@@ -18,6 +18,7 @@ class Auto : LinearOpMode() {
         RIGHT,
         OFF
     }
+
     override fun runOpMode() {
         val fsm = StateMachineBuilder()
         .state(AutoStates.FORWARD)

@@ -7,15 +7,15 @@ import org.firstinspires.ftc.teamcode.hardware.HardwareMap
 object TankDrivetrain {
 
     private val frontLeft = HardwareMap.frontLeft(DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.BRAKE)
-    private val frontRight = HardwareMap.frontRight(DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.BRAKE)
-    private val backLeft = HardwareMap.backLeft(DcMotorSimple.Direction.REVERSE, DcMotor.ZeroPowerBehavior.BRAKE)
-    private val backRight = HardwareMap.backRight(DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.BRAKE)
+    private val frontRight = HardwareMap.frontRight(DcMotorSimple.Direction.REVERSE, DcMotor.ZeroPowerBehavior.BRAKE)
+    private val backLeft = HardwareMap.backLeft(DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.BRAKE)
+    private val backRight = HardwareMap.backRight(DcMotorSimple.Direction.REVERSE, DcMotor.ZeroPowerBehavior.BRAKE)
 
     fun setSpeed(x: Double, y:Double, turn: Double) {
-        frontLeft.effort = y - x + turn
-        frontRight.effort = y + x - turn
-        backLeft.effort = y + x + turn
-        backRight.effort = y - x - turn
+        frontLeft.effort = y + x - turn
+        frontRight.effort = y - x + turn
+        backLeft.effort = y - x - turn
+        backRight.effort = y + x + turn
     }
 
     fun write() {
