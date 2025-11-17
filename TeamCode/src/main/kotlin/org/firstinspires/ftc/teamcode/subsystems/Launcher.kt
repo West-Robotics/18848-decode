@@ -3,11 +3,20 @@ package org.firstinspires.ftc.teamcode.subsystems
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import org.firstinspires.ftc.robotcore.external.Telemetry
+import org.firstinspires.ftc.teamcode.component.Component
+import org.firstinspires.ftc.teamcode.component.Component.Direction.REVERSE
+import org.firstinspires.ftc.teamcode.component.Component.Direction.FORWARD
 import org.firstinspires.ftc.teamcode.hardware.HardwareMap
+import org.firstinspires.ftc.teamcode.subsystems.internal.Subsystem
 
-object Launcher {
-    private val spinnerLeft = HardwareMap.spinnerLeft(DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.FLOAT)
-    private val spinnerRight = HardwareMap.spinnerRight(DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.FLOAT)
+object Launcher: Subsystem<Launcher>() {
+    private val spinnerLeft = HardwareMap.spinnerLeft(FORWARD)
+    private val spinnerRight = HardwareMap.spinnerRight(REVERSE)
+
+    override val components: List<Component> = arrayListOf(
+        spinnerLeft,
+        spinnerRight
+    )
 
     var speed: Double
         get() = spinnerLeft.effort
@@ -16,14 +25,13 @@ object Launcher {
             spinnerRight.effort = value
         }
 
-    fun write() {
-        spinnerLeft.write()
-        spinnerRight.write()
+    override fun disable() {
+        this.speed = 0.0
     }
 
-    fun logCurrent(telemetry: Telemetry) {
-        telemetry.addData("left spinner current", spinnerLeft.current)
-        telemetry.addData("right spinner current", spinnerRight.current)
-    }
+//    fun logCurrent(telemetry: Telemetry) {
+//        telemetry.addData("left spinner current", spinnerLeft.current)
+//        telemetry.addData("right spinner current", spinnerRight.current)
+//    }
 
 }

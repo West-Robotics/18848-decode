@@ -1,39 +1,40 @@
 package org.firstinspires.ftc.teamcode.component
 
-import com.qualcomm.robotcore.hardware.CRServoImplEx
+import android.R.attr.direction
+import com.qualcomm.robotcore.hardware.ServoImplEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.PwmControl
 import kotlin.math.abs
 
 /**
- * CRServo wrapper with cached writes, built in servo pwm ranges, and less functions
+ * Servo wrapper with cached writes, built in servo pwm ranges, and less functions
  *
  * @param pwm servo model, used to determine pwm range
  * @param currentThresh minimum change in commanded power to necessitate a hardware write
  */
 class CRServo(
-    private val deviceSupplier: () -> CRServoImplEx?,
-    private val pwm: ModelPWM,
-    private val dir: DcMotorSimple.Direction,
+    private val deviceSupplier: () -> ServoImplEx?,
+//    private val pwm: ModelPWM,
+    var direction: Direction,
     val eps: Double = 0.005,
-    private var currentThresh: Double = 0.005
-) {
-    enum class ModelPWM(val min: Double, val max: Double) {
-        CR_AXON_MAX(510.0, 2490.0), CR_AXON_MINI(510.0, 2490.0), CR_AXON_MICRO(510.0, 2490.0),
-        CR_GOBILDA_TORQUE(900.0, 2100.0), CR_GOBILDA_SPEED(1000.0, 2000.0), CR_GOBILDA_SUPER(1000.0, 2000.0),
-    }
+): Component() {
+//    enum class ModelPWM(val min: Double, val max: Double) {
+//        CR_AXON_MAX(510.0, 2490.0), CR_AXON_MINI(510.0, 2490.0), CR_AXON_MICRO(510.0, 2490.0),
+//        CR_GOBILDA_TORQUE(900.0, 2100.0), CR_GOBILDA_SPEED(1000.0, 2000.0), CR_GOBILDA_SUPER(1000.0, 2000.0),
+//    }
 
-    private var _crservo: CRServoImplEx? = null
-    private val crservo: CRServoImplEx get() {
-        if (_crservo == null) {
-            _crservo = deviceSupplier() ?: error(
+    private var _servo: ServoImplEx? = null
+    private val servo: ServoImplEx get() {
+        if (_servo == null) {
+            _servo = deviceSupplier() ?: error(
                 "tryed to access a device before OpMode init"
             )
-            _crservo!!.pwmRange = PwmControl.PwmRange(pwm.min, pwm.max)
-            _crservo!!.direction = dir
+//            _servo!!.pwmRange = PwmControl.PwmRange(pwm.min, pwm.max)
+//            _servo!!.direction = DcMotorSimple.Direction.FORWARD
         }
-        return _crservo!!
+        return _servo!!
     }
+
     private var _effort = 0.0
 
     var effort
@@ -42,17 +43,16 @@ class CRServo(
             _effort = value
         } else Unit
 
-    fun thresh(thresh: Double) {
-        this.currentThresh = thresh
+    override fun write() {
+        servo.position = (effort * direction.dir + 1) / 2
     }
 
-    fun commandedPower() = crservo.power
-
-    /**
-     * Perform hardware write
-     */
-    fun write() { crservo.power = effort }
-
-    init {
+    override fun reset() {
+        _servo = null
     }
+
+    override fun update(dt: Double) {
+
+    }
+
 }

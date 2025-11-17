@@ -13,7 +13,7 @@ class Pinpoint(
     private val xDirection: GoBildaPinpointDriver.EncoderDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD,
     private val yDirection: GoBildaPinpointDriver.EncoderDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD,
     private val encoderResolution: GoBildaPinpointDriver.GoBildaOdometryPods = GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD,
-) {
+): Component() {
     private var _pinpoint: GoBildaPinpointDriver? = null
     private val pinpoint: GoBildaPinpointDriver get() {
         if (_pinpoint == null) {
@@ -44,5 +44,7 @@ class Pinpoint(
             AngleUnit.DEGREES,
             pinpoint.getHeadingVelocity(UnnormalizedAngleUnit.DEGREES)
         )
+
+    override fun write() { }
 }
 

@@ -5,21 +5,33 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
+import org.firstinspires.ftc.teamcode.component.Component
 import org.firstinspires.ftc.teamcode.hardware.HardwareMap
 import org.firstinspires.ftc.teamcode.robertmkII.hardware.GoBildaPinpointDriver
 import java.util.Locale
+import org.firstinspires.ftc.teamcode.component.Component.Direction.FORWARD
+import org.firstinspires.ftc.teamcode.component.Component.Direction.REVERSE
+import org.firstinspires.ftc.teamcode.subsystems.internal.Subsystem
 
-object Drivetrain {
+object Drivetrain: Subsystem<Drivetrain>() {
 
-    private val frontLeft = HardwareMap.frontLeft(DcMotorSimple.Direction.REVERSE, DcMotor.ZeroPowerBehavior.BRAKE)
-    private val frontRight = HardwareMap.frontRight(DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.BRAKE)
-    private val backLeft = HardwareMap.backLeft(DcMotorSimple.Direction.REVERSE, DcMotor.ZeroPowerBehavior.BRAKE)
-    private val backRight = HardwareMap.backRight(DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.BRAKE)
+    private val frontLeft = HardwareMap.frontLeft(REVERSE)
+    private val frontRight = HardwareMap.frontRight(FORWARD)
+    private val backLeft = HardwareMap.backLeft(REVERSE)
+    private val backRight = HardwareMap.backRight(FORWARD)
     val pinpoint = HardwareMap.pinpoint(
         0.0, 0.0,
         GoBildaPinpointDriver.EncoderDirection.FORWARD,
         GoBildaPinpointDriver.EncoderDirection.FORWARD,
         GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD,
+    )
+
+    override val components: List<Component> = arrayListOf(
+        frontLeft,
+        frontRight,
+        backLeft,
+        backRight,
+        pinpoint
     )
 
     fun setSpeed(x: Double, y:Double, turn: Double) {
@@ -29,12 +41,12 @@ object Drivetrain {
         backRight.effort = y - x + turn
     }
 
-    fun write() {
-        frontLeft.write()
-        frontRight.write()
-        backLeft.write()
-        backRight.write()
-    }
+//    fun write() {
+//        frontLeft.write()
+//        frontRight.write()
+//        backLeft.write()
+//        backRight.write()
+//    }
 
     fun showPos(telemetry: Telemetry) {
         val pos = pinpoint.pos

@@ -22,7 +22,7 @@ class Servo(
     private val pwm: ModelPWM,
     var thresh: Double = 0.002,
     private val usFrame: Double = 5000.0,
-) {
+): Component() {
     /**
      * PWM ranges for various servo models
      *
@@ -59,11 +59,17 @@ class Servo(
             _position = value
         } else Unit
 
-    fun write() {
+    override fun write() {
         if (abs(_position - lastPosition) > thresh) {
             servo.position = _position
             lastPosition = _position
         }
+    }
+
+    override fun update(dt: Double) { }
+
+    override fun reset() {
+        _servo = null
     }
 
 }

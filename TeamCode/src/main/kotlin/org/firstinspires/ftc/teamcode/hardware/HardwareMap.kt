@@ -1,12 +1,11 @@
 package org.firstinspires.ftc.teamcode.hardware
 
-import com.qualcomm.robotcore.hardware.CRServoImplEx
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
-import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.ServoImplEx
 import org.firstinspires.ftc.teamcode.component.CRServo
+import org.firstinspires.ftc.teamcode.component.Component.Direction
 import org.firstinspires.ftc.teamcode.component.Motor
 import org.firstinspires.ftc.teamcode.component.Pinpoint
 import org.firstinspires.ftc.teamcode.component.Servo
@@ -40,18 +39,15 @@ object HardwareMap {
 
     interface MotorConstructor {
         operator fun invoke(
-            dir: DcMotorSimple.Direction,
-            zpb: DcMotor.ZeroPowerBehavior
+            dir: Direction,
             ): Motor
     }
     private fun motor(port: Int) = object : MotorConstructor {
         override operator fun invoke(
-            dir: DcMotorSimple.Direction,
-            zpb: DcMotor.ZeroPowerBehavior
+            dir: Direction,
         ) = Motor(
             { hardwareMap?.get(DcMotorEx::class.java, "m$port") },
             dir,
-            zpb
         )
     }
 
@@ -77,24 +73,24 @@ object HardwareMap {
 
     interface CRServoConstructor {
         operator fun invoke(
-            pwm: CRServo.ModelPWM,
-            dir: DcMotorSimple.Direction,
+//            pwm: CRServo.ModelPWM,
+            dir: Direction,
             eps: Double = 0.005,
-            currentThresh: Double = 0.005,
+//            currentThresh: Double = 0.005,
         ): CRServo
     }
     private fun crservo(port: Int) = object : CRServoConstructor {
         override operator fun invoke(
-            pwm: CRServo.ModelPWM,
-            dir: DcMotorSimple.Direction,
+//            pwm: CRServo.ModelPWM,
+            dir: Direction,
             eps: Double,
-            currentThresh: Double,
+//            currentThresh: Double,
         ) = CRServo(
-            { hardwareMap?.get(CRServoImplEx::class.java, "s$port") },
-            pwm,
+            { hardwareMap?.get(ServoImplEx::class.java, "s$port") },
+//            pwm,
             dir,
             eps,
-            currentThresh,
+//            currentThresh,
         )
     }
 
