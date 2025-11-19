@@ -29,7 +29,7 @@ object HardwareMap {
     val lift3 = servo(6)
 
     val lowspinner = crservo(1)
-    val highspinner = crservo(3)
+    val highspinner = crservo(0)
 
     val pinpoint = gobuildapinpoint(0)
 

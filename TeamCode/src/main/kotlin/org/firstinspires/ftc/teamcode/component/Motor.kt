@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
-import com.qualcomm.robotcore.hardware.DcMotorSimple.Direction
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit
 import kotlin.math.abs
 
@@ -48,12 +47,9 @@ class Motor(
             _effort = value
         } else Unit
 
-    fun write() {
+    override fun write() {
         if (abs(lasteffort - effort) > eps) {
-            motor.power = effort * when (direction) {
-                Direction.FORWARD -> 1
-                Direction.REVERSE -> -1
-            }
+            motor.power = effort * direction.dir
             lasteffort = effort
         }
     }

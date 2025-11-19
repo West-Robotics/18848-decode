@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.opmodes
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import org.firstinspires.ftc.teamcode.command.internal.RunCommand
 import org.firstinspires.ftc.teamcode.command.internal.WaitCommand
 import org.firstinspires.ftc.teamcode.subsystems.Kicker
 import org.firstinspires.ftc.teamcode.subsystems.Launcher
 import org.firstinspires.ftc.teamcode.subsystems.TankDrivetrain
 
+@Autonomous(name = "full auto?")
 class ScrimAuto: CommandOpMode() {
     override fun initialize() {
 

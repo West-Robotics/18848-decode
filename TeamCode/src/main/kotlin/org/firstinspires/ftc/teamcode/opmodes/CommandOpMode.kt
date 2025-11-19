@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmodes
 
 import com.qualcomm.hardware.lynx.LynxModule
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
+import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.command.internal.CommandScheduler
 import org.firstinspires.ftc.teamcode.component.Gamepad
 import org.firstinspires.ftc.teamcode.hardware.HardwareMap
@@ -18,6 +19,8 @@ abstract class CommandOpMode : LinearOpMode() {
     override fun runOpMode() {
         HardwareMap.init(hardwareMap)
 
+        val looptime = ElapsedTime()
+
         driver = Gamepad(gamepad1)
         operator = Gamepad(gamepad2)
 
@@ -30,10 +33,12 @@ abstract class CommandOpMode : LinearOpMode() {
 
         waitForStart()
         while (opModeIsActive()) {
+            looptime.reset()
             allHubs.forEach { it.clearBulkCache() }
 
             CommandScheduler.update()
 
+            telemetry.addData("looptime", looptime.seconds())
             telemetry.update()
         }
         CommandScheduler.end()

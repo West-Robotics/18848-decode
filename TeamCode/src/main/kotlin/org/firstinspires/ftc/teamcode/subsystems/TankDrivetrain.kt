@@ -12,9 +12,9 @@ import org.firstinspires.ftc.teamcode.subsystems.internal.Subsystem
 object TankDrivetrain : Subsystem<TankDrivetrain>() {
 
     private val frontLeft = HardwareMap.frontLeft(FORWARD)
-    private val frontRight = HardwareMap.frontRight(FORWARD)
-    private val backLeft = HardwareMap.backLeft(REVERSE)
-    private val backRight = HardwareMap.backRight(FORWARD)
+    private val frontRight = HardwareMap.frontRight(REVERSE)
+    private val backLeft = HardwareMap.backLeft(FORWARD)
+    private val backRight = HardwareMap.backRight(REVERSE)
 
     override val components: List<Component> = arrayListOf(
         frontLeft,

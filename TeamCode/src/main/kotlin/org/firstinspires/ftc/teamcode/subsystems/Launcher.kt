@@ -10,8 +10,8 @@ import org.firstinspires.ftc.teamcode.hardware.HardwareMap
 import org.firstinspires.ftc.teamcode.subsystems.internal.Subsystem
 
 object Launcher: Subsystem<Launcher>() {
-    private val spinnerLeft = HardwareMap.spinnerLeft(FORWARD)
-    private val spinnerRight = HardwareMap.spinnerRight(REVERSE)
+    private val spinnerLeft = HardwareMap.spinnerLeft(REVERSE)
+    private val spinnerRight = HardwareMap.spinnerRight(FORWARD)
 
     override val components: List<Component> = arrayListOf(
         spinnerLeft,

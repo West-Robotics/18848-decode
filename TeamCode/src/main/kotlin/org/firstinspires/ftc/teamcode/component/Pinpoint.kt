@@ -46,5 +46,9 @@ class Pinpoint(
         )
 
     override fun write() { }
+
+    override fun reset() { }
+
+    override fun update(dt: Double) { }
 }
 
