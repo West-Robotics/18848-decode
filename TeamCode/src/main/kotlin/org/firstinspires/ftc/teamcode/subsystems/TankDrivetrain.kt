@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.component.Motor
 import org.firstinspires.ftc.teamcode.hardware.HardwareMap
 import org.firstinspires.ftc.teamcode.subsystems.internal.Subsystem
 
-object TankDrivetrain : Subsystem<TankDrivetrain>() {
+object TankDrivetrain : Subsystem() {
 
     private val frontLeft = HardwareMap.frontLeft(FORWARD)
     private val frontRight = HardwareMap.frontRight(REVERSE)

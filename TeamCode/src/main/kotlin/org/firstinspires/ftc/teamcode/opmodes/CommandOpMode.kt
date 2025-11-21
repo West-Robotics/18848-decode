@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.command.internal.CommandScheduler
 import org.firstinspires.ftc.teamcode.component.Gamepad
 import org.firstinspires.ftc.teamcode.hardware.HardwareMap
+import org.firstinspires.ftc.teamcode.subsystems.Telemetry
 import kotlin.collections.forEach
 
 //@Disabled
@@ -18,6 +19,7 @@ abstract class CommandOpMode : LinearOpMode() {
 
     override fun runOpMode() {
         HardwareMap.init(hardwareMap)
+        Telemetry.init(telemetry)
 
         val looptime = ElapsedTime()
 
@@ -38,10 +40,9 @@ abstract class CommandOpMode : LinearOpMode() {
 
             CommandScheduler.update()
 
-            telemetry.addData("looptime", looptime.seconds())
-            telemetry.update()
+            Telemetry.addFunction("looptime", looptime::seconds)
+            Telemetry.update()
         }
         CommandScheduler.end()
     }
-
 }

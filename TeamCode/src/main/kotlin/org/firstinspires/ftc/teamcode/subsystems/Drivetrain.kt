@@ -7,24 +7,42 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import org.firstinspires.ftc.teamcode.component.Component
 import org.firstinspires.ftc.teamcode.hardware.HardwareMap
-import org.firstinspires.ftc.teamcode.robertmkII.hardware.GoBildaPinpointDriver
 import java.util.Locale
 import org.firstinspires.ftc.teamcode.component.Component.Direction.FORWARD
 import org.firstinspires.ftc.teamcode.component.Component.Direction.REVERSE
 import org.firstinspires.ftc.teamcode.subsystems.internal.Subsystem
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D
+import kotlin.math.cos
+import kotlin.math.sin
 
-object Drivetrain: Subsystem<Drivetrain>() {
+object Drivetrain: Subsystem() {
 
     private val frontLeft = HardwareMap.frontLeft(REVERSE)
     private val frontRight = HardwareMap.frontRight(FORWARD)
     private val backLeft = HardwareMap.backLeft(REVERSE)
     private val backRight = HardwareMap.backRight(FORWARD)
     val pinpoint = HardwareMap.pinpoint(
-        0.0, 0.0,
-        GoBildaPinpointDriver.EncoderDirection.FORWARD,
-        GoBildaPinpointDriver.EncoderDirection.FORWARD,
-        GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD,
+        // 0.0, 0.0,
+        // GoBildaPinpointDriver.EncoderDirection.FORWARD,
+        // GoBildaPinpointDriver.EncoderDirection.FORWARD,
+        // GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD,
     )
+
+    init { // TODO: add pinpoint init vals
+        pinpoint.xDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD
+        pinpoint.yDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD
+        pinpoint.xOffset = 0.0
+        pinpoint.yOffset = 0.0
+        pinpoint.podType = GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD
+        pinpoint.pos = Pose2D(
+            DistanceUnit.MM,
+            0.0,
+            0.0,
+            AngleUnit.DEGREES,
+            0.0
+        )
+    }
 
     override val components: List<Component> = arrayListOf(
         frontLeft,
@@ -41,17 +59,17 @@ object Drivetrain: Subsystem<Drivetrain>() {
         backRight.effort = y - x + turn
     }
 
-//    fun write() {
-//        frontLeft.write()
-//        frontRight.write()
-//        backLeft.write()
-//        backRight.write()
-//    }
+    fun fieldCentricDrive(x: Double, y: Double, turn: Double) {
+        // get heading
+        val heading = pinpoint.pos.getHeading(AngleUnit.RADIANS)
+        val rotX = x * cos(-heading) - y * sin(-heading)
+        val rotY = x * sin(-heading) + y * cos(-heading)
+        setSpeed(rotX, rotY, turn)
+    }
 
-    fun showPos(telemetry: Telemetry) {
+    fun posString(): String {
         val pos = pinpoint.pos
-        val data = String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f", pos.getX(DistanceUnit.MM),
+        return String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f", pos.getX(DistanceUnit.MM),
             pos.getY(DistanceUnit.MM), pos.getHeading(AngleUnit.DEGREES))
-        telemetry.addData("Position", data)
     }
 }

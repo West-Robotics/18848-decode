@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.subsystems.internal
 
 import org.firstinspires.ftc.teamcode.component.Component
 
-abstract class Subsystem<T: Subsystem<T>> {
+abstract class Subsystem {
     abstract val components: List<Component>
 
     open fun update(dt: Double = 0.0) { }

@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.command.internal
 
-open class CommandGroup(vararg commandsInGroup: Command) : Command() {
+open class CommandGroup(vararg commandsInGroup: Command) : Command(name = { "CommandGroup" }) {
     var commands = unpack(commandsInGroup.asList())
 
     override var requirements = commands.flatMap {

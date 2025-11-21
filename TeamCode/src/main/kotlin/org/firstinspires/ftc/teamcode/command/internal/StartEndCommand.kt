@@ -5,8 +5,8 @@ import org.firstinspires.ftc.teamcode.subsystems.internal.Subsystem
 class StartEndCommand(
     start: () -> Unit,
     end: () -> Unit,
-    vararg requirements: Subsystem<*>,
-) : Command(initialize = start, end = { _ -> end() }, requirements = requirements.toMutableSet()) {
+    vararg requirements: Subsystem,
+) : Command(initialize = start, end = { _ -> end() }, requirements = requirements.toMutableSet(), name = { "StartEndCommand" }) {
     constructor(start: Command, end: Command): this(
         start = {
             start.initialize()

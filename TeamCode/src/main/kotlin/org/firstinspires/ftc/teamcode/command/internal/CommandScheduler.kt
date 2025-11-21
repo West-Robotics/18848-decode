@@ -14,10 +14,11 @@ object CommandScheduler {
 
     fun addTrigger(trigger: Trigger) = triggers.add(trigger)
 
-    fun schedule(command: Command) {
+    fun schedule(command: Command): Boolean {
         command.requirements.forEach { subsystem ->
             commands.filter { it.requirements.contains(subsystem) }
                 .forEach {
+                    if (!it.interruptable) return false
                     it.end(true)
                     commands.remove(it)
                     it.requirements.filter { !command.requirements.contains(it) }
@@ -27,6 +28,7 @@ object CommandScheduler {
         command.requirements.forEach { it.enable() }
         command.initialize()
         commands.add(command)
+        return true
     }
 
     private fun updateCommands(dt: Double) {

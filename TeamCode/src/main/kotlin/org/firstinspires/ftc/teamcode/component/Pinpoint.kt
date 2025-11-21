@@ -4,15 +4,15 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D
 import org.firstinspires.ftc.robotcore.external.navigation.UnnormalizedAngleUnit
-import org.firstinspires.ftc.teamcode.robertmkII.hardware.GoBildaPinpointDriver
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver
 
 class Pinpoint(
     private val deviceSupplier: () -> GoBildaPinpointDriver?,
-    private val xOffset: Double = 0.0,
-    private val yOffset: Double = 0.0,
-    private val xDirection: GoBildaPinpointDriver.EncoderDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD,
-    private val yDirection: GoBildaPinpointDriver.EncoderDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD,
-    private val encoderResolution: GoBildaPinpointDriver.GoBildaOdometryPods = GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD,
+    // private val xOffset: Double = 0.0,
+    // private val yOffset: Double = 0.0,
+    // private val xDirection: GoBildaPinpointDriver.EncoderDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD,
+    // private val yDirection: GoBildaPinpointDriver.EncoderDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD,
+    // private val encoderResolution: GoBildaPinpointDriver.GoBildaOdometryPods = GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD,
 ): Component() {
     private var _pinpoint: GoBildaPinpointDriver? = null
     private val pinpoint: GoBildaPinpointDriver get() {
@@ -20,35 +20,83 @@ class Pinpoint(
             _pinpoint = deviceSupplier() ?: error(
                 "tryed to acces device before OpMode init"
             )
-            _pinpoint!!.setOffsets(xOffset, yOffset, DistanceUnit.MM)
-            _pinpoint!!.setEncoderResolution(encoderResolution)
-            _pinpoint!!.setEncoderDirections(xDirection, yDirection)
+            // _pinpoint!!.setOffsets(xOffset, yOffset, DistanceUnit.MM)
+            // _pinpoint!!.setEncoderResolution(encoderResolution)
+            // _pinpoint!!.setEncoderDirections(xDirection, yDirection)
             _pinpoint!!.resetPosAndIMU()
         }
         return _pinpoint!!
     }
-    val pos: Pose2D
-        get() = Pose2D(
-            DistanceUnit.MM,
-            pinpoint.getPosX(DistanceUnit.MM),
-            pinpoint.getPosY(DistanceUnit.MM),
-            AngleUnit.DEGREES,
-            pinpoint.getHeading(AngleUnit.DEGREES)
-        )
+    private var _pos: Pose2D = pinpoint.position
+    var pos: Pose2D
+        get() = _pos
+        set(value) {
+            pinpoint.setPosition(value)
+        }
 
-    val vel: Pose2D
-        get() = Pose2D(
+    var vel: Pose2D = Pose2D(
             DistanceUnit.MM,
             pinpoint.getVelX(DistanceUnit.MM),
             pinpoint.getVelY(DistanceUnit.MM),
             AngleUnit.DEGREES,
-            pinpoint.getHeadingVelocity(UnnormalizedAngleUnit.DEGREES)
-        )
+            pinpoint.getHeadingVelocity(UnnormalizedAngleUnit.DEGREES),
+    )
+        internal set
+
+    var yOffset: Double = 0.0
+        set(value) {
+            field = value
+            pinpoint.setOffsets(xOffset, value, DistanceUnit.MM)
+        }
+
+    var xOffset: Double = 0.0
+        set(value) {
+            field = value
+            pinpoint.setOffsets(value, yOffset, DistanceUnit.MM)
+        }
+
+    var podType: GoBildaPinpointDriver.GoBildaOdometryPods = GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD
+        set(value) {
+            field = value
+            pinpoint.setEncoderResolution(value)
+        }
+
+    var xDirection: GoBildaPinpointDriver.EncoderDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD
+        set(value) {
+            field = value
+            pinpoint.setEncoderDirections(value, yDirection)
+        }
+
+    var yDirection: GoBildaPinpointDriver.EncoderDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD
+        set(value) {
+            field = value
+            pinpoint.setEncoderDirections(xDirection, value)
+        }
 
     override fun write() { }
 
-    override fun reset() { }
+    override fun reset() {
+        pinpoint.resetPosAndIMU()
+    }
 
-    override fun update(dt: Double) { }
+    override fun update(dt: Double) {
+        pinpoint.update()
+        _pos = Pose2D(
+            DistanceUnit.MM,
+            pinpoint.getPosX(DistanceUnit.MM),
+            pinpoint.getPosY(DistanceUnit.MM),
+            AngleUnit.RADIANS,
+            pinpoint.getHeading(AngleUnit.RADIANS)
+        )
+        vel = Pose2D(
+            DistanceUnit.MM,
+            pinpoint.getVelX(DistanceUnit.MM),
+            pinpoint.getVelY(DistanceUnit.MM),
+            AngleUnit.DEGREES,
+            pinpoint.getHeadingVelocity(UnnormalizedAngleUnit.DEGREES),
+        )
+    }
+
+    fun status() = pinpoint.getDeviceStatus()
 }
 

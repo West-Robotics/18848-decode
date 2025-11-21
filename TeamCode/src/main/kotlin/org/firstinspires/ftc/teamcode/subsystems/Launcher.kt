@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.component.Component.Direction.FORWARD
 import org.firstinspires.ftc.teamcode.hardware.HardwareMap
 import org.firstinspires.ftc.teamcode.subsystems.internal.Subsystem
 
-object Launcher: Subsystem<Launcher>() {
+object Launcher: Subsystem() {
     private val spinnerLeft = HardwareMap.spinnerLeft(REVERSE)
     private val spinnerRight = HardwareMap.spinnerRight(FORWARD)
 

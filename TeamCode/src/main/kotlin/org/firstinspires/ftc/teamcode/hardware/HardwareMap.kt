@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.component.Component.Direction
 import org.firstinspires.ftc.teamcode.component.Motor
 import org.firstinspires.ftc.teamcode.component.Pinpoint
 import org.firstinspires.ftc.teamcode.component.Servo
-import org.firstinspires.ftc.teamcode.robertmkII.hardware.GoBildaPinpointDriver
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver
 import kotlin.jvm.java
 
 // TODO: add actual ports in and configure robot correctly
@@ -96,27 +96,27 @@ object HardwareMap {
 
     interface PinpointConstructor {
         operator fun invoke(
-            xOffset: Double = 0.0,
-            yOffset: Double = 0.0,
-            xDirection: GoBildaPinpointDriver.EncoderDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD,
-            yDirection: GoBildaPinpointDriver.EncoderDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD,
-            encoderResolution: GoBildaPinpointDriver.GoBildaOdometryPods = GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD,
+            // xOffset: Double = 0.0,
+            // yOffset: Double = 0.0,
+            // xDirection: GoBildaPinpointDriver.EncoderDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD,
+            // yDirection: GoBildaPinpointDriver.EncoderDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD,
+            // encoderResolution: GoBildaPinpointDriver.GoBildaOdometryPods = GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD,
         ): Pinpoint
     }
     private fun gobuildapinpoint(port: Int) = object : PinpointConstructor {
         override operator fun invoke(
-            xOffset: Double,
-            yOffset: Double,
-            xDirection: GoBildaPinpointDriver.EncoderDirection,
-            yDirection: GoBildaPinpointDriver.EncoderDirection,
-            encoderResolution: GoBildaPinpointDriver.GoBildaOdometryPods
+            // xOffset: Double,
+            // yOffset: Double,
+            // xDirection: GoBildaPinpointDriver.EncoderDirection,
+            // yDirection: GoBildaPinpointDriver.EncoderDirection,
+            // encoderResolution: GoBildaPinpointDriver.GoBildaOdometryPods
         ): Pinpoint = Pinpoint(
             { hardwareMap?.get(GoBildaPinpointDriver::class.java, "i$port") },
-            xOffset,
-            yOffset,
-            xDirection,
-            yDirection,
-            encoderResolution,
+            // xOffset,
+            // yOffset,
+            // xDirection,
+            // yDirection,
+            // encoderResolution,
         )
     }
 }

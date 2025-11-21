@@ -5,7 +5,7 @@ import org.firstinspires.ftc.teamcode.hardware.HardwareMap
 import org.firstinspires.ftc.teamcode.subsystems.internal.Subsystem
 import org.firstinspires.ftc.teamcode.component.Component.Direction.FORWARD
 
-object Kicker: Subsystem<Kicker>() {
+object Kicker: Subsystem() {
     private val kicker = HardwareMap.highspinner(FORWARD)
     override val components: List<Component> = arrayListOf(kicker)
 

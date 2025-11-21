@@ -1,3 +1,3 @@
 package org.firstinspires.ftc.teamcode.command.internal
 
-class WaitUntilCommand(until: () -> Boolean) : Command(isFinished = until)
+class WaitUntilCommand(until: () -> Boolean) : Command(isFinished = until, name = { "WaitUntilCommand" })
