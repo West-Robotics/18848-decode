@@ -8,6 +8,8 @@ import org.firstinspires.ftc.teamcode.component.Component
 import org.firstinspires.ftc.teamcode.component.Motor
 import org.firstinspires.ftc.teamcode.hardware.HardwareMap
 import org.firstinspires.ftc.teamcode.subsystems.internal.Subsystem
+import kotlin.math.max
+import kotlin.math.abs
 
 object TankDrivetrain : Subsystem() {
 
@@ -24,10 +26,11 @@ object TankDrivetrain : Subsystem() {
     )
 
     fun setSpeed(x: Double, y:Double, turn: Double) {
-        frontLeft.effort = y - x + turn
-        frontRight.effort = y + x - turn
-        backLeft.effort = y + x + turn
-        backRight.effort = y - x - turn
+        val denominator: Double = max(abs(y)+abs(x)+abs(turn), 1.0)
+        frontLeft.effort = (y - x - turn)/denominator
+        frontRight.effort = (y + x + turn)/denominator
+        backLeft.effort = (y + x - turn)/denominator
+        backRight.effort = (y - x + turn)/denominator
     }
 
     override fun disable() {

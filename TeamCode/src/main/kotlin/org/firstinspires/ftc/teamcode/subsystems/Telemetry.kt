@@ -1,13 +1,19 @@
 package org.firstinspires.ftc.teamcode.subsystems
 
+import com.acmerobotics.dashboard.FtcDashboard
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
+
 object Telemetry {
-    lateinit var telemetry: org.firstinspires.ftc.robotcore.external.Telemetry
+    lateinit var telemetry: MultipleTelemetry
 
     var data = ArrayList<Pair<String, () -> Any>>()
     var lines = ArrayList<() -> String>()
 
     fun init(telemetry: org.firstinspires.ftc.robotcore.external.Telemetry) {
-        this.telemetry = telemetry
+        this.telemetry = MultipleTelemetry(
+            telemetry,
+            FtcDashboard.getInstance().telemetry
+        )
     }
 
     fun addFunction(label: String, func: () -> Any) = data.add(Pair(label, func))

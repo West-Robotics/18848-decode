@@ -30,17 +30,16 @@ abstract class CommandOpMode : LinearOpMode() {
         allHubs.forEach { it.bulkCachingMode = LynxModule.BulkCachingMode.MANUAL }
 
         CommandScheduler.reset()
-
-        initialize()
+        Telemetry.addFunction("looptime", looptime::seconds)
 
         waitForStart()
+        initialize()
         while (opModeIsActive()) {
             looptime.reset()
             allHubs.forEach { it.clearBulkCache() }
 
             CommandScheduler.update()
 
-            Telemetry.addFunction("looptime", looptime::seconds)
             Telemetry.update()
         }
         CommandScheduler.end()
