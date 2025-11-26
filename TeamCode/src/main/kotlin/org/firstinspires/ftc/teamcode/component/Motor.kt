@@ -10,7 +10,8 @@ import kotlin.math.abs
 class Motor(
     private val deviceSupplier: () -> DcMotorEx?,
     var direction: Direction = Component.Direction.FORWARD,
-//    private val zeroPowerBehavior: ZeroPowerBehavior,
+    var max_change: Double = 2.0,
+    // private val zeroPowerBehavior: ZeroPowerBehavior,
     val eps: Double = 0.005
 ): Component() {
     private var _motor: DcMotorEx? = null
@@ -49,7 +50,7 @@ class Motor(
 
     override fun write() {
         if (abs(lasteffort - effort) > eps) {
-            motor.power = effort * direction.dir
+            motor.power = effort.coerceIn(lasteffort-max_change, lasteffort+max_change) * direction.dir
             lasteffort = effort
         }
     }

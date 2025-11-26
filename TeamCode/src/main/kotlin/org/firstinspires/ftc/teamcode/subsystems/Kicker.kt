@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.subsystems.internal.Subsystem
 import org.firstinspires.ftc.teamcode.component.Component.Direction.FORWARD
 
 object Kicker: Subsystem() {
-    private val kicker = HardwareMap.highspinner(FORWARD)
+    private val kicker = HardwareMap.kicker(FORWARD)
     override val components: List<Component> = arrayListOf(kicker)
 
     var speed: Double

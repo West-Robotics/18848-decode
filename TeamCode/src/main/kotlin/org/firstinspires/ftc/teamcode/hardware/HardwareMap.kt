@@ -28,11 +28,11 @@ object HardwareMap {
     val lift2 = servo(2)
     val lift3 = servo(6)
 
-    val lowspinner = crservo(1)
-    val highspinner = crservo(0)
+    val lowspinner = crservo(1) // wrong port
+    val highspinner = crservo(3) // wrong port
+    val kicker = crservo(0)
 
     val pinpoint = gobuildapinpoint(0)
-
 
 
     fun init(hardwareMap: HardwareMap) { this.hardwareMap = hardwareMap }
@@ -40,14 +40,17 @@ object HardwareMap {
     interface MotorConstructor {
         operator fun invoke(
             dir: Direction,
+            max_change: Double = 2.0,
             ): Motor
     }
     private fun motor(port: Int) = object : MotorConstructor {
         override operator fun invoke(
             dir: Direction,
+            max_change: Double,
         ) = Motor(
             { hardwareMap?.get(DcMotorEx::class.java, "m$port") },
             dir,
+            max_change,
         )
     }
 
