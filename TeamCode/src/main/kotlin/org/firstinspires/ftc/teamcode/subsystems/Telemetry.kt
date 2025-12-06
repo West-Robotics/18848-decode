@@ -18,6 +18,7 @@ object Telemetry {
 
     fun addFunction(label: String, func: () -> Any) = data.add(Pair(label, func))
     fun addLine(line: () -> String) = lines.add(line)
+    fun addLines(vararg lines: String) = lines.forEach { it.add() }
     fun addAll(builder: Telemetry.() -> Unit) {
         this.builder()
     }

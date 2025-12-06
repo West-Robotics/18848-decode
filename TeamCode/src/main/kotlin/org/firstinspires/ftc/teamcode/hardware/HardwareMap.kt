@@ -4,11 +4,9 @@ import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.ServoImplEx
-import org.firstinspires.ftc.teamcode.component.CRServo
+import com.qualcomm.robotcore.hardware.AnalogInput
+import org.firstinspires.ftc.teamcode.component.*
 import org.firstinspires.ftc.teamcode.component.Component.Direction
-import org.firstinspires.ftc.teamcode.component.Motor
-import org.firstinspires.ftc.teamcode.component.Pinpoint
-import org.firstinspires.ftc.teamcode.component.Servo
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver
 import kotlin.jvm.java
 
@@ -24,13 +22,15 @@ object HardwareMap {
     val spinnerLeft = motor(4)
     val spinnerRight = motor(5)
 
-    val lift1 = servo(0)
-    val lift2 = servo(2)
-    val lift3 = servo(6)
+    val lift1 = servo(5)
+    val lift2 = servo(8)
+    val lift3 = servo(10)
 
-    val lowspinner = crservo(1) // wrong port
-    val highspinner = crservo(3) // wrong port
+    val intakewheel = crservo(6)
+    val midtakewheel = crservo(2)
     val kicker = crservo(0)
+    val kicker_sensor = analogdistancesensor(0) // wrong port, needs fix
+    // val kicker = servo(0)
 
     val pinpoint = gobuildapinpoint(0)
 
@@ -40,13 +40,13 @@ object HardwareMap {
     interface MotorConstructor {
         operator fun invoke(
             dir: Direction,
-            max_change: Double = 2.0,
+            max_change: Double? = null,
             ): Motor
     }
     private fun motor(port: Int) = object : MotorConstructor {
         override operator fun invoke(
             dir: Direction,
-            max_change: Double,
+            max_change: Double?,
         ) = Motor(
             { hardwareMap?.get(DcMotorEx::class.java, "m$port") },
             dir,
@@ -94,6 +94,30 @@ object HardwareMap {
             dir,
             eps,
 //            currentThresh,
+        )
+    }
+
+    interface AnalogDistanceSensorConstructor {
+        operator fun invoke(
+            // dir: Direction,
+            minDist: Double = 0.0,
+            maxDist: Double = 1.0,
+            zeroVoltage: Double = 0.0,
+            maxVoltage: Double = 3.3,
+        ): AnalogDistanceSensor
+    }
+    private fun analogdistancesensor(port: Int) = object : AnalogDistanceSensorConstructor {
+        override operator fun invoke(
+            minDist: Double,
+            maxDist: Double,
+            zeroVoltage: Double,
+            maxVoltage: Double,
+        ) = AnalogDistanceSensor(
+            { hardwareMap?.get(AnalogInput::class.java, "a$port") },
+            minDist,
+            maxDist,
+            zeroVoltage,
+            maxVoltage,
         )
     }
 

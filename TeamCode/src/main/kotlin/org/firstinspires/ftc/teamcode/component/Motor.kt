@@ -10,7 +10,7 @@ import kotlin.math.abs
 class Motor(
     private val deviceSupplier: () -> DcMotorEx?,
     var direction: Direction = Component.Direction.FORWARD,
-    var max_change: Double = 2.0,
+    var max_change: Double? = 2.0,
     // private val zeroPowerBehavior: ZeroPowerBehavior,
     val eps: Double = 0.005
 ): Component() {
@@ -27,31 +27,37 @@ class Motor(
         }
         return _motor!!
     }
-    private var _effort = 0.0
-    private var lasteffort = 9999.0
+
+    private var lasteffort = 0.0
+    private var true_max_change = 0.0
 
     override fun reset() {
         _motor = null
     }
 
     override fun update(dt: Double) {
-
+        true_max_change = (max_change ?: 0.0) * dt
     }
 
     fun setZPB(zpb: ZeroPowerBehavior) {
         motor.zeroPowerBehavior = zpb
     }
 
-    var effort
-        get() = _effort
-        set(value) = if (abs(value - _effort) > eps) {
-            _effort = value
-        } else Unit
+    var effort = 0.0
+        set(value) {
+            if (abs(value - field) > eps) field = value
+        }
 
     override fun write() {
         if (abs(lasteffort - effort) > eps) {
-            motor.power = effort.coerceIn(lasteffort-max_change, lasteffort+max_change) * direction.dir
-            lasteffort = effort
+            if (max_change == null) {
+                motor.power = effort * direction.dir
+                lasteffort = effort
+            } else effort.coerceIn(lasteffort-true_max_change, lasteffort+true_max_change).let {
+                motor.power = it
+                lasteffort = it
+            }
+
         }
     }
 

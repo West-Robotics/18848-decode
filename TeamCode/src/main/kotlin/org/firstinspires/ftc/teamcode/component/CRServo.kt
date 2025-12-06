@@ -5,8 +5,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.PwmControl
 import com.qualcomm.robotcore.hardware.ServoImplEx
 import org.firstinspires.ftc.teamcode.component.Component.Direction
-import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry
-import org.firstinspires.ftc.robotcore.external.Telemetry
 import java.util.Optional
 import kotlin.math.abs
 
@@ -39,13 +37,11 @@ class CRServo(
         return _servo!!
     }
 
-    private var _effort = 0.0
-
-    var effort
-        get() = _effort
-        set(value) = if (abs(value - _effort) > eps) {
-            _effort = value
-        } else Unit
+    var effort = 0.0
+        set(value) { if (abs(value - field) > eps) {
+            field = value
+        }
+    }
 
     override fun write() {
         servo.position = (effort * direction.dir + 1) / 2

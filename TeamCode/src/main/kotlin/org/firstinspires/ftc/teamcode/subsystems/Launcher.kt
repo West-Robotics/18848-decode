@@ -9,7 +9,16 @@ import org.firstinspires.ftc.teamcode.component.Component.Direction.FORWARD
 import org.firstinspires.ftc.teamcode.hardware.HardwareMap
 import org.firstinspires.ftc.teamcode.subsystems.internal.Subsystem
 
-object Launcher: Subsystem() {
+
+enum class Zone(val launcher_speed: Double) {
+    BACKZONE(1.0),
+    FAR_FRONT(0.7),
+    NEAR_FRONT(0.5)
+}
+
+
+object Launcher: Subsystem<Launcher>() {
+
     private val spinnerLeft = HardwareMap.spinnerLeft(REVERSE)
     private val spinnerRight = HardwareMap.spinnerRight(FORWARD)
 
@@ -25,13 +34,16 @@ object Launcher: Subsystem() {
             spinnerRight.effort = value
         }
 
-    override fun disable() {
+    fun gyrate(speed: Double) = run {
+        this.speed = speed
+    } withEnd {
         this.speed = 0.0
     }
 
-//    fun logCurrent(telemetry: Telemetry) {
-//        telemetry.addData("left spinner current", spinnerLeft.current)
-//        telemetry.addData("right spinner current", spinnerRight.current)
-//    }
+    fun spin(zone: Zone) = gyrate(zone.launcher_speed)
+    fun stop() = runOnce { this.speed = 0.0 }
 
+    override fun disable() {
+        this.speed = 0.0
+    }
 }

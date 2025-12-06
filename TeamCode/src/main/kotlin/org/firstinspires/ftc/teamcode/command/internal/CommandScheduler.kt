@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.command.internal
 
+import com.qualcomm.robotcore.util.ElapsedTime
+
 object CommandScheduler {
 
     var commands = arrayListOf<Command>()
@@ -36,7 +38,7 @@ object CommandScheduler {
         while (i < commands.size) {
             val command = commands[i]
             command.requirements.forEach { requirement ->
-                requirement.components.forEach { it.update(dt) }
+                // requirement.components.forEach { it.update(dt) }
                 requirement.update(dt)
             }
             command.execute()
@@ -48,9 +50,7 @@ object CommandScheduler {
             } else {
                 i++
             }
-            command.requirements.forEach { requirement ->
-                requirement.components.forEach { it.write() }
-            }
+            command.requirements.forEach { it.write() }
         }
     }
 
@@ -63,11 +63,9 @@ object CommandScheduler {
         }
     }
 
-    fun update() {
-        val deltatime = 0.0 // add later
-
+    fun update(dt: Double) {
         updateTriggers()
-        updateCommands(deltatime)
+        updateCommands(dt)
     }
 
     fun end() {

@@ -44,7 +44,7 @@ class Servo(
         }
         return _servo!!
     }
-    private var lastPosition = 0.0
+    // private var lastPosition = 0.0
 
     var direction: Servo.Direction
         get() = servo.direction
@@ -52,18 +52,16 @@ class Servo(
             servo.direction = value
         }
 
-    private var _position = 0.0
-    var position: Double
-        get() = servo.position
-        set(value: Double) = if (abs(value - lastPosition) > thresh) {
-            _position = value
+    var position = 0.0
+        set(value: Double) = if (abs(value - field) > thresh) {
+            field = value
         } else Unit
 
     override fun write() {
-        if (abs(_position - lastPosition) > thresh) {
-            servo.position = _position
-            lastPosition = _position
-        }
+        // if (abs(_position - lastPosition) > thresh) {
+            servo.position = position
+            // lastPosition = _position
+        // }
     }
 
     override fun update(dt: Double) { }

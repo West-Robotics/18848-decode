@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.component
 
 import com.qualcomm.robotcore.hardware.Gamepad
 import org.firstinspires.ftc.teamcode.command.internal.Trigger
+import org.firstinspires.ftc.teamcode.command.internal.InstantCommand
 import kotlin.math.pow
 import kotlin.math.sign
 
@@ -94,4 +95,8 @@ class Gamepad(private val gamepad: Gamepad) {
 
     val left_trigger = GamepadTrigger { gamepad.left_trigger.toDouble() }
     val right_trigger = GamepadTrigger { gamepad.right_trigger.toDouble() }
+
+    fun rumble(time: Double = 0.5) = InstantCommand {
+        gamepad.rumble((time * 1000).toInt())
+    }
 }

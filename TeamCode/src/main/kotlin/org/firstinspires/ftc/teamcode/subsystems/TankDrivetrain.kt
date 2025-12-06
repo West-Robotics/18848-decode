@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.subsystems.internal.Subsystem
 import kotlin.math.max
 import kotlin.math.abs
 
-object TankDrivetrain : Subsystem() {
+object TankDrivetrain : Subsystem<TankDrivetrain>() {
 
     private val frontLeft = HardwareMap.frontLeft(FORWARD)
     private val frontRight = HardwareMap.frontRight(REVERSE)
@@ -25,20 +25,31 @@ object TankDrivetrain : Subsystem() {
         backRight,
     )
 
+    fun setSpeed(speed: Double) {
+        setSpeed(speed, speed, speed)
+    }
+
     fun setSpeed(x: Double, y:Double, turn: Double) {
         val denominator: Double = max(abs(y)+abs(x)+abs(turn), 1.0)
-        frontLeft.effort = (y - x - turn)/denominator
-        frontRight.effort = (y + x + turn)/denominator
-        backLeft.effort = (y + x - turn)/denominator
-        backRight.effort = (y - x + turn)/denominator
+        frontLeft.effort = (y - x*0.8 + turn)/denominator
+        frontRight.effort = (y + x*0.8 - turn)/denominator
+        backLeft.effort = (y + x + turn)/denominator
+        backRight.effort = (y - x - turn)/denominator
     }
 
     override fun disable() {
-        components.filter { it is Motor }.forEach { (it as Motor).effort = 0.0 }
+        // components.filter { it is Motor }.forEach { (it as Motor).effort = 0.0 }
+        setSpeed(0.0)
     }
 
     init {
         components.filter { it is Motor }.forEach { (it as Motor).setZPB(BRAKE) }
+        // Telemetry.addAll {
+        //     "frontLeft" ids { frontLeft.effort }
+        //     "frontRight" ids { frontRight.effort }
+        //     "backLeft" ids { backLeft.effort }
+        //     "backRight" ids { backRight.effort }
+        // }
     }
 
 }

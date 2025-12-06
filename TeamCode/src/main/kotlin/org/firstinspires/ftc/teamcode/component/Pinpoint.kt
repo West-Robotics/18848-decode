@@ -20,7 +20,7 @@ class Pinpoint(
             _pinpoint = deviceSupplier() ?: error(
                 "tryed to acces device before OpMode init"
             )
-            // _pinpoint!!.setOffsets(xOffset, yOffset, DistanceUnit.MM)
+            // _pinpoint!!.setOffsets(xOffset, yOffset, DistanceUnit.INCH)
             // _pinpoint!!.setEncoderResolution(encoderResolution)
             // _pinpoint!!.setEncoderDirections(xDirection, yDirection)
             _pinpoint!!.resetPosAndIMU()
@@ -35,9 +35,9 @@ class Pinpoint(
         }
 
     var vel: Pose2D = Pose2D(
-            DistanceUnit.MM,
-            pinpoint.getVelX(DistanceUnit.MM),
-            pinpoint.getVelY(DistanceUnit.MM),
+            DistanceUnit.INCH,
+            pinpoint.getVelX(DistanceUnit.INCH),
+            pinpoint.getVelY(DistanceUnit.INCH),
             AngleUnit.DEGREES,
             pinpoint.getHeadingVelocity(UnnormalizedAngleUnit.DEGREES),
     )
@@ -46,13 +46,13 @@ class Pinpoint(
     var yOffset: Double = 0.0
         set(value) {
             field = value
-            pinpoint.setOffsets(xOffset, value, DistanceUnit.MM)
+            pinpoint.setOffsets(xOffset, value, DistanceUnit.INCH)
         }
 
     var xOffset: Double = 0.0
         set(value) {
             field = value
-            pinpoint.setOffsets(value, yOffset, DistanceUnit.MM)
+            pinpoint.setOffsets(value, yOffset, DistanceUnit.INCH)
         }
 
     var podType: GoBildaPinpointDriver.GoBildaOdometryPods = GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD
@@ -82,16 +82,16 @@ class Pinpoint(
     override fun update(dt: Double) {
         pinpoint.update()
         _pos = Pose2D(
-            DistanceUnit.MM,
-            pinpoint.getPosX(DistanceUnit.MM),
-            pinpoint.getPosY(DistanceUnit.MM),
-            AngleUnit.RADIANS,
-            pinpoint.getHeading(AngleUnit.RADIANS)
+            DistanceUnit.INCH,
+            pinpoint.getPosX(DistanceUnit.INCH),
+            pinpoint.getPosY(DistanceUnit.INCH),
+            AngleUnit.DEGREES,
+            pinpoint.getHeading(AngleUnit.DEGREES)
         )
         vel = Pose2D(
-            DistanceUnit.MM,
-            pinpoint.getVelX(DistanceUnit.MM),
-            pinpoint.getVelY(DistanceUnit.MM),
+            DistanceUnit.INCH,
+            pinpoint.getVelX(DistanceUnit.INCH),
+            pinpoint.getVelY(DistanceUnit.INCH),
             AngleUnit.DEGREES,
             pinpoint.getHeadingVelocity(UnnormalizedAngleUnit.DEGREES),
         )

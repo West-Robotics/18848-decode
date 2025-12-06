@@ -11,8 +11,8 @@ import org.firstinspires.ftc.teamcode.subsystems.TankDrivetrain
 class ForwardAuto: CommandOpMode() {
 
     override fun initialize() {
-        RunCommand(TankDrivetrain) {
-            TankDrivetrain.setSpeed(0.0, 0.5, 0.0)
+        TankDrivetrain.run {
+            setSpeed(0.0, 0.5, 0.0)
         }.schedule()
     }
 

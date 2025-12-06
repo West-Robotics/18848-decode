@@ -19,12 +19,16 @@ import kotlin.math.sin
 import kotlin.math.max
 import kotlin.math.abs
 
-object Drivetrain: Subsystem() {
+object Drivetrain: Subsystem<Drivetrain>() {
 
-    private val frontLeft = HardwareMap.frontLeft(REVERSE)
-    private val frontRight = HardwareMap.frontRight(FORWARD)
-    private val backLeft = HardwareMap.backLeft(REVERSE)
-    private val backRight = HardwareMap.backRight(FORWARD)
+    private val FRONT_STRAFE_MODIFIER = 0.74
+    // private val SLEW_RATE: Double? = 0.2
+    private val SLEW_RATE: Double? = null
+
+    private val frontLeft  = HardwareMap.frontLeft (FORWARD, SLEW_RATE)
+    private val frontRight = HardwareMap.frontRight(REVERSE, SLEW_RATE)
+    private val backLeft   = HardwareMap.backLeft  (FORWARD, SLEW_RATE)
+    private val backRight  = HardwareMap.backRight (REVERSE, SLEW_RATE)
     val pinpoint = HardwareMap.pinpoint()
 
     override val components: List<Component> = arrayListOf(
@@ -36,7 +40,7 @@ object Drivetrain: Subsystem() {
     )
 
 
-    init { // TODO: add pinpoint init vals
+    init { // TODO: add pinpoint start vals
         pinpoint.xDirection = GoBildaPinpointDriver.EncoderDirection.REVERSED
         pinpoint.yDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD
         pinpoint.xOffset = 23.0
@@ -58,12 +62,17 @@ object Drivetrain: Subsystem() {
             pinpoint.pos = value
         }
 
+    fun getZone(): Zone = Zone.BACKZONE
+
+
+    fun setSpeed(speed: Double) = setSpeed(speed, speed, speed)
+
     fun setSpeed(x: Double, y:Double, turn: Double) {
         val denominator: Double = max(abs(y)+abs(x)+abs(turn), 1.0)
-        frontLeft.effort = (y - x - turn)/denominator
-        frontRight.effort = (y + x + turn)/denominator
-        backLeft.effort = (y + x - turn)/denominator
-        backRight.effort = (y - x + turn)/denominator
+        frontLeft.effort =  (y - x*FRONT_STRAFE_MODIFIER + turn)/denominator
+        frontRight.effort = (y + x*FRONT_STRAFE_MODIFIER - turn)/denominator
+        backLeft.effort =   (y + x                       + turn)/denominator
+        backRight.effort =  (y - x                       - turn)/denominator
     }
 
     fun fieldCentricDrive(x: Double, y: Double, turn: Double) {
@@ -81,6 +90,12 @@ object Drivetrain: Subsystem() {
     }
 
     override fun disable() {
-        components.filter { it is Motor }.forEach { (it as Motor).effort = 0.0 }
+        // components.filter { it is Motor }.forEach { (it as Motor).effort = 0.0 }
+        this.setSpeed(0.0)
+    }
+
+    override fun reset() {
+        components.forEach { it.reset() }
+        components.filter { it is Motor }.forEach { (it as Motor).setZPB(DcMotor.ZeroPowerBehavior.BRAKE) }
     }
 }

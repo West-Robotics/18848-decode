@@ -20,6 +20,7 @@ open class Trigger(
     infix fun or(other: Trigger) = Trigger { supplier() or other.supplier() }
     operator fun not() = Trigger { !supplier() }
 
+    fun onTrue(func: () -> Unit) = onTrue(InstantCommand(command = func))
     fun onTrue(command: Command): Trigger {
         CommandScheduler.addTrigger(
             Trigger(
@@ -31,6 +32,7 @@ open class Trigger(
         return this
     }
 
+    fun onFalse(func: () -> Unit) = onFalse(InstantCommand(command = func))
     fun onFalse(command: Command): Trigger {
         CommandScheduler.addTrigger(
             Trigger(
