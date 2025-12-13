@@ -78,8 +78,8 @@ object Drivetrain: Subsystem<Drivetrain>() {
     fun fieldCentricDrive(x: Double, y: Double, turn: Double) {
         // get heading
         val heading = pinpoint.pos.getHeading(AngleUnit.RADIANS)
-        val rotX = x * cos(heading) - y * sin(heading)
-        val rotY = x * sin(heading) + y * cos(heading)
+        val rotX = x * cos(-heading) - y * sin(-heading)
+        val rotY = x * sin(-heading) + y * cos(-heading)
         setSpeed(rotX, rotY, turn)
     }
 
