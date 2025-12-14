@@ -2,14 +2,12 @@ package org.firstinspires.ftc.teamcode.command
 
 import org.firstinspires.ftc.teamcode.subsystems.*
 
-fun PrimeBallCommand(slot: Int) = (Lifts.resetLifts() andThen 
-    IntakeWheel.spin()
-    parallelTo MidtakeWheel.spin()
-    parallelTo (
+fun PrimeSlot(slot: Int) = (
+    (
+        IntakeWheel.spin() with 
+        MidtakeWheel.spin() with
         Lifts.raise(slot)
-        andThen Kicker.runToPos(0.3)
-    )).withRequirements(
-        Kicker, IntakeWheel, MidtakeWheel, Lifts
-    ) withEnd Lifts.resetLifts()
+    ) withTimeout 1.0
+) withEnd Lifts.lower(slot) withName "prime $slot"
 
 

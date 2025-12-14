@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.command.internal
 
-import android.R.attr.description
-import org.firstinspires.ftc.teamcode.subsystems.internal.Subsystem
-import java.lang.Thread.interrupted
+import org.firstinspires.ftc.teamcode.subsystems.Subsystem
 
 open class Command(
     private var initialize: () -> Unit = { },
@@ -11,7 +9,8 @@ open class Command(
     private var isFinished: () -> Boolean = { false },
     open val requirements: MutableSet<Subsystem<*>> = mutableSetOf(),
     open var name: () -> String = { "Command" },
-    open var interruptable: Boolean = true,
+    open var interruptable: () -> Boolean = { true },
+    open var runStates: MutableSet<OpModeState> = mutableSetOf(OpModeState.ACTIVE)
 //    open var description: () -> String = {
 //        requirements.map { it::class.simpleName!! }.toString()
 //    }
@@ -37,7 +36,7 @@ open class Command(
             + other.requirements.toList()
         ).toMutableSet()
     )
-    infix fun parallelTo(other: Command) = ParallelCommandGroup(this, other)
+    infix fun with(other: Command) = ParallelCommandGroup(this, other)
 
     fun schedule() = CommandScheduler.schedule(this)
     fun cancel() = CommandScheduler.end(this)
@@ -50,7 +49,13 @@ open class Command(
     infix fun withEnd(function: InstantCommand) = copy(end = { function.command() })
     infix fun until(function: () -> Boolean) = copy(isFinished = function)
     infix fun withName(name: String) = copy(name = { name })
-    infix fun isInteruptable(interruptable: Boolean) = copy(interruptable = interruptable)
+    infix fun isInterruptable(interruptable: Boolean) = copy(interruptable = { interruptable })
+    infix fun isInterruptable(interruptable: () -> Boolean) = copy(interruptable = interruptable)
+    infix fun during(state: OpModeState) = copy(runStates = mutableSetOf(state))
+
+    fun during(vararg newrunStates: OpModeState) = copy(
+        runStates = newrunStates.toMutableSet()
+    )
 
     fun withRequirements(vararg newrequirements: Subsystem<*>) = copy(
         requirements = newrequirements.toMutableSet()
@@ -63,7 +68,8 @@ open class Command(
         isFinished: () -> Boolean = this::isFinished,
         requirements: MutableSet<Subsystem<*>> = this.requirements,
         name: () -> String = this.name,
-        interruptable: Boolean = this.interruptable
+        interruptable: () -> Boolean = this.interruptable,
+        runStates: MutableSet<OpModeState> = this.runStates,
 //        description: () -> String = this.description
     ) = Command(
         initialize = initialize,
@@ -72,8 +78,9 @@ open class Command(
         isFinished = isFinished,
         requirements = requirements,
         name = name,
-//        description = description
         interruptable = interruptable,
+        runStates = runStates,
+//        description = description
     )
 
     override fun toString() = "${name()}"

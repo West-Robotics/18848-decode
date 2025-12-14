@@ -2,12 +2,14 @@ package org.firstinspires.ftc.teamcode.subsystems
 
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
+import org.firstinspires.ftc.teamcode.command.internal.CommandScheduler
 
 object Telemetry {
     lateinit var telemetry: MultipleTelemetry
 
     var data = ArrayList<Pair<String, () -> Any>>()
     var lines = ArrayList<() -> String>()
+    var show_commands = false
 
     fun init(telemetry: org.firstinspires.ftc.robotcore.external.Telemetry) {
         this.telemetry = MultipleTelemetry(
@@ -29,6 +31,11 @@ object Telemetry {
     fun String.add() = addLine { this }
 
     fun update() {
+        if (show_commands) {
+            telemetry.addLine("------------- Commands! -------------")
+            CommandScheduler.commands.forEach { telemetry.addLine(it.name()) }
+            telemetry.addLine("-------------------------------------")
+        }
         lines.forEach {
             telemetry.addLine(it())
         }
@@ -41,6 +48,7 @@ object Telemetry {
     fun reset() {
         data = arrayListOf()
         lines = arrayListOf()
+        show_commands = false
     }
 
 

@@ -7,42 +7,82 @@ import org.firstinspires.ftc.teamcode.command.internal.CommandScheduler
 import org.firstinspires.ftc.teamcode.component.Gamepad
 import org.firstinspires.ftc.teamcode.hardware.HardwareMap
 import org.firstinspires.ftc.teamcode.subsystems.Telemetry
+import org.psilynx.psikit.ftc.PsiKitLinearOpMode
+import com.qualcomm.robotcore.eventloop.opmode.OpMode
+import org.psilynx.psikit.ftc.wrappers.GamepadWrapper
+import org.psilynx.psikit.ftc.OpModeControls
+import org.psilynx.psikit.core.rlog.RLOGServer
+import org.psilynx.psikit.core.rlog.RLOGWriter
+import org.psilynx.psikit.core.Logger
 import kotlin.collections.forEach
 
-//@Disabled
-abstract class CommandOpMode : LinearOpMode() {
+abstract class CommandOpMode : PsiKitLinearOpMode() {
 
     lateinit var driver: Gamepad
     lateinit var operator: Gamepad
+    private val looptime = ElapsedTime()
 
-    abstract fun initialize()
+    open fun onInit() { }
+    open fun onStart() { }
 
     override fun runOpMode() {
+        psiKitSetup()
         HardwareMap.init(hardwareMap)
         Telemetry.init(telemetry)
+        CommandScheduler.init()
 
-        val looptime = ElapsedTime()
+        // val allHubs = hardwareMap.getAll(LynxModule::class.java)
+        // allHubs.forEach { it.bulkCachingMode = LynxModule.BulkCachingMode.MANUAL }
 
-        driver = Gamepad(gamepad1)
-        operator = Gamepad(gamepad2)
+        driver = Gamepad(GamepadWrapper(gamepad1))
+        operator = Gamepad(GamepadWrapper(gamepad2))
 
-        val allHubs: List<LynxModule> = hardwareMap.getAll(LynxModule::class.java)
-        allHubs.forEach { it.bulkCachingMode = LynxModule.BulkCachingMode.MANUAL }
-
-        CommandScheduler.reset()
         Telemetry.reset()
-        Telemetry.addFunction("looptime", looptime::seconds)
+        // Telemetry.show_commands = true
+        // Telemetry.addFunction("looptime", looptime::seconds)
+        
+        val server = RLOGServer()
+        Logger.addDataReceiver(server)
+        // val writer = RLOGWriter()
+        Logger.start()
 
-        waitForStart()
-        initialize()
-        while (opModeIsActive()) {
+        onInit()
+
+        while (opModeInInit()) {
+            Logger.periodicBeforeUser()
+            processHardwareInputs()
             looptime.reset()
-            allHubs.forEach { it.clearBulkCache() }
 
             CommandScheduler.update(looptime.seconds())
+            Logger.periodicAfterUser(0.0, 0.0)
 
+        }
+
+        waitForStart()
+        CommandScheduler.start()
+        onStart()
+        while (opModeIsActive()) {
+            Logger.periodicBeforeUser()
+            processHardwareInputs()
+            looptime.reset()
+
+            // allHubs.forEach { it.clearBulkCache() }
+            Logger.processInputs(
+                "/DriverStation/joystick1",
+                driver.gamepad as GamepadWrapper
+            )
+            Logger.processInputs(
+                "/DriverStation/joystick2",
+                operator.gamepad as GamepadWrapper
+            )
+
+            CommandScheduler.update(looptime.seconds())
             Telemetry.update()
+            Logger.periodicAfterUser(0.0, 0.0)
         }
         CommandScheduler.end()
+        // Logger.end()
+        OpModeControls.started = false
+        OpModeControls.stopped = true
     }
 }

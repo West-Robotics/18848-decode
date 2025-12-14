@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.subsystems
 
-import org.firstinspires.ftc.teamcode.subsystems.internal.Subsystem
 import org.firstinspires.ftc.teamcode.component.Component.Direction.*
 import org.firstinspires.ftc.teamcode.hardware.HardwareMap
 import org.firstinspires.ftc.teamcode.component.Servo.ModelPWM.*
@@ -10,6 +9,10 @@ import kotlin.math.abs
 object MidtakeWheel : Subsystem<MidtakeWheel>() {
     private val spinner = HardwareMap.midtakewheel(REVERSE)
     override val components = listOf(spinner)
+
+    override fun disable() {
+        spinner.effort = 0.0
+    }
 
     var speed: Double
         get() = spinner.effort

@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Telemetry
 @TeleOp(name = "Pinpoint be testing")
 class PinpointTest: CommandOpMode() {
 
-    override fun initialize() {
+    override fun onInit() {
 
         Drivetrain.run {
             fieldCentricDrive(

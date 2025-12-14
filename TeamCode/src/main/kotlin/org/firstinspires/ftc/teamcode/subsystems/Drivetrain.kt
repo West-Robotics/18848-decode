@@ -3,17 +3,19 @@ package org.firstinspires.ftc.teamcode.subsystems
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import org.firstinspires.ftc.robotcore.external.Telemetry
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import org.firstinspires.ftc.teamcode.component.Component
 import org.firstinspires.ftc.teamcode.hardware.HardwareMap
 import java.util.Locale
-import org.firstinspires.ftc.teamcode.component.Component.Direction.FORWARD
-import org.firstinspires.ftc.teamcode.component.Component.Direction.REVERSE
-import org.firstinspires.ftc.teamcode.subsystems.internal.Subsystem
+import org.firstinspires.ftc.teamcode.component.Component.Direction.*
 import org.firstinspires.ftc.teamcode.component.Motor
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D
+import org.firstinspires.ftc.teamcode.util.log
+import org.psilynx.psikit.core.wpi.math.Pose2d
+import org.psilynx.psikit.core.wpi.math.Rotation2d
+import org.psilynx.psikit.core.wpi.math.Translation2d
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.*
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit.*
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.max
@@ -39,18 +41,27 @@ object Drivetrain: Subsystem<Drivetrain>() {
         pinpoint
     )
 
+    override fun update(dt: Double) {
+        super.update(dt)
+        log("position string")value posString()
+        log("position") value Pose2d(
+            pos.getX(METER), pos.getY(METER),
+            Rotation2d.fromRadians(pos.getHeading(RADIANS))
+        )
+    }
+
 
     init { // TODO: add pinpoint start vals
         pinpoint.xDirection = GoBildaPinpointDriver.EncoderDirection.REVERSED
         pinpoint.yDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD
-        pinpoint.xOffset = 23.0
-        pinpoint.yOffset = -152.0
+        pinpoint.yOffset = 23.0
+        pinpoint.xOffset = -152.0
         pinpoint.podType = GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD
         pinpoint.pos = Pose2D(
-            DistanceUnit.MM,
+            MM,
             0.0,
             0.0,
-            AngleUnit.DEGREES,
+            DEGREES,
             0.0
         )
         components.filter { it is Motor }.forEach { (it as Motor).setZPB(DcMotor.ZeroPowerBehavior.BRAKE) }
@@ -64,6 +75,11 @@ object Drivetrain: Subsystem<Drivetrain>() {
 
     fun getZone(): Zone = Zone.BACKZONE
 
+    fun fixedSpeed(x: Double, y: Double, turn: Double) = run {
+        setSpeed(x, y, turn)
+    } withEnd {
+        setSpeed(0.0)
+    }
 
     fun setSpeed(speed: Double) = setSpeed(speed, speed, speed)
 
@@ -77,16 +93,16 @@ object Drivetrain: Subsystem<Drivetrain>() {
 
     fun fieldCentricDrive(x: Double, y: Double, turn: Double) {
         // get heading
-        val heading = pinpoint.pos.getHeading(AngleUnit.RADIANS)
-        val rotX = x * cos(-heading) - y * sin(-heading)
-        val rotY = x * sin(-heading) + y * cos(-heading)
+        val heading = pinpoint.pos.getHeading(RADIANS)
+        val rotX = x * cos(heading) - y * sin(heading)
+        val rotY = x * sin(heading) + y * cos(heading)
         setSpeed(rotX, rotY, turn)
     }
 
     fun posString(): String {
         val pos = pinpoint.pos
-        return String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f", pos.getX(DistanceUnit.MM),
-            pos.getY(DistanceUnit.MM), pos.getHeading(AngleUnit.DEGREES))
+        return String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f", pos.getX(MM),
+            pos.getY(MM), pos.getHeading(DEGREES))
     }
 
     override fun disable() {

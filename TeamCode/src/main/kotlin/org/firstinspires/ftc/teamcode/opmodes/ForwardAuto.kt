@@ -5,13 +5,13 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.command.internal.Command
 import org.firstinspires.ftc.teamcode.command.internal.InstantCommand
 import org.firstinspires.ftc.teamcode.command.internal.RunCommand
-import org.firstinspires.ftc.teamcode.subsystems.TankDrivetrain
+import org.firstinspires.ftc.teamcode.subsystems.Drivetrain
 
 @Autonomous(name = "manually controlled auto")
 class ForwardAuto: CommandOpMode() {
 
-    override fun initialize() {
-        TankDrivetrain.run {
+    override fun onInit() {
+        Drivetrain.run {
             setSpeed(0.0, 0.5, 0.0)
         }.schedule()
     }

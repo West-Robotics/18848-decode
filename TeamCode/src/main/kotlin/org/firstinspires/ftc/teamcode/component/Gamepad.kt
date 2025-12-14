@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.command.internal.InstantCommand
 import kotlin.math.pow
 import kotlin.math.sign
 
-class Gamepad(private val gamepad: Gamepad) {
+class Gamepad(val gamepad: Gamepad) {
 
     class Axis(private val supplier: () -> Double): Number() {
         override fun toByte() = supplier().toInt().toByte()

@@ -7,13 +7,12 @@ import org.firstinspires.ftc.teamcode.component.Component
 import org.firstinspires.ftc.teamcode.component.Component.Direction.REVERSE
 import org.firstinspires.ftc.teamcode.component.Component.Direction.FORWARD
 import org.firstinspires.ftc.teamcode.hardware.HardwareMap
-import org.firstinspires.ftc.teamcode.subsystems.internal.Subsystem
 
 
 enum class Zone(val launcher_speed: Double) {
     BACKZONE(1.0),
-    FAR_FRONT(0.7),
-    NEAR_FRONT(0.5)
+    FAR_FRONT(0.8),
+    NEAR_FRONT(0.7)
 }
 
 

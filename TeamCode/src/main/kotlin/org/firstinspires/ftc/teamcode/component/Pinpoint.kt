@@ -46,13 +46,13 @@ class Pinpoint(
     var yOffset: Double = 0.0
         set(value) {
             field = value
-            pinpoint.setOffsets(xOffset, value, DistanceUnit.INCH)
+            pinpoint.setOffsets(xOffset, value, DistanceUnit.MM)
         }
 
     var xOffset: Double = 0.0
         set(value) {
             field = value
-            pinpoint.setOffsets(value, yOffset, DistanceUnit.INCH)
+            pinpoint.setOffsets(value, yOffset, DistanceUnit.MM)
         }
 
     var podType: GoBildaPinpointDriver.GoBildaOdometryPods = GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD

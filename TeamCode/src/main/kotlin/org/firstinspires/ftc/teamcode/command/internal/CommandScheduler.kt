@@ -1,10 +1,19 @@
 package org.firstinspires.ftc.teamcode.command.internal
 
-import com.qualcomm.robotcore.util.ElapsedTime
+import org.firstinspires.ftc.teamcode.subsystems.Subsystem
+
+enum class OpModeState {
+    OFF,
+    INIT,
+    ACTIVE,
+}
 
 object CommandScheduler {
 
     var commands = arrayListOf<Command>()
+        internal set
+
+    var opmode_state = OpModeState.OFF
         internal set
 
     private var triggers = arrayListOf<Trigger>()
@@ -12,15 +21,29 @@ object CommandScheduler {
     fun reset() {
         commands = arrayListOf()
         triggers = arrayListOf()
+        opmode_state = OpModeState.OFF
+    }
+
+    fun init() {
+        reset()
+        opmode_state = OpModeState.INIT
+    }
+
+    fun start() {
+        opmode_state = OpModeState.ACTIVE
     }
 
     fun addTrigger(trigger: Trigger) = triggers.add(trigger)
 
     fun schedule(command: Command): Boolean {
+        if (!command.runStates.contains(opmode_state)) {
+            Trigger { command.runStates.contains(opmode_state) }.oneshot(true).onTrue(command)
+            return true // IDK about this (true|false)
+        }
         command.requirements.forEach { subsystem ->
             commands.filter { it.requirements.contains(subsystem) }
                 .forEach {
-                    if (!it.interruptable) return false
+                    if (!it.interruptable()) return false
                     it.end(true)
                     commands.remove(it)
                     it.requirements.filter { !command.requirements.contains(it) }
@@ -30,6 +53,7 @@ object CommandScheduler {
         command.requirements.forEach { it.enable() }
         command.initialize()
         commands.add(command)
+        println("CommandScheduler: Scheduled ${command.name()}")
         return true
     }
 
@@ -43,10 +67,11 @@ object CommandScheduler {
             }
             command.execute()
 
-            if (command.isFinished()) {
+            if (command.isFinished() || !command.runStates.contains(opmode_state)) {
                 command.end(false)
                 commands.remove(command)
                 command.requirements.forEach { it.disable() }
+                println("CommandScheduler: Removed ${command.name()}")
             } else {
                 i++
             }
@@ -54,11 +79,16 @@ object CommandScheduler {
         }
     }
 
-    private fun updateTriggers() {
-        triggers.forEach {
-            it.update()
-            if (it.isTriggered) {
-                schedule(it.command)
+    private fun updateTriggers() { // ugly ass code, should clean later but prolly wont :/
+        var i = 0
+        while (i < triggers.size) {
+            triggers[i].let {
+                it.update()
+                if (it.isTriggered) {
+                    schedule(it.command)
+                    if (it.oneshot) triggers.remove(it)
+                    else i++
+                } else i++
             }
         }
     }
@@ -71,14 +101,16 @@ object CommandScheduler {
     fun end() {
         commands.forEach { it.end(true) }
         commands = arrayListOf()
+        opmode_state = OpModeState.OFF
     }
 
     fun end(command: Command) {
-        val toRemove = commands.firstOrNull { it == command}
+        val toRemove = commands.firstOrNull { it == command }
         if (toRemove != null) {
             toRemove.end(true)
             commands.remove(toRemove)
             command.requirements.forEach { it.disable() }
+            println("CommandScheduler: Removed ${command.name()}")
         }
     }
 }

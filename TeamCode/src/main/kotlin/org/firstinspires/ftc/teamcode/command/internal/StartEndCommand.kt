@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.command.internal
 
-import org.firstinspires.ftc.teamcode.subsystems.internal.Subsystem
+import org.firstinspires.ftc.teamcode.subsystems.Subsystem
 
 class StartEndCommand(
     start: () -> Unit,

@@ -3,7 +3,8 @@ package org.firstinspires.ftc.teamcode.command.internal
 open class Trigger(
     var supplier: () -> Boolean,
     var conditionsMet: (Boolean, Boolean) -> Boolean = { value, lastValue -> value },
-    var command: Command = Command()
+    var command: Command = Command(),
+    var oneshot: Boolean = false,
 ) {
     constructor(supplier: () -> Boolean) : this(supplier, { value, lastValue -> value }, Command())
     private var lastValue = supplier()
@@ -13,6 +14,7 @@ open class Trigger(
         lastValue = value
         value = supplier()
     }
+     nfix fun oneshot(oneshot: Boolean) = this.apply { this.oneshot = oneshot }
     val isTriggered: Boolean
         get() = conditionsMet(value, lastValue)
 

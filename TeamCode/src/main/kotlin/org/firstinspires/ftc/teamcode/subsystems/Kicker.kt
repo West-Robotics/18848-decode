@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.subsystems
 
 import org.firstinspires.ftc.teamcode.component.Component
 import org.firstinspires.ftc.teamcode.hardware.HardwareMap
-import org.firstinspires.ftc.teamcode.subsystems.internal.Subsystem
 import org.firstinspires.ftc.teamcode.component.Component.Direction.*
 import kotlin.math.abs
 

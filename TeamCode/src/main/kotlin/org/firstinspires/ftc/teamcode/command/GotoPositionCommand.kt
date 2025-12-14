@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.command
 
 import org.firstinspires.ftc.teamcode.command.internal.Command
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain
-import org.firstinspires.ftc.teamcode.subsystems.internal.Subsystem
+import org.firstinspires.ftc.teamcode.subsystems.Subsystem
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit

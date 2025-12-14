@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.subsystems.internal
+package org.firstinspires.ftc.teamcode.subsystems
 
 import org.firstinspires.ftc.teamcode.component.Component
 import org.firstinspires.ftc.teamcode.command.internal.RunCommand

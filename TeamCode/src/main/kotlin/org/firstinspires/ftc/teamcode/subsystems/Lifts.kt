@@ -1,13 +1,12 @@
 package org.firstinspires.ftc.teamcode.subsystems
 
-import org.firstinspires.ftc.teamcode.subsystems.internal.Subsystem
 import org.firstinspires.ftc.teamcode.component.Servo
 import org.firstinspires.ftc.teamcode.component.Servo.ModelPWM.*
 import org.firstinspires.ftc.teamcode.hardware.HardwareMap
 
 
 object Lifts : Subsystem<Lifts>() {
-    private val LIFT_MOVE_TImayraME: Double = 0.3
+    private val LIFT_MOVE_TIME: Double = 0.3
     private val lifts: List<Servo> = listOf(
         HardwareMap.lift1(AXON_MINI),
         HardwareMap.lift2(AXON_MINI),
@@ -16,8 +15,10 @@ object Lifts : Subsystem<Lifts>() {
     override val components = lifts
 
     enum class LiftPos(val pos: Double) {
-        LOW(0.0),
-        HIGH(0.12),
+        ZERO(0.0),
+        LOW(0.5),
+        HOLD(0.52),
+        HIGH(0.62),
     }
 
     fun raise(lift: Int) = setPos(lift, LiftPos.HIGH)
