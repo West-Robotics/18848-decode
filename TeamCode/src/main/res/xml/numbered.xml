@@ -33,6 +33,7 @@
             <LynxEmbeddedIMU name="imu" port="0" bus="0" />
             <!--<OctoQuadFWv3 name="octoquad" port="1" bus="1" /> -->
             <goBILDAPinpoint name="i0" port="1" bus="1" />
+            <RevColorSensorV3 name="ColorSensor" port="2" bus="2" />
         </LynxModule>
 
         <LynxModule name="Expansion Hub 3" port="3">
