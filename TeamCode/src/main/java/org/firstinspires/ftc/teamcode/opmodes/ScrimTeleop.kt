@@ -9,13 +9,14 @@ import org.firstinspires.ftc.teamcode.subsystems.Zone.*
 @TeleOp(name = "dont know dont care")
 class ScrimTeleop: CommandOpMode() {
 
-    override fun onInit() {
+    override fun onStart() {
 
         val drive = TeleOpDrive(
             { driver.left_stick.x.cube },
             { -driver.left_stick.y.cube },
             { driver.right_stick.x.cube },
-            0.9
+            // 0.9
+            null
         ).also { it.schedule() }
 
         // Lifts.showPos()

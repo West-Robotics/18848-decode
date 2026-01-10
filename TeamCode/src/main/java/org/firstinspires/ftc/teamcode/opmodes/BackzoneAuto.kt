@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.command.*
 
 @Autonomous(name = "christmas presents")
 class BackzoneAuto : CommandOpMode() {
-    override fun onInit() {
+    override fun onStart() {
         Telemetry.show_commands = true
         LaunchPreloads(BACKZONE).schedule()
     }

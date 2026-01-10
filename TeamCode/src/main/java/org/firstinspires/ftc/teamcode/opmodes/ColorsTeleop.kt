@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.util.Globals
 @TeleOp(name = "smelling colors")
 class ColorsTeleop: CommandOpMode() {
 
-    override fun onInit() {
+    override fun onStart() {
 
         val drive = TeleOpDrive(
             { driver.left_stick.x.cube },

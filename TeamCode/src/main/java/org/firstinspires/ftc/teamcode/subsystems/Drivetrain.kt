@@ -26,8 +26,6 @@ object Drivetrain: Subsystem<Drivetrain>() {
 
     private val FRONT_STRAFE_MODIFIER = 0.74
     // private val FRONT_STRAFE_MODIFIER = 1.0
-    private val SLEW_RATE: Double? = 1.0
-    // private val SLEW_RATE: Double? = null
 
     private val frontLeft  = HardwareMap.frontLeft (FORWARD)
     private val frontRight = HardwareMap.frontRight(REVERSE)
@@ -57,16 +55,12 @@ object Drivetrain: Subsystem<Drivetrain>() {
     init { // TODO: add pinpoint start vals
         pinpoint.xDirection = GoBildaPinpointDriver.EncoderDirection.REVERSED
         pinpoint.yDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD
-        pinpoint.yOffset = -22.5
-        pinpoint.xOffset = -65.5
         pinpoint.podType = GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD
-        pinpoint.pos = Pose2D(
-            MM,
-            0.0,
-            0.0,
-            DEGREES,
-            0.0
-        )
+        // pinpoint.yOffset = -22.5
+        // pinpoint.xOffset = -65.5
+        pinpoint.yOffset = -110.0
+        pinpoint.xOffset = 42.5
+        pinpoint.pos = Globals.start_pos.get()
         components.filter { it is Motor }.forEach { (it as Motor).setZPB(DcMotor.ZeroPowerBehavior.BRAKE) }
     }
 
@@ -76,7 +70,11 @@ object Drivetrain: Subsystem<Drivetrain>() {
             pinpoint.pos = value
         }
 
-    fun getZone(): Zone = Zone.BACKZONE
+    fun getZone(): Zone = when (distanceTo(Globals.alliance.goal, DistanceUnit.INCH)) {
+        in 0.0..24.0 -> Zone.NEAR_FRONT
+        in 24.0..48.0 -> Zone.FAR_FRONT
+        else -> Zone.BACKZONE
+    }
 
     fun fixedSpeed(x: Double, y: Double, turn: Double) = run {
         setSpeed(x, y, turn)

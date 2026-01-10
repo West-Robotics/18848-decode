@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Drivetrain
 @Autonomous(name = "manually controlled auto")
 class ForwardAuto: CommandOpMode() {
 
-    override fun onInit() {
+    override fun onStart() {
         Drivetrain.run {
             setSpeed(0.0, 0.5, 0.0)
         }.schedule()

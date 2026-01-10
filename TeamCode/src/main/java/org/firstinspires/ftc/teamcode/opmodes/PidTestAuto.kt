@@ -12,8 +12,23 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES
 
 @Autonomous(name = "the next 9/11")
 class PontenialExplosives : CommandOpMode() {
-    override fun onInit() {
-        MoveFancy(180.0, 1.0).schedule()
+    override fun onStart() {
+        Drivetrain.pinpoint.pos = Pose2D(
+            METER,
+            0.0,
+            0.0,
+            DEGREES,
+            0.0,
+        )
+        GotoPosition(
+            Pose2D(
+                METER,
+                1.0,
+                0.5,
+                DEGREES,
+                0.0,
+            )
+        ).schedule()
     }
 }
 

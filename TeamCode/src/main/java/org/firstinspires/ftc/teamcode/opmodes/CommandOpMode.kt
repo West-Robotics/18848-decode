@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.command.internal.CommandScheduler
 import org.firstinspires.ftc.teamcode.component.Gamepad
 import org.firstinspires.ftc.teamcode.hardware.HardwareMap
 import org.firstinspires.ftc.teamcode.subsystems.Telemetry
+import org.firstinspires.ftc.teamcode.util.SelectorCommand
 import org.psilynx.psikit.ftc.PsiKitLinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import org.psilynx.psikit.ftc.wrappers.GamepadWrapper
@@ -14,7 +15,6 @@ import org.psilynx.psikit.ftc.OpModeControls
 import org.psilynx.psikit.core.rlog.RLOGServer
 import org.psilynx.psikit.core.rlog.RLOGWriter
 import org.psilynx.psikit.core.Logger
-import kotlin.collections.forEach
 
 abstract class CommandOpMode : PsiKitLinearOpMode() {
 
@@ -22,8 +22,10 @@ abstract class CommandOpMode : PsiKitLinearOpMode() {
     lateinit var operator: Gamepad
     private val looptime = ElapsedTime()
 
-    open fun onInit() { }
-    open fun onStart() { }
+    open fun onInit() {
+        // SelectorCommand(gamepad1, telemetry).schedule()
+    }
+    abstract fun onStart()
 
     override fun runOpMode() {
         psiKitSetup()

@@ -2,12 +2,13 @@ package org.firstinspires.ftc.teamcode.util
 
 import org.firstinspires.ftc.teamcode.command.internal.*
 import com.qualcomm.robotcore.hardware.Gamepad
+import org.firstinspires.ftc.robotcore.external.Telemetry
 import kotlin.reflect.KProperty
 
 class Selector<T>(val name: String, val options: List<T>) {
     constructor(name: String, vararg options: T): this(name, options.asList())
     private var index = 0
-    private val value get() = options[index]
+    val value get() = options[index]
 
     operator fun getValue(thisRef: Any, property: KProperty<*>) = value
 
@@ -34,6 +35,29 @@ class Selector<T>(val name: String, val options: List<T>) {
     }
 }
 
-class SelectorCommand(val gamepad: Gamepad): Command(name = { "Selectors" }, runStates = mutableSetOf(OpModeState.INIT)) {
+class SelectorCommand(val gamepad: Gamepad, val telemetry: Telemetry): Command(name = { "Selectors" }, runStates = mutableSetOf(OpModeState.INIT)) {
+
+    private var index = 0
+    private var prevGamepad: Gamepad = Gamepad()
+    private val current: Selector<*> get() = Selector.allSelectors[index]
+
+    override fun execute(dt: Double) {
+        if (gamepad.dpad_up && !prevGamepad.dpad_up) {
+            index++
+        } else if (gamepad.dpad_down && !prevGamepad.dpad_down) {
+            index--
+        }
+
+        if (gamepad.dpad_right && !prevGamepad.dpad_right) {
+            current.next()
+        } else if (gamepad.dpad_left && !prevGamepad.dpad_left) {
+            current.prev()
+        }
+
+        prevGamepad.copy(gamepad)
+
+        telemetry.addData(current.name, current.value)
+        telemetry.update()
+    }
 
 }

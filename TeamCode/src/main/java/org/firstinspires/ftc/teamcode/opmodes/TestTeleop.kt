@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.hardware.HardwareMap
 
 @TeleOp(name = "testing!")
 class TestTeleop: CommandOpMode() {
-    override fun onInit() {
+    override fun onStart() {
         // TeleOpDrive(
         //     { driver.left_stick.x.sq },
         //     { -driver.left_stick.y.sq },

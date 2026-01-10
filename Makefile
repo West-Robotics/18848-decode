@@ -3,8 +3,8 @@ ROOT_DIR := $(dir $(lastword $MAKEFILE_LIST))
 sloth:
 	${ROOT_DIR}/gradlew :TeamCode:deploySloth
 adb:
-	iwctl station wlan0 scan
-	iwctl station wlan0 connect 18848-RC
+	iwctl station wlp4s0 scan
+	iwctl station wlp4s0 connect 18848-RC
 	-killall adb
 	sleep 1
 	adb connect 192.168.43.1
