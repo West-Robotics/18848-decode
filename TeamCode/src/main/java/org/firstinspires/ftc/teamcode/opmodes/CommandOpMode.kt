@@ -24,7 +24,7 @@ abstract class CommandOpMode : PsiKitLinearOpMode() {
 
     open fun onInit() {
         Drivetrain
-        // SelectorCommand(gamepad1, telemetry).schedule()
+        SelectorCommand(gamepad2, telemetry).schedule()
     }
     abstract fun onStart()
 

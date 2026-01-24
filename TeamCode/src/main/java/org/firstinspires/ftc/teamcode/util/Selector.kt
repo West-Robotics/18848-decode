@@ -38,6 +38,13 @@ class Selector<T>(val name: String, val options: List<T>) {
 class SelectorCommand(val gamepad: Gamepad, val telemetry: Telemetry): Command(name = { "Selectors" }, runStates = mutableSetOf(OpModeState.INIT)) {
 
     private var index = 0
+        set(value) {
+            field = when {
+                value < 0 -> Selector.allSelectors.size - 1
+                value >= Selector.allSelectors.size -> 0
+                else -> value
+            }
+        }
     private var prevGamepad: Gamepad = Gamepad()
     private val current: Selector<*> get() = Selector.allSelectors[index]
 
