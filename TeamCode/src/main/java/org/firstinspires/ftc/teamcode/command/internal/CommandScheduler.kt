@@ -39,7 +39,7 @@ object CommandScheduler {
         opmode_state = OpModeState.ACTIVE
     }
 
-    fun addTrigger(trigger: Trigger) = triggers.add(trigger)
+    fun addTrigger(trigger: Trigger) = triggers.add(trigger).also { println("trigger added") }
 
     fun schedule(command: Command): Boolean {
         if (!command.runStates.contains(opmode_state)) {

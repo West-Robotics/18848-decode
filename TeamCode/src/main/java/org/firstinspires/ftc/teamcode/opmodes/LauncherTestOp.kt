@@ -1,35 +1,30 @@
 package org.firstinspires.ftc.teamcode.opmodes
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import org.firstinspires.ftc.teamcode.command.internal.*
-import org.firstinspires.ftc.teamcode.command.*
 import org.firstinspires.ftc.teamcode.subsystems.*
+import org.firstinspires.ftc.teamcode.command.*
+import org.firstinspires.ftc.teamcode.command.internal.*
 import org.firstinspires.ftc.teamcode.subsystems.Zone.*
-import org.firstinspires.ftc.teamcode.util.Globals
 
-@TeleOp(name = "smelling colors")
-class ColorsTeleop: CommandOpMode() {
-
+@TeleOp(name = "tuned launches")
+class MotorTest : CommandOpMode() {
     override fun onStart() {
+        //val drive = TeleOpDrive(
+        //    { driver.left_stick.x.cube },
+        //    { -driver.left_stick.y.cube },
+        //    { driver.right_stick.x.cube },
+        //    0.95
+        //).also { it.schedule() }
 
-        val drive = TeleOpDrive(
-            { driver.left_stick.x.cube },
-            { -driver.left_stick.y.cube },
-            { driver.right_stick.x.cube },
-            0.95
-        ).also { it.schedule() }
-
-        // Lifts.showPos()
         var zone: Zone = BACKZONE
         var auto_zone: Boolean = false
+        var launcher_speed: Double = 0.0
 
         Telemetry.addAll {
             "zone" ids { zone }
             "zone management" ids { if (auto_zone) "auto" else "manual" }
-            "launcher power" ids { Launcher.speed }
-            "color sensor 1" ids ColorSensors.sensors[0]::color
-            "color sensor 2" ids ColorSensors.sensors[1]::color
-            "color sensor 3" ids ColorSensors.sensors[2]::color
+            "launcher power" ids Launcher::speed
+            "custom launcher power" ids { launcher_speed }
         }
         // Telemetry.show_commands = true
 
@@ -51,13 +46,17 @@ class ColorsTeleop: CommandOpMode() {
             prime(ColorSensors.slotWithBall).schedule()
         }
 
+        fun launcherSpeedChange(speed: Double) = InstantCommand {
+            launcher_speed += speed
+        }
+
         driver.apply {
             // a.whileTrue(Kicker.gyrate(0.5))
             // b.whileTrue(Kicker.gyrate(-0.5))
             // x.whileTrue(MidtakeWheel.spin())
             y.whileTrue(Launcher.intake())
 
-            (left_bumper or right_bumper).whileTrue(drive.slowmode())
+            //(left_bumper or right_bumper).whileTrue(drive.slowmode())
             right_trigger.whileTrue(
                 IntakeWheel.spin()
                 with MidtakeWheel.reverse()
@@ -79,10 +78,10 @@ class ColorsTeleop: CommandOpMode() {
             //     }
             // )
 
-            // dpad_left.onTrue(prime(1))
-            // dpad_up.onTrue(prime(2))
-            // dpad_right.onTrue(prime(3))
-            dpad_down.onTrue(Lifts.resetLifts(Lifts.LiftPos.HOLD))
+            dpad_up.onTrue(launcherSpeedChange(0.1))
+            dpad_right.onTrue(launcherSpeedChange(0.01))
+            dpad_down.onTrue(launcherSpeedChange(-0.1))
+            dpad_left.onTrue(launcherSpeedChange(-0.01))
         }
 
         operator.apply {
@@ -102,7 +101,7 @@ class ColorsTeleop: CommandOpMode() {
             left_bumper.whileTrue(MidtakeWheel.spin())
             right_trigger.whileTrue(
                 Launcher.run {
-                    speed = zone.launcher_speed
+                    speed = launcher_speed
                 }
             )
             // (

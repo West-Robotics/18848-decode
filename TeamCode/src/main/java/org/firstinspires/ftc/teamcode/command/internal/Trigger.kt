@@ -33,7 +33,7 @@ open class Trigger(
                 supplier,
                 { value, lastValue -> value and !lastValue },
                 command,
-            )
+            ).oneshot(this.oneshot)
         )
         return this
     }
@@ -45,7 +45,7 @@ open class Trigger(
                 supplier,
                 { value, lastValue -> !value and lastValue },
                 command
-            )
+            ).oneshot(this.oneshot)
         )
         return this
     }
@@ -56,7 +56,7 @@ open class Trigger(
                 supplier,
                 { value, lastValue -> value and !lastValue },
                 command racesWith WaitUntilCommand { !supplier() }
-            )
+            ).oneshot(this.oneshot)
         )
         return this
     }
@@ -67,7 +67,7 @@ open class Trigger(
                 supplier,
                 { value, lastValue -> !value and lastValue },
                 command racesWith WaitUntilCommand { supplier() }
-            )
+            ).oneshot(this.oneshot)
         )
         return this
     }
@@ -85,7 +85,7 @@ open class Trigger(
                             it.schedule()
                         }
                     }
-                )
+                ).oneshot(this.oneshot)
             }
         )
         return this
@@ -93,14 +93,18 @@ open class Trigger(
 
     fun toggleOnFalse(command: Command): Trigger {
         CommandScheduler.addTrigger(
-            Trigger(supplier).apply {
-                this.command = command.until { !this.value && this.lastValue }.also {
-                    this.conditionsMet = { value, lastValue ->
-                        !value
-                            && lastValue
-                            && !CommandScheduler.commands.contains(it)
+            command.let {
+                Trigger(
+                    supplier,
+                    { value, lastValue -> !value && lastValue },
+                    InstantCommand {
+                        if (CommandScheduler.commands.contains(it)) {
+                            it.cancel()
+                        } else {
+                            it.schedule()
+                        }
                     }
-                }
+                ).oneshot(this.oneshot)
             }
         )
         return this

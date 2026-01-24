@@ -2,8 +2,10 @@ package org.firstinspires.ftc.teamcode.command.internal
 
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.subsystems.Subsystem
+//import org.firstinspires.ftc.teamcode.subsystems.Drivetrain
 
 class TimedCommand(private val seconds: Double, private val command: Command = Command())
+    //: Command(requirements = mutableSetOf(Drivetrain), name = { "TimedCommand" }) {
     : Command(requirements = command.requirements, name = { "TimedCommand" }) {
     constructor(seconds: Double, vararg requirements: Subsystem<*>, execute: (Double) -> Unit = { }): this(seconds, RunCommand(*requirements, function = execute))
     private val e = ElapsedTime()

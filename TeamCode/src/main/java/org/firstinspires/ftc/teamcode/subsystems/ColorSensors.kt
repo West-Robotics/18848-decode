@@ -30,5 +30,9 @@ object ColorSensors : Subsystem<ColorSensors>() {
         ColorSensor(HardwareMap.sensors[4](), HardwareMap.sensors[5]()),
     )
 
+    val slotWithBall: Int? get() = sensors.indexOfFirst { it.hasBall }.let {
+        if (it == -1) null else it + 1 
+    }
+
     override val components = listOf<Component>()
 }

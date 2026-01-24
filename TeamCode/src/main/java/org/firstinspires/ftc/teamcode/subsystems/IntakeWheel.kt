@@ -25,8 +25,8 @@ object IntakeWheel : Subsystem<IntakeWheel>() {
         wheel.effort = 0.0
     }
 
-    fun spin()    = gyrate(1.0)
+    fun spin()    = gyrate(0.7)
     fun stop()    = runOnce { wheel.effort = 0.0 }
-    fun reverse() = gyrate(-1.0)
+    fun reverse() = gyrate(-0.7)
 
 }

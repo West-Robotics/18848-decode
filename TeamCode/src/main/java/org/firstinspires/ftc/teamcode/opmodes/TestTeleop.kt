@@ -20,21 +20,35 @@ class TestTeleop: CommandOpMode() {
 
         fun prime(slot: Int) = (
             Lifts.raise(slot)
-            with (
+            andThen (
                 IntakeWheel.spin() with
                 MidtakeWheel.spin()
             ) withTimeout 0.5
+            andThen MidtakeWheel.spin() withTimeout(1.5)
+            andThen Lifts.lower(slot)
         ) andThen InstantCommand { primed = true }
 
-        Trigger {
-            ColorSensors.sensors[0].hasBall
-        }.onTrue(
-            If({ !primed }, prime(1))
-        )
+
+        ColorSensors.sensors.forEach { sensor ->
+            Trigger {
+                sensor.hasBall
+            }.onTrue(
+                If(
+                    { !primed },
+                    prime(ColorSensors.sensors.indexOf(sensor) + 1),
+                    InstantCommand {
+                        Trigger({ !primed }).oneshot(true).onTrue(
+                            prime(ColorSensors.sensors.indexOf(sensor) + 1),
+                        )
+                    }
+                )
+            )
+        }
 
 
         // val testing_pin = HardwareMap.testing_pin(maxDist = 360.0)
         // val distance_pin = HardwareMap.testing_pin(maxDist = 100.0)
+        Telemetry.show_commands = true
         Telemetry.addAll {
             "color sensor 1" ids { ColorSensors.sensors[0].color }
             "color sensor 2" ids { ColorSensors.sensors[1].color }
@@ -48,6 +62,13 @@ class TestTeleop: CommandOpMode() {
             a.onTrue {
                 primed = !primed
             }
+            b.onTrue(
+                Lifts.resetLifts()
+            )
+            x.whileTrue(
+                IntakeWheel.spin()
+            )
+            y.whileTrue(MidtakeWheel.spin())
         }
     }
 }

@@ -20,13 +20,15 @@ class PontenialExplosives : CommandOpMode() {
             DEGREES,
             0.0,
         )
+
+        // TurnToFaceCommand( 
         GotoPosition(
             Pose2D(
                 METER,
-                1.0,
-                0.5,
-                DEGREES,
                 0.0,
+                1.0,
+                DEGREES,
+                90.0,
             )
         ).schedule()
     }

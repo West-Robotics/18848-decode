@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.command.internal.CommandScheduler
 import org.firstinspires.ftc.teamcode.component.Gamepad
 import org.firstinspires.ftc.teamcode.hardware.HardwareMap
-import org.firstinspires.ftc.teamcode.subsystems.Telemetry
+import org.firstinspires.ftc.teamcode.subsystems.*
 import org.firstinspires.ftc.teamcode.util.SelectorCommand
 import org.psilynx.psikit.ftc.PsiKitLinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
@@ -23,6 +23,7 @@ abstract class CommandOpMode : PsiKitLinearOpMode() {
     private val looptime = ElapsedTime()
 
     open fun onInit() {
+        Drivetrain
         // SelectorCommand(gamepad1, telemetry).schedule()
     }
     abstract fun onStart()

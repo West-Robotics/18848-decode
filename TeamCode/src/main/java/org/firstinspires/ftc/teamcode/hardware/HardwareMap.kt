@@ -40,6 +40,7 @@ object HardwareMap {
     val intakewheel = motor(6) // TODO: change to motor
     val midtakewheel = crservo(2)
     val kicker = crservo(0)
+    val kicker_sensor = analogdistancesensor(1)
     // val kicker = servo(0)
 
     val pinpoint = gobuildapinpoint(0)
