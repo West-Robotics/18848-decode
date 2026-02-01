@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmodes
 
 import com.qualcomm.hardware.lynx.LynxModule
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
+import com.qualcomm.robotcore.hardware.VoltageSensor
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.command.internal.CommandScheduler
 import org.firstinspires.ftc.teamcode.component.Gamepad
@@ -28,6 +29,7 @@ abstract class CommandOpMode : PsiKitLinearOpMode() {
         Globals
         SelectorCommand(gamepad2, telemetry).schedule()
     }
+
     abstract fun onStart()
 
     override fun runOpMode() {
@@ -35,6 +37,13 @@ abstract class CommandOpMode : PsiKitLinearOpMode() {
         HardwareMap.init(hardwareMap)
         Telemetry.init(telemetry)
         CommandScheduler.init()
+
+        Globals.voltage = (
+            hardwareMap.get(
+                VoltageSensor::class.java,
+                "Control Hub"
+            ).voltage
+        )
 
         // val allHubs = hardwareMap.getAll(LynxModule::class.java)
         // allHubs.forEach { it.bulkCachingMode = LynxModule.BulkCachingMode.MANUAL }
