@@ -22,6 +22,7 @@ object Lifts : Subsystem<Lifts>() {
     }
 
     fun raise(lift: Int) = setPos(lift, LiftPos.HIGH)
+    fun hold(lift: Int) = setPos(lift, LiftPos.HOLD)
     fun lower(lift: Int) = setPos(lift, LiftPos.LOW)
 
     fun setPos(lift: Int, pos: LiftPos) = setPos(lift, pos.pos)

@@ -15,34 +15,34 @@ object Globals {
     enum class StartPos(val red_pos: Pose2D, val blue_pos: Pose2D) {
         GOAL(
             red_pos = Pose2D(
-                INCH,
-                 0.0,
-                 0.0,
+                METER,
+                 1.260,
+                 1.358,
                 DEGREES,
-                0.0,
+                -140.06,
             ),
             blue_pos = Pose2D(
-                INCH,
-                 0.0,
-                 0.0,
+                METER,
+                -1.372,
+                 1.310,
                 DEGREES,
-                0.0,
+                -37.25,
             )
         ),
         BACKZONE(
             red_pos = Pose2D(
-                INCH,
-                 0.0,
-                 0.0,
+                METER,
+                 0.366,
+                -1.534,
                 DEGREES,
-                0.0,
+                -89.57,
             ),
             blue_pos = Pose2D(
-                INCH,
-                 0.0,
-                 0.0,
+                METER,
+                -0.426,
+                -1.538,
                 DEGREES,
-                0.0,
+                -90.22,
             )
         );
 

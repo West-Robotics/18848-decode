@@ -11,7 +11,6 @@ import org.firstinspires.ftc.teamcode.component.Component.Direction
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver
 import kotlin.jvm.java
 
-// TODO: add actual ports in and configure robot correctly
 object HardwareMap {
     var hardwareMap: HardwareMap? = null
 
@@ -35,13 +34,14 @@ object HardwareMap {
         digitalsensor(4),
         digitalsensor(5),
     )
-    val testing_pin = analogdistancesensor(0)
 
-    val intakewheel = motor(6) // TODO: change to motor
+    val left_light = pwmlight(4)
+    val right_light = pwmlight(11)
+
+    val intakewheel = motor(6)
     val midtakewheel = crservo(2)
     val kicker = crservo(0)
-    val kicker_sensor = analogdistancesensor(1)
-    // val kicker = servo(0)
+    val kicker_sensor = analogdistancesensor(0)
 
     val pinpoint = gobuildapinpoint(0)
 
@@ -103,6 +103,13 @@ object HardwareMap {
             eps,
 //            currentThresh,
         )
+    }
+
+    interface PWMLightConstructor {
+        operator fun invoke(): PWMLight
+    }
+    private fun pwmlight(port: Int) = object : PWMLightConstructor {
+        override operator fun invoke() = PWMLight { hardwareMap?.get(ServoImplEx::class.java, "s$port")}
     }
 
     interface AnalogDistanceSensorConstructor {

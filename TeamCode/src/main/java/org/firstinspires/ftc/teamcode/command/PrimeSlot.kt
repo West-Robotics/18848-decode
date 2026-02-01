@@ -1,13 +1,18 @@
 package org.firstinspires.ftc.teamcode.command
 
 import org.firstinspires.ftc.teamcode.subsystems.*
+import org.firstinspires.ftc.teamcode.command.internal.*
 
-fun PrimeSlot(slot: Int) = (
-    (
-        IntakeWheel.spin() with 
-        MidtakeWheel.spin() with
-        Lifts.raise(slot)
-    ) withTimeout 1.0
-) withEnd Lifts.lower(slot) withName "prime $slot"
+fun prime(slot: Int?) = if (slot == null) Command() else (
+    Lifts.raise(slot)
+    andThen (
+        IntakeWheel.spin() with
+        MidtakeWheel.spin()
+    ) withTimeout 0.5
+    andThen (MidtakeWheel.spin() withTimeout 2.0)
+    withEnd Lifts.setPos(slot, Lifts.LiftPos.HOLD)
+)
 
-
+fun prime() = InstantCommand {
+    prime(ColorSensors.slotWithBall).schedule()
+}

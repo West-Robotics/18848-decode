@@ -10,11 +10,11 @@ class PIDController(
     private val k_d: Double = 0.0,
     private val max_i: Double = 1.0,
 ) {
-    private var prev_error = 0.0
-    private val e = ElapsedTime()
-    private var p = 0.0
-    private var i = 0.0
-    private var d = 0.0
+    var prev_error = 0.0
+    val e = ElapsedTime()
+    var p = 0.0
+    var i = 0.0
+    var d = 0.0
 
     fun calculate(error: Double): Double {
         val dt = e.seconds()

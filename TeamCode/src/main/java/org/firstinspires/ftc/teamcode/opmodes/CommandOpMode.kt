@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.component.Gamepad
 import org.firstinspires.ftc.teamcode.hardware.HardwareMap
 import org.firstinspires.ftc.teamcode.subsystems.*
 import org.firstinspires.ftc.teamcode.util.SelectorCommand
+import org.firstinspires.ftc.teamcode.util.Globals
 import org.psilynx.psikit.ftc.PsiKitLinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import org.psilynx.psikit.ftc.wrappers.GamepadWrapper
@@ -24,6 +25,7 @@ abstract class CommandOpMode : PsiKitLinearOpMode() {
 
     open fun onInit() {
         Drivetrain
+        Globals
         SelectorCommand(gamepad2, telemetry).schedule()
     }
     abstract fun onStart()

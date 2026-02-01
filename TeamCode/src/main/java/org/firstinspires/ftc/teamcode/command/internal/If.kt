@@ -9,6 +9,11 @@ class If(
 
     lateinit var command: Command
 
+    infix fun Then(command: Command) = If(
+        supplier,
+        command,
+        falseCommand,
+    )
     infix fun Else(command: Command) = If(
         supplier,
         trueCommand,

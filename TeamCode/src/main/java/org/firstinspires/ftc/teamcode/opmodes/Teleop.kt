@@ -16,7 +16,8 @@ class ColorsTeleop: CommandOpMode() {
             { driver.left_stick.x.cube },
             { -driver.left_stick.y.cube },
             { driver.right_stick.x.cube },
-            0.95
+            // 0.95
+            null,
         ).also { it.schedule() }
 
         // Lifts.showPos()
@@ -33,23 +34,6 @@ class ColorsTeleop: CommandOpMode() {
         }
         // Telemetry.show_commands = true
 
-        // Color Sensors
-
-        fun prime(slot: Int?): Command {
-            return if (slot == null) Command() else (
-                Lifts.raise(slot)
-                andThen (
-                    IntakeWheel.spin() with
-                    MidtakeWheel.spin()
-                ) withTimeout 0.5
-                andThen MidtakeWheel.spin() withTimeout(1.5)
-                andThen Lifts.setPos(slot, Lifts.LiftPos.HOLD)
-            )
-        }
-
-        fun primeBall() = InstantCommand {
-            prime(ColorSensors.slotWithBall).schedule()
-        }
 
         driver.apply {
             // a.whileTrue(Kicker.gyrate(0.5))
@@ -97,7 +81,7 @@ class ColorsTeleop: CommandOpMode() {
             // y.onTrue(Lifts.resetLifts())
 
 
-            left_trigger.onTrue(primeBall())
+            left_trigger.onTrue(prime())
 
             left_bumper.whileTrue(MidtakeWheel.spin())
             right_trigger.whileTrue(

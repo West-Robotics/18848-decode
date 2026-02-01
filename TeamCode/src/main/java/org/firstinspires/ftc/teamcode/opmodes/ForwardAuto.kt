@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Drivetrain
 class ForwardAuto: CommandOpMode() {
 
     override fun onStart() {
+        Drivetrain.resetToStartPos()
         Drivetrain.run {
             setSpeed(0.0, 0.5, 0.0)
         }.schedule()

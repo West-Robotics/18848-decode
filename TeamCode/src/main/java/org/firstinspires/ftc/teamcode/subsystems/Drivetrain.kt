@@ -60,7 +60,6 @@ object Drivetrain: Subsystem<Drivetrain>() {
         // pinpoint.xOffset = -65.5
         pinpoint.yOffset = -110.0
         pinpoint.xOffset = 42.5
-        pinpoint.pos = Globals.start_pos.get()
         components.filter { it is Motor }.forEach { (it as Motor).setZPB(DcMotor.ZeroPowerBehavior.BRAKE) }
     }
 
@@ -74,6 +73,10 @@ object Drivetrain: Subsystem<Drivetrain>() {
         in 0.0..24.0 -> Zone.NEAR_FRONT
         in 24.0..48.0 -> Zone.FAR_FRONT
         else -> Zone.BACKZONE
+    }
+
+    fun resetToStartPos() {
+        pinpoint.pos = Globals.start_pos.get()
     }
 
     fun fixedSpeed(x: Double, y: Double, turn: Double) = run {
@@ -110,6 +113,21 @@ object Drivetrain: Subsystem<Drivetrain>() {
         (target.getX(unit) - pinpoint.pos.getX(unit)).pow(2) +
         (target.getY(unit) - pinpoint.pos.getY(unit)).pow(2)
     )
+
+    fun angleTo(point: Pose2D) = (atan2(
+        point.getY(METER) - Drivetrain.pos.getY(METER),
+        point.getX(METER) - Drivetrain.pos.getX(METER),
+    )/*+ PI/4*/).let {
+        var out = it
+        while (out < -PI || out > PI) {
+            if (out < -PI) {
+                out += 2*PI
+            } else if (out > PI) {
+                out -= 2*PI
+            } 
+        }
+        out
+    }
 
     override fun disable() {
         // components.filter { it is Motor }.forEach { (it as Motor).effort = 0.0 }
