@@ -1,23 +1,19 @@
 package org.firstinspires.ftc.teamcode.opmodes
 
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import org.firstinspires.ftc.teamcode.command.internal.*
+import com.qualcomm.robotcore.eventloop.opmode.*
 import org.firstinspires.ftc.teamcode.command.*
+import org.firstinspires.ftc.teamcode.command.internal.group.*
 import org.firstinspires.ftc.teamcode.subsystems.*
-import org.firstinspires.ftc.teamcode.hardware.HardwareMap
-import org.firstinspires.ftc.robotcore.external.navigation.Pose2D
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit.METER
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES
 
-@TeleOp(name = "testing!")
-class TestTeleop: CommandOpMode() {
+@TeleOp(name = "solo?")
+class SoloTeleop: CommandOpMode() {
     override fun onStart() {
         val drive = TeleOpDrive(
             { driver.left_stick.x.sq },
             { -driver.left_stick.y.sq },
             { driver.right_stick.x.sq },
             0.9
-        ).also { it.schedule() }
+        )
 
         Telemetry.show_commands = true
         Telemetry.addAll {
@@ -35,8 +31,25 @@ class TestTeleop: CommandOpMode() {
         Drivetrain.resetToStartPos()
 
         driver.apply {
+            (left_trigger and x).onTrue(prime(3))
+            (left_trigger and y).onTrue(prime(2))
+            (left_trigger and b).onTrue(prime(1))
+            (right_bumper and a).onTrue(Lifts.resetLifts())
+
             a.whileTrue(Kicker.gyrate(0.5))
             b.whileTrue(Kicker.gyrate(-0.5))
+
+            left_trigger.onTrue(prime())
+
+            right_trigger.onTrue(
+                AdvancingCommandGroup(
+                    drive,
+                    ShootingState(),
+                ).also { it.schedule() }
+            )
+
+            right_trigger.whileTrue(MidtakeWheel.spin())
+
             left_bumper.whileTrue(
                 drive.slowmode()
             )
