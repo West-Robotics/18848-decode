@@ -16,8 +16,8 @@ class ColorsTeleop: CommandOpMode() {
             { driver.left_stick.x.cube },
             { -driver.left_stick.y.cube },
             { driver.right_stick.x.cube },
-            // 0.95
-            null,
+            0.95
+            // null,
         ).also { it.schedule() }
 
         var zone: Zone = BACKZONE
@@ -27,12 +27,13 @@ class ColorsTeleop: CommandOpMode() {
             "zone" ids { zone }
             "zone management" ids { if (auto_zone) "auto" else "manual" }
             "launcher power" ids { Launcher.speed }
-            "color sensor 1" ids ColorSensors.sensors[0]::color
-            "color sensor 2" ids ColorSensors.sensors[1]::color
-            "color sensor 3" ids ColorSensors.sensors[2]::color
+            // "color sensor 1" ids ColorSensors.sensors[0]::color
+            // "color sensor 2" ids ColorSensors.sensors[1]::color
+            // "color sensor 3" ids ColorSensors.sensors[2]::color
         }
         // Telemetry.show_commands = true
 
+        Lights.display(Lights.DisplayType.ALIGNED_WITH_GOAL, Lights.DisplayType.BALLS_HELD)
 
         driver.apply {
             // a.whileTrue(Kicker.gyrate(0.5))
