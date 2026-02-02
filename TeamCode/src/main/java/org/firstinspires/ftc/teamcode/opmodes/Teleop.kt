@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Zone.*
 import org.firstinspires.ftc.teamcode.util.*
 
 @TeleOp(name = "smelling colors")
-class ColorsTeleop: CommandOpMode() {
+class Teleop: CommandOpMode() {
 
     override fun onStart() {
 
