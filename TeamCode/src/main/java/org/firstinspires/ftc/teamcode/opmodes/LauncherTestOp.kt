@@ -5,6 +5,7 @@ import org.firstinspires.ftc.teamcode.command.*
 import org.firstinspires.ftc.teamcode.command.internal.*
 import org.firstinspires.ftc.teamcode.command.internal.group.*
 import org.firstinspires.ftc.teamcode.subsystems.*
+import org.firstinspires.ftc.teamcode.subsystems.Launcher.speed
 import org.firstinspires.ftc.teamcode.subsystems.Zone.*
 
 @TeleOp(name = "tuned launches")
@@ -103,12 +104,15 @@ class MotorTest : CommandOpMode() {
             dpad_down.onTrue { zone = BACKZONE }
             dpad_left.onTrue { zone = FAR_FRONT }
             dpad_right.onTrue { zone = NEAR_FRONT }
-            dpad_up.toggleOnTrue(
-                Command()
-                    withInit { auto_zone = true }
-                    withExecute { zone = Drivetrain.getZone() }
-                    withEnd { auto_zone = false }
-                    withName "Auto Zoning"
+            dpad_up.onTrue(
+                AdvancingCommandGroup(
+                    Command()
+                        withInit { auto_zone = true }
+                        withExecute { zone = Drivetrain.getZone() }
+                        withEnd { auto_zone = false }
+                        withName "Auto Zoning",
+                    Command(),
+                )
             )
         }
     }

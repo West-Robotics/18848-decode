@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.command.internal
 
+import org.firstinspires.ftc.teamcode.command.internal.group.*
+
 open class Trigger(
     var supplier: () -> Boolean,
     var conditionsMet: (Boolean, Boolean) -> Boolean = { value, lastValue -> value },
@@ -55,7 +57,7 @@ open class Trigger(
             Trigger(
                 supplier,
                 { value, lastValue -> value and !lastValue },
-                command racesWith WaitUntilCommand { !supplier() }
+                command races WaitUntilCommand { !supplier() }
             ).oneshot(this.oneshot)
         )
         return this
@@ -66,47 +68,10 @@ open class Trigger(
             Trigger(
                 supplier,
                 { value, lastValue -> !value and lastValue },
-                command racesWith WaitUntilCommand { supplier() }
+                command races WaitUntilCommand { supplier() }
             ).oneshot(this.oneshot)
         )
         return this
     }
 
-    fun toggleOnTrue(command: Command): Trigger {
-        CommandScheduler.addTrigger(
-            command.let {
-                Trigger(
-                    supplier,
-                    { value, lastValue -> value && !lastValue },
-                    InstantCommand {
-                        if (CommandScheduler.commands.contains(it)) {
-                            it.cancel()
-                        } else {
-                            it.schedule()
-                        }
-                    }
-                ).oneshot(this.oneshot)
-            }
-        )
-        return this
-    }
-
-    fun toggleOnFalse(command: Command): Trigger {
-        CommandScheduler.addTrigger(
-            command.let {
-                Trigger(
-                    supplier,
-                    { value, lastValue -> !value && lastValue },
-                    InstantCommand {
-                        if (CommandScheduler.commands.contains(it)) {
-                            it.cancel()
-                        } else {
-                            it.schedule()
-                        }
-                    }
-                ).oneshot(this.oneshot)
-            }
-        )
-        return this
-    }
 }
