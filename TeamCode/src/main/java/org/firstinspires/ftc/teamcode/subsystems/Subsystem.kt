@@ -8,7 +8,7 @@ abstract class Subsystem<T: Subsystem<T>> {
     abstract val components: List<Component>
 
     open fun update(dt: Double = 0.0) {
-        components.forEach { it.update(dt) }
+        // components.forEach { it.update(dt) }
     }
 
     open fun reset() {

@@ -42,7 +42,6 @@ object Drivetrain: Subsystem<Drivetrain>() {
     )
 
     override fun update(dt: Double) {
-        super.update(dt)
         // log("position string")value posString()
         log("position") value Pose2d(
             pos.getX(METER), pos.getY(METER),

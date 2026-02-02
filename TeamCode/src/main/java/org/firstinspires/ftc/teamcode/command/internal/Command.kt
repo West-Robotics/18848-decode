@@ -26,7 +26,7 @@ open class Command(
 
     infix fun andThen(next: Command) = CommandGroup(this, next)
     infix fun withTimeout(seconds: Double) = TimedCommand(seconds, this)
-    infix fun racesWith(other: Command) = Command(
+    infix fun races(other: Command) = Command(
         { this.initialize(); other.initialize() },
         { dt -> this.execute(dt); other.execute(dt) },
         { interrupted -> this.end(interrupted); other.end(interrupted) },
@@ -36,6 +36,7 @@ open class Command(
             + other.requirements.toList()
         ).toMutableSet()
     )
+    infix fun racesWith(other: Command) = races(other)
     infix fun with(other: Command) = ParallelCommandGroup(this, other)
     infix fun parallelTo(other: Command) = ParallelCommandGroup(this, other)
 

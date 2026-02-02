@@ -41,15 +41,15 @@ object CommandScheduler {
 
     fun addTrigger(trigger: Trigger) = triggers.add(trigger).also { println("trigger added") }
 
-    fun schedule(command: Command): Boolean {
+    fun schedule(command: Command) {
         if (!command.runStates.contains(opmode_state)) {
             Trigger { command.runStates.contains(opmode_state) }.oneshot(true).onTrue(command)
-            return true // IDK about this (true|false)
+            return
         }
         command.requirements.forEach { subsystem ->
             commands.filter { it.requirements.contains(subsystem) }
                 .forEach {
-                    if (command.priority().level < it.priority().level) return false
+                    if (command.priority().level < it.priority().level) return
                     it.end(true)
                     commands.remove(it)
                     it.requirements.filter { !command.requirements.contains(it) }
@@ -60,7 +60,7 @@ object CommandScheduler {
         command.initialize()
         commands.add(command)
         println("CommandScheduler: Scheduled ${command.name()}")
-        return true
+        return
     }
 
     private fun updateCommands(dt: Double) {
@@ -68,7 +68,7 @@ object CommandScheduler {
         while (i < commands.size) {
             val command = commands[i]
             command.requirements.forEach { requirement ->
-                // requirement.components.forEach { it.update(dt) }
+                requirement.components.forEach { it.update(dt) }
                 requirement.update(dt)
             }
             command.execute(dt)
