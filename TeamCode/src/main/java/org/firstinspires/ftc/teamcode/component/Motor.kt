@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit
 import org.firstinspires.ftc.teamcode.util.log
+import org.firstinspires.ftc.teamcode.util.Globals
 import kotlin.math.abs
 import kotlin.math.sign
 
@@ -49,7 +50,7 @@ class Motor(
 
     override fun write() {
         if (abs(lasteffort - effort) > eps) {
-            motor.power = effort * direction.dir
+            motor.power = (effort * direction.dir) / Globals.voltage * 13
             lasteffort = effort
         }
     }

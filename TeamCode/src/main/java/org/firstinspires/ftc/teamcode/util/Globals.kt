@@ -10,6 +10,7 @@ object Globals {
     var alliance by Selector("alliance", Alliance.RED, Alliance.BLUE)
     var start_pos by Selector("start pos", StartPos.BACKZONE, StartPos.GOAL)
     var randomization = Randomization.UNKNOWN
+    var voltage: Double = 0.0
 
 
     enum class StartPos(val red_pos: Pose2D, val blue_pos: Pose2D) {
