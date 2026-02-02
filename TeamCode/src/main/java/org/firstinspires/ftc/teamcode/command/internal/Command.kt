@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.command.internal
 
-import org.firstinspires.ftc.teamcode.subsystems.Subsystem
+import org.firstinspires.ftc.teamcode.subsystems.*
 
 open class Command(
     private var initialize: () -> Unit = { },
@@ -9,7 +9,7 @@ open class Command(
     private var isFinished: () -> Boolean = { false },
     open var requirements: MutableSet<Subsystem<*>> = mutableSetOf(),
     open var name: () -> String = { "Command" },
-    open var priority: () -> Priority = { Priority.MEDIUM },
+    open var priority: Priority = Priority.MEDIUM,
     open var runStates: MutableSet<OpModeState> = mutableSetOf(OpModeState.ACTIVE)
 //    open var description: () -> String = {
 //        requirements.map { it::class.simpleName!! }.toString()
@@ -53,7 +53,6 @@ open class Command(
     infix fun withName(name: String) = this.apply { this.name = { name } }
     infix fun withName(name: () -> String) = this.apply { this.name = name }
     infix fun withPriority(priority: Priority) = this.apply { this.priority = { priority } }
-    infix fun withPriority(priority: () -> Priority) = this.apply { this.priority = priority }
     infix fun during(state: OpModeState) = this.apply { runStates = mutableSetOf(state) }
 
     fun during(vararg newrunStates: OpModeState) = copy(

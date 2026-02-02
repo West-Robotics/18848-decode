@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.command.internal
 
-import org.firstinspires.ftc.teamcode.subsystems.Subsystem
-
 enum class OpModeState {
     OFF,
     INIT,
@@ -49,7 +47,7 @@ object CommandScheduler {
         command.requirements.forEach { subsystem ->
             commands.filter { it.requirements.contains(subsystem) }
                 .forEach {
-                    if (command.priority().level < it.priority().level) return
+                    if (command.priority.level < it.priority.level) return
                     it.end(true)
                     commands.remove(it)
                     it.requirements.filter { !command.requirements.contains(it) }
@@ -59,7 +57,7 @@ object CommandScheduler {
         command.requirements.forEach { it.enable() }
         command.initialize()
         commands.add(command)
-        println("CommandScheduler: Scheduled ${command.name()}")
+        println("CommandScheduler: Scheduled $command")
         return
     }
 
@@ -77,7 +75,7 @@ object CommandScheduler {
                 command.end(false)
                 commands.remove(command)
                 command.requirements.forEach { it.disable() }
-                println("CommandScheduler: Removed ${command.name()}")
+                println("CommandScheduler: Removed $command")
             } else {
                 i++
             }
@@ -116,7 +114,7 @@ object CommandScheduler {
             toRemove.end(true)
             commands.remove(toRemove)
             command.requirements.forEach { it.disable() }
-            println("CommandScheduler: Removed ${command.name()}")
+            println("CommandScheduler: Removed $command")
         }
     }
 }
