@@ -122,7 +122,7 @@ class MotorTest : CommandOpMode() {
             dpad_up.toggleOnTrue(
                 Command()
                     withInit { auto_zone = true }
-                    withExecute { autoZone = Drivetrain.getZone() }
+                    withExecute { zone = Drivetrain.getZone() }
                     withEnd { auto_zone = false }
                     withName "Auto Zoning"
             )
