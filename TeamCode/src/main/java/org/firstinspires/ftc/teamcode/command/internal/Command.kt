@@ -52,7 +52,7 @@ open class Command(
     infix fun until(function: () -> Boolean) = this.apply { isFinished = function }
     infix fun withName(name: String) = this.apply { this.name = { name } }
     infix fun withName(name: () -> String) = this.apply { this.name = name }
-    infix fun withPriority(priority: Priority) = this.apply { this.priority = { priority } }
+    infix fun withPriority(priority: Priority) = this.apply { this.priority = priority }
     infix fun during(state: OpModeState) = this.apply { runStates = mutableSetOf(state) }
 
     fun during(vararg newrunStates: OpModeState) = copy(
@@ -70,7 +70,7 @@ open class Command(
         isFinished: () -> Boolean = this::isFinished,
         requirements: MutableSet<Subsystem<*>> = this.requirements,
         name: () -> String = this.name,
-        priority: () -> Priority = this.priority,
+        priority: Priority = this.priority,
         runStates: MutableSet<OpModeState> = this.runStates,
 //        description: () -> String = this.description
     ) = Command(
