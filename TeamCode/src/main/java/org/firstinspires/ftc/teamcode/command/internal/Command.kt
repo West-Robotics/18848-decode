@@ -43,6 +43,8 @@ open class Command(
     infix fun racesWith(other: Command) = races(other)
     infix fun with(other: Command) = ParallelCommandGroup(this, other)
     infix fun parallelTo(other: Command) = ParallelCommandGroup(this, other)
+    infix fun deadlines(other: Command) = DeadlineCommandGroup(this, other)
+    fun deadlines(vararg others: Command) = DeadlineCommandGroup(this, *others)
 
     fun schedule() = CommandScheduler.schedule(this)
     fun cancel() = CommandScheduler.end(this)
