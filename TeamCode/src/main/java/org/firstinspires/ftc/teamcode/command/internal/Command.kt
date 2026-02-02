@@ -24,8 +24,8 @@ open class Command(
     open fun end(interrupted: Boolean) = end.invoke(interrupted)
     open fun isFinished() = isFinished.invoke()
 
-    fun schedule() = CommandScheduler.schedule(this)
-    fun cancel() = CommandScheduler.end(this)
+    open fun schedule() = CommandScheduler.schedule(this)
+    open fun cancel() = CommandScheduler.end(this)
 
     infix fun withInit(function: () -> Unit) = this.apply { initialize = function}
     infix fun withInit(function: InstantCommand) = this.apply { initialize = function.command }

@@ -4,39 +4,47 @@ import org.firstinspires.ftc.teamcode.command.internal.*
 
 class AdvancingCommandGroup(vararg commandsInGroup: Command) : CommandGroup(*commandsInGroup) {
     private var index: Int = 0
-        get() = field
         set(value) {
             field = value % commands.size
         }
 
     val current: Command get() = commands[index]
 
-    private var manualAdvance: Int = 0
+    private var advance = false
+
+    private var scheduled = false
 
     fun advance() {
-        manualAdvance += 1
+        advance = true
     }
 
+    override fun schedule() {
+        if (scheduled) advance()
+        else super.schedule()
+    }
+
+
     override fun initialize() {
+        scheduled = true
         current.initialize()
     }
 
     override fun execute(dt: Double) {
         current.execute(dt)
+        if (advance) {
+            current.end(true)
+            index++
+            current.initialize()
+            advance = false
+        }
     }
 
     override fun end(interrupted: Boolean) {
         current.end(interrupted)
-        if (manualAdvance >= 1) {
-            index += manualAdvance
-            manualAdvance = 0
-            this.schedule()
-        } else {
-            index++
-        }
+        scheduled = false
     }
 
-    override fun isFinished() = current.isFinished() || manualAdvance >= 1
+    override fun isFinished() = current.isFinished() && !advance
 
 
 }
