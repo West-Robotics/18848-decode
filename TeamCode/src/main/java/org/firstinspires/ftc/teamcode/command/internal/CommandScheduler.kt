@@ -89,7 +89,7 @@ object CommandScheduler {
             triggers[i].let {
                 it.update()
                 if (it.isTriggered) {
-                    schedule(it.command)
+                    it.command.schedule()
                     if (it.oneshot) triggers.remove(it)
                     else i++
                 } else i++

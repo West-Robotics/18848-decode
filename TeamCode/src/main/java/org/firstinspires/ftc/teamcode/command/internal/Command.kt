@@ -24,28 +24,6 @@ open class Command(
     open fun end(interrupted: Boolean) = end.invoke(interrupted)
     open fun isFinished() = isFinished.invoke()
 
-    infix fun andThen(next: Command) = CommandGroup(this, next)
-    infix fun then(next: Command) = CommandGroup(this, next)
-    infix fun withTimeout(seconds: Double) = TimedCommand(seconds, this)
-    /*
-    infix fun races(other: Command) = Command(
-        { this.initialize(); other.initialize() },
-        { dt -> this.execute(dt); other.execute(dt) },
-        { interrupted -> this.end(interrupted); other.end(interrupted) },
-        { this.isFinished() or other.isFinished() },
-        requirements = (
-            this.requirements.toList()
-            + other.requirements.toList()
-        ).toMutableSet()
-    )
-    */
-    infix fun races(other: Command) = RaceCommand(this, other)
-    infix fun racesWith(other: Command) = races(other)
-    infix fun with(other: Command) = ParallelCommandGroup(this, other)
-    infix fun parallelTo(other: Command) = ParallelCommandGroup(this, other)
-    infix fun deadlines(other: Command) = DeadlineCommandGroup(this, other)
-    fun deadlines(vararg others: Command) = DeadlineCommandGroup(this, *others)
-
     fun schedule() = CommandScheduler.schedule(this)
     fun cancel() = CommandScheduler.end(this)
 

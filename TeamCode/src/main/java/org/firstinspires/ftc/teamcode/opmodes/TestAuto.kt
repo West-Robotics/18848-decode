@@ -1,18 +1,17 @@
 package org.firstinspires.ftc.teamcode.opmodes
 
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous
-import org.firstinspires.ftc.teamcode.command.internal.*
-import org.firstinspires.ftc.teamcode.command.*
-import org.firstinspires.ftc.teamcode.component.Component.Direction.*
-import org.firstinspires.ftc.teamcode.subsystems.*
-import org.firstinspires.ftc.teamcode.subsystems.Lifts.LiftPos.*
-import org.firstinspires.ftc.teamcode.subsystems.Zone.*
-import org.firstinspires.ftc.teamcode.util.Globals
-import org.firstinspires.ftc.robotcore.external.navigation.Pose2D
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit.*
+import com.qualcomm.robotcore.eventloop.opmode.*
+import org.firstinspires.ftc.robotcore.external.navigation.*
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.*
-import kotlin.math.PI
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit.*
+import org.firstinspires.ftc.teamcode.command.*
+import org.firstinspires.ftc.teamcode.command.internal.*
+import org.firstinspires.ftc.teamcode.command.internal.group.*
+import org.firstinspires.ftc.teamcode.subsystems.*
+import org.firstinspires.ftc.teamcode.subsystems.Launcher.speed
+import org.firstinspires.ftc.teamcode.util.*
+import kotlin.math.*
 
 @Autonomous(name = "test autp")
 class TestAuto: CommandOpMode() {
@@ -27,28 +26,28 @@ class TestAuto: CommandOpMode() {
             Launcher.run { speed = Zone.NEAR_FRONT.launcher_speed }
             with IntakeWheel.spin()
             with MidtakeWheel.spin()
-        ) racesWith (
+        ) races (
             (
                 Lifts.raise(1)
                 with Wait(2.5)
             )
-            andThen (
+            then (
                 Lifts.raise(3)
                 with Wait(0.5)
             )
-            andThen (
+            then (
                 Kicker.pushOne()
                 with Wait(1.5)
             )
-            andThen (
+            then (
                 Kicker.pushOne()
                 with Wait(0.5)
             )
-            andThen (
+            then (
                 Lifts.raise(2)
                 with Wait(1.0)
             )
-            andThen Kicker.pushOne()
+            then Kicker.pushOne()
         ) withEnd {
             Lifts.resetLifts(Lifts.LiftPos.HOLD).command()
             Launcher.speed = 0.0
@@ -104,7 +103,7 @@ class TestAuto: CommandOpMode() {
 
         (
             MoveToPointCommand(launch)
-            andThen TurnCommand(PI/4)
+            then TurnCommand(PI/4)
         ).schedule() // dont forget to schedule it!
     }
 }

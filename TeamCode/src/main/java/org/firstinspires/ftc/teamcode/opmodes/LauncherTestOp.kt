@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode.opmodes
 
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import org.firstinspires.ftc.teamcode.subsystems.*
+import com.qualcomm.robotcore.eventloop.opmode.*
 import org.firstinspires.ftc.teamcode.command.*
 import org.firstinspires.ftc.teamcode.command.internal.*
+import org.firstinspires.ftc.teamcode.command.internal.group.*
+import org.firstinspires.ftc.teamcode.subsystems.*
 import org.firstinspires.ftc.teamcode.subsystems.Zone.*
 
 @TeleOp(name = "tuned launches")
@@ -29,22 +30,6 @@ class MotorTest : CommandOpMode() {
         // Telemetry.show_commands = true
 
         // Color Sensors
-
-        fun prime(slot: Int?): Command {
-            return if (slot == null) Command() else (
-                Lifts.raise(slot)
-                andThen (
-                    IntakeWheel.spin() with
-                    MidtakeWheel.spin()
-                ) withTimeout 0.5
-                andThen MidtakeWheel.spin() withTimeout(1.5)
-                andThen Lifts.setPos(slot, Lifts.LiftPos.HOLD)
-            )
-        }
-
-        fun primeBall() = InstantCommand {
-            prime(ColorSensors.slotWithBall).schedule()
-        }
 
         fun launcherSpeedChange(speed: Double) = InstantCommand {
             launcher_speed += speed
@@ -96,7 +81,7 @@ class MotorTest : CommandOpMode() {
             // y.onTrue(Lifts.resetLifts())
 
 
-            left_trigger.onTrue(primeBall())
+            left_trigger.onTrue(prime())
 
             left_bumper.whileTrue(MidtakeWheel.spin())
             right_trigger.whileTrue(

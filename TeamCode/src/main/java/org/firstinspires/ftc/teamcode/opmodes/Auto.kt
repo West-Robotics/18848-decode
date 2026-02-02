@@ -1,17 +1,18 @@
 package org.firstinspires.ftc.teamcode.opmodes
 
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous
-import org.firstinspires.ftc.teamcode.command.internal.*
+import com.qualcomm.robotcore.eventloop.opmode.*
+import org.firstinspires.ftc.robotcore.external.navigation.*
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.*
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit.*
 import org.firstinspires.ftc.teamcode.command.*
+import org.firstinspires.ftc.teamcode.command.internal.*
+import org.firstinspires.ftc.teamcode.command.internal.group.*
 import org.firstinspires.ftc.teamcode.component.Component.Direction.*
 import org.firstinspires.ftc.teamcode.subsystems.*
+import org.firstinspires.ftc.teamcode.subsystems.Launcher.speed
 import org.firstinspires.ftc.teamcode.subsystems.Lifts.LiftPos.*
-import org.firstinspires.ftc.teamcode.subsystems.Zone.*
-import org.firstinspires.ftc.teamcode.util.Globals
-import org.firstinspires.ftc.robotcore.external.navigation.Pose2D
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit.*
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.*
+import org.firstinspires.ftc.teamcode.util.*
 
 @Autonomous(name = "basically bavery")
 class MainAuto: CommandOpMode() {
@@ -26,28 +27,28 @@ class MainAuto: CommandOpMode() {
             Launcher.run { speed = Zone.NEAR_FRONT.launcher_speed }
             with IntakeWheel.spin()
             with MidtakeWheel.spin()
-        ) racesWith (
+        ) races (
             (
                 Lifts.raise(1)
                 with Wait(2.5)
             )
-            andThen (
+            then (
                 Lifts.raise(3)
                 with Wait(0.5)
             )
-            andThen (
+            then (
                 Kicker.pushOne()
                 with Wait(1.5)
             )
-            andThen (
+            then (
                 Kicker.pushOne()
                 with Wait(0.5)
             )
-            andThen (
+            then (
                 Lifts.raise(2)
                 with Wait(1.0)
             )
-            andThen Kicker.pushOne()
+            then Kicker.pushOne()
         ) withEnd {
             Lifts.resetLifts(Lifts.LiftPos.HOLD).command()
             Launcher.speed = 0.0
@@ -103,34 +104,36 @@ class MainAuto: CommandOpMode() {
 
         (
             // initiate servos (there is a serious delay the first time you run the servos)
-            Kicker.gyrate(0.1).withTimeout(0.1) andThen
-            Lifts.resetLifts(HOLD) andThen
+            Kicker.gyrate(0.1).withTimeout(0.1)
+            then Lifts.resetLifts(HOLD)
 
             // launch preloads
-            MoveToPointCommand(launch) andThen
-            launch_all() andThen
+            then MoveToPointCommand(launch)
+            then launch_all()
 
             // goto first spike
-            TurnToFaceCommand(spike1) andThen 
-            Lifts.resetLifts(LOW) andThen ( // intake
-                (IntakeWheel.spin() parallelTo MidtakeWheel.reverse()) racesWith
+            then TurnToFaceCommand(spike1)
+            then Lifts.resetLifts(LOW)
+            then ( // intake
+                (IntakeWheel.spin() with MidtakeWheel.reverse()) races
                 MoveToPointCommand(spike1)
-            ) andThen Lifts.resetLifts(HOLD) andThen
+            ) then Lifts.resetLifts(HOLD)
             // and launch first spike balls
-            MoveToPointCommand(launch, REVERSE) andThen
-            TurnCommand(launch.getHeading(RADIANS)) andThen
-            launch_all() andThen
+            then MoveToPointCommand(launch, REVERSE)
+            then TurnCommand(launch.getHeading(RADIANS))
+            then launch_all()
 
             // goto second spike
-            TurnToFaceCommand(spike2) andThen 
-            Lifts.resetLifts(LOW) andThen ( // intake
-                (IntakeWheel.spin() parallelTo MidtakeWheel.reverse()) racesWith
+            then TurnToFaceCommand(spike2)
+            then Lifts.resetLifts(LOW)
+            then ( // intake
+                (IntakeWheel.spin() with MidtakeWheel.reverse()) races
                 MoveToPointCommand(spike2)
-            ) andThen Lifts.resetLifts(HOLD) andThen
+            ) then Lifts.resetLifts(HOLD)
             // launch second spike balls
-            MoveToPointCommand(launch, REVERSE) andThen
-            TurnCommand(launch.getHeading(RADIANS)) andThen
-            launch_all()
+            then MoveToPointCommand(launch, REVERSE)
+            then TurnCommand(launch.getHeading(RADIANS))
+            then launch_all()
         ).schedule() // dont forget to schedule it!
     }
 }

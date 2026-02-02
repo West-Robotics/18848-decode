@@ -1,7 +1,8 @@
 package org.firstinspires.ftc.teamcode.command.internal
 
-import com.qualcomm.robotcore.util.ElapsedTime
-import org.firstinspires.ftc.teamcode.subsystems.Subsystem
+import com.qualcomm.robotcore.util.*
+import org.firstinspires.ftc.teamcode.subsystems.*
+
 //import org.firstinspires.ftc.teamcode.subsystems.Drivetrain
 
 class TimedCommand(private val seconds: Double, private val command: Command = Command())
@@ -26,3 +27,5 @@ class TimedCommand(private val seconds: Double, private val command: Command = C
 }
 
 fun Wait(seconds: Double) = TimedCommand(seconds = seconds)
+
+infix fun Command.withTimeout(seconds: Double) = TimedCommand(seconds, this)
