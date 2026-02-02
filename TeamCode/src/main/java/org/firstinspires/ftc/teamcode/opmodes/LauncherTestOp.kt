@@ -5,7 +5,6 @@ import org.firstinspires.ftc.teamcode.subsystems.*
 import org.firstinspires.ftc.teamcode.command.*
 import org.firstinspires.ftc.teamcode.command.internal.*
 import org.firstinspires.ftc.teamcode.subsystems.Zone.*
-import org.firstinspires.ftc.teamcode.subsystems.autoZone.*
 
 @TeleOp(name = "tuned launches")
 class MotorTest : CommandOpMode() {

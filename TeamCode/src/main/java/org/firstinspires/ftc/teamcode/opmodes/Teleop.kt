@@ -5,7 +5,6 @@ import org.firstinspires.ftc.teamcode.command.internal.*
 import org.firstinspires.ftc.teamcode.command.*
 import org.firstinspires.ftc.teamcode.subsystems.*
 import org.firstinspires.ftc.teamcode.subsystems.Zone.*
-import org.firstinspires.ftc.teamcode.subsystems.autoZone.*
 import org.firstinspires.ftc.teamcode.util.Globals
 
 @TeleOp(name = "smelling colors")
@@ -21,9 +20,7 @@ class ColorsTeleop: CommandOpMode() {
             null,
         ).also { it.schedule() }
 
-         Lifts.showPos()
         var zone: Zone = BACKZONE
-        var distance: Double = 0.0
         var auto_zone: Boolean = false
 
         Telemetry.addAll {
@@ -88,7 +85,11 @@ class ColorsTeleop: CommandOpMode() {
             left_bumper.whileTrue(MidtakeWheel.spin())
             right_trigger.whileTrue(
                 Launcher.run {
-                    speed = zone.launcher_speed
+                    if (auto_zone) {
+                        spinFromDistance(Drivetrain.distanceTo(Globals.alliance.goal))
+                    } else {
+                        speed = zone.launcher_speed
+                    }
                 }
             )
             // (
@@ -105,13 +106,7 @@ class ColorsTeleop: CommandOpMode() {
             dpad_down.onTrue { zone = BACKZONE }
             dpad_left.onTrue { zone = FAR_FRONT }
             dpad_right.onTrue { zone = NEAR_FRONT }
-            dpad_up.toggleOnTrue(
-                Command()
-                    withInit { auto_zone = true }
-                    withExecute { distance = Drivetrain.getAutoZone() }
-                    withEnd { auto_zone = false }
-                    withName "Auto Zoning"
-            )
+            dpad_up.onTrue { auto_zone = !auto_zone }
 //            dpad_up.toggleOnTrue(
 //                Command()
 //                        withInit { auto_zone = true }
