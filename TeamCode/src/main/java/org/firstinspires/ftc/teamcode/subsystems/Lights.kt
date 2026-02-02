@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode.subsystems
 
 
-import org.firstinspires.ftc.teamcode.component.PWMLight
-import org.firstinspires.ftc.teamcode.hardware.HardwareMap
-import org.firstinspires.ftc.teamcode.util.Globals
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.RADIANS
-import kotlin.math.abs
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.*
+import org.firstinspires.ftc.teamcode.component.*
+import org.firstinspires.ftc.teamcode.hardware.*
+import org.firstinspires.ftc.teamcode.util.*
+import kotlin.math.*
 
 object Lights : Subsystem<Lights>() {
     val left_light = HardwareMap.left_light()
@@ -41,5 +41,15 @@ object Lights : Subsystem<Lights>() {
     fun display(left: DisplayType = DisplayType.NONE, right: DisplayType = DisplayType.NONE) = run {
         left_light.color = left.supplier()
         right_light.color = right.supplier()
+    }
+
+    fun police_siren() = run {
+        right_light.color.let {
+            right_light.color = left_light.color
+            left_light.color = it
+        }
+    } withInit {
+        right_light.color = PWMLight.Color.BLUE
+        left_light.color = PWMLight.Color.RED
     }
 }

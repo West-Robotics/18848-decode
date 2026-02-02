@@ -13,6 +13,6 @@ fun prime(slot: Int?) = if (slot == null) Command() else (
     withEnd Lifts.setPos(slot, Lifts.LiftPos.HOLD)
 )
 
-fun prime() = InstantCommand {
-    prime(ColorSensors.slotWithBall).schedule()
+fun prime() = DeferredCommand(Lifts, MidtakeWheel, IntakeWheel) {
+    prime(ColorSensors.slotWithBall)
 }

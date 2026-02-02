@@ -1,9 +1,8 @@
 package org.firstinspires.ftc.teamcode.command
 
 import org.firstinspires.ftc.teamcode.command.internal.*
-import org.firstinspires.ftc.teamcode.subsystems.Drivetrain
-import kotlin.math.abs
-import kotlin.math.sign
+import org.firstinspires.ftc.teamcode.subsystems.*
+import kotlin.math.*
 
 class TeleOpDrive(
     val xSupplier: () -> Double,
@@ -18,12 +17,11 @@ class TeleOpDrive(
     private var last_turn = 0.0
 
     override fun execute(dt: Double) {
-
         if (max_change == null) {
             Drivetrain.setSpeed(
-                xSupplier().also { last_x = it },
-                ySupplier().also { last_y = it },
-                turnSupplier().also { last_turn = it },
+                xSupplier(),
+                ySupplier(),
+                turnSupplier(),
             )
         } else {
             val true_max_change = max_change * dt * 100
@@ -32,7 +30,7 @@ class TeleOpDrive(
                 limit(xSupplier(), last_x, true_max_change).also { last_x = it },
                 limit(ySupplier(), last_y, true_max_change).also { last_y = it },
                 // limit(turnSupplier(), last_turn, true_max_change).also { last_turn = it },
-                turnSupplier().also { last_turn = it },
+                turnSupplier(),
             )
         }
     }

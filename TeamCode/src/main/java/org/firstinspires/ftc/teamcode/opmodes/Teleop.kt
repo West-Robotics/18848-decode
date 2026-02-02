@@ -1,11 +1,10 @@
 package org.firstinspires.ftc.teamcode.opmodes
 
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import org.firstinspires.ftc.teamcode.command.internal.*
+import com.qualcomm.robotcore.eventloop.opmode.*
 import org.firstinspires.ftc.teamcode.command.*
 import org.firstinspires.ftc.teamcode.subsystems.*
 import org.firstinspires.ftc.teamcode.subsystems.Zone.*
-import org.firstinspires.ftc.teamcode.util.Globals
+import org.firstinspires.ftc.teamcode.util.*
 
 @TeleOp(name = "smelling colors")
 class ColorsTeleop: CommandOpMode() {
@@ -26,14 +25,14 @@ class ColorsTeleop: CommandOpMode() {
         Telemetry.addAll {
             "zone" ids { zone }
             "zone management" ids { if (auto_zone) "auto" else "manual" }
-            "launcher power" ids { Launcher.speed }
+            "launcher power" ids Launcher::speed
             // "color sensor 1" ids ColorSensors.sensors[0]::color
             // "color sensor 2" ids ColorSensors.sensors[1]::color
             // "color sensor 3" ids ColorSensors.sensors[2]::color
         }
         // Telemetry.show_commands = true
 
-        Lights.display(Lights.DisplayType.ALIGNED_WITH_GOAL, Lights.DisplayType.BALLS_HELD)
+        Lights.display(Lights.DisplayType.ALIGNED_WITH_GOAL, Lights.DisplayType.BALLS_HELD).schedule()
 
         driver.apply {
             // a.whileTrue(Kicker.gyrate(0.5))
