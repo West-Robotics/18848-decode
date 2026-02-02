@@ -5,6 +5,7 @@ import org.firstinspires.ftc.teamcode.subsystems.*
 import org.firstinspires.ftc.teamcode.command.*
 import org.firstinspires.ftc.teamcode.command.internal.*
 import org.firstinspires.ftc.teamcode.subsystems.Zone.*
+import org.firstinspires.ftc.teamcode.subsystems.autoZone.*
 
 @TeleOp(name = "tuned launches")
 class MotorTest : CommandOpMode() {
@@ -121,7 +122,7 @@ class MotorTest : CommandOpMode() {
             dpad_up.toggleOnTrue(
                 Command()
                     withInit { auto_zone = true }
-                    withExecute { zone = Drivetrain.getZone() }
+                    withExecute { autoZone = Drivetrain.getZone() }
                     withEnd { auto_zone = false }
                     withName "Auto Zoning"
             )

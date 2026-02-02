@@ -5,6 +5,7 @@ import org.firstinspires.ftc.teamcode.command.internal.*
 import org.firstinspires.ftc.teamcode.command.*
 import org.firstinspires.ftc.teamcode.subsystems.*
 import org.firstinspires.ftc.teamcode.subsystems.Zone.*
+import org.firstinspires.ftc.teamcode.subsystems.autoZone.*
 import org.firstinspires.ftc.teamcode.util.Globals
 
 @TeleOp(name = "smelling colors")
@@ -20,8 +21,9 @@ class ColorsTeleop: CommandOpMode() {
             null,
         ).also { it.schedule() }
 
-        // Lifts.showPos()
+         Lifts.showPos()
         var zone: Zone = BACKZONE
+        var distance: Double = 0.0
         var auto_zone: Boolean = false
 
         Telemetry.addAll {
@@ -106,10 +108,17 @@ class ColorsTeleop: CommandOpMode() {
             dpad_up.toggleOnTrue(
                 Command()
                     withInit { auto_zone = true }
-                    withExecute { zone = Drivetrain.getZone() }
+                    withExecute { distance = Drivetrain.getAutoZone() }
                     withEnd { auto_zone = false }
                     withName "Auto Zoning"
             )
+//            dpad_up.toggleOnTrue(
+//                Command()
+//                        withInit { auto_zone = true }
+//                        withExecute { zone = Drivetrain.getZone() }
+//                        withEnd { auto_zone = false }
+//                        withName "Auto Zoning"
+//            )
         }
     }
 }

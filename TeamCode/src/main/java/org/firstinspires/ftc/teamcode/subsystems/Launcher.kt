@@ -40,10 +40,12 @@ object Launcher: Subsystem<Launcher>() {
     }
 
     fun intake() = gyrate(-0.7)
-
-    fun spin(zone: Zone) = gyrate(zone.launcher_speed)
+    //launcher function has auto distance and set zones
+    fun spin(auto_zone: Boolean, zone: Zone, distance: Double) {
+        if (auto_zone == false) gyrate(zone.launcher_speed)
+        else gyrate(distance)
+    }
     fun stop() = runOnce { this.speed = 0.0 }
-
     fun spinFromDistance(dist: Double) {
         // speed = 
     }

@@ -69,12 +69,14 @@ object Drivetrain: Subsystem<Drivetrain>() {
             pinpoint.pos = value
         }
 
-    fun getZone(): Zone = when (distanceTo(Globals.alliance.goal, DistanceUnit.INCH)) {
-        in 0.0..24.0 -> Zone.NEAR_FRONT
-        in 24.0..48.0 -> Zone.FAR_FRONT
-        else -> Zone.BACKZONE
+    fun getAutoZone(): Double {
+        return 0.077*(distanceTo(Globals.alliance.goal, DistanceUnit.METER)) + 0.6
     }
-
+    //fun getZone(): Zone = when (distanceTo(Globals.alliance.goal, DistanceUnit.INCH)) {
+        //in 0.0..24.0 -> Zone.NEAR_FRONT
+        //in 24.0..48.0 -> Zone.FAR_FRONT
+        //else -> Zone.BACKZONE
+    //}
     fun resetToStartPos() {
         pinpoint.pos = Globals.start_pos.get()
     }
