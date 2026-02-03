@@ -109,7 +109,7 @@ class MainAuto: CommandOpMode() {
 
             // launch preloads
             then MoveToPointCommand(launch)
-            then launch_all()
+            then ShootingState()
 
             // goto first spike
             then TurnToFaceCommand(spike1)
@@ -121,7 +121,7 @@ class MainAuto: CommandOpMode() {
             // and launch first spike balls
             then MoveToPointCommand(launch, REVERSE)
             then TurnCommand(launch.getHeading(RADIANS))
-            then launch_all()
+            then ShootingState()
 
             // goto second spike
             then TurnToFaceCommand(spike2)
@@ -133,7 +133,7 @@ class MainAuto: CommandOpMode() {
             // launch second spike balls
             then MoveToPointCommand(launch, REVERSE)
             then TurnCommand(launch.getHeading(RADIANS))
-            then launch_all()
+            then ShootingState()
         ).schedule() // dont forget to schedule it!
     }
 }

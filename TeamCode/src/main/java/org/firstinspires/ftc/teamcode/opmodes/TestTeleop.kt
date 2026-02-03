@@ -81,7 +81,12 @@ class TestTeleop : CommandOpMode() {
 
             left_trigger.onTrue(prime())
 
-            right_trigger.onTrue(launch_all())
+            right_trigger.onTrue(
+                AdvancingCommandGroup(
+                    drive,
+                    ShootingState()
+                ).also { it.schedule() }
+            )
 
             right_trigger.whileTrue(MidtakeWheel.spin())
 
