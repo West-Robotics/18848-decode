@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.subsystems.*
 class SoloTeleop: CommandOpMode() {
     override fun onStart() {
         val drive = TeleOpDrive(
-            { driver.left_stick.x.sq },
+//            { driver.left_stick.x.sq },
             { -driver.left_stick.y.sq },
             { driver.right_stick.x.sq },
             0.9

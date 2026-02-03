@@ -1,25 +1,16 @@
 package org.firstinspires.ftc.teamcode.subsystems
 
-import com.qualcomm.robotcore.hardware.DcMotor
-import com.qualcomm.robotcore.hardware.DcMotorSimple
-import org.firstinspires.ftc.robotcore.external.Telemetry
-import org.firstinspires.ftc.teamcode.component.Component
-import org.firstinspires.ftc.teamcode.component.Gamepad
-import org.firstinspires.ftc.teamcode.command.internal.Command
-import org.firstinspires.ftc.teamcode.hardware.HardwareMap
-import java.util.Locale
-import org.firstinspires.ftc.teamcode.component.Component.Direction.*
-import org.firstinspires.ftc.teamcode.component.Motor
-import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver
-import org.firstinspires.ftc.robotcore.external.navigation.Pose2D
-import org.firstinspires.ftc.teamcode.util.log
-import org.psilynx.psikit.core.wpi.math.Pose2d
-import org.psilynx.psikit.core.wpi.math.Rotation2d
-import org.psilynx.psikit.core.wpi.math.Translation2d
+import com.qualcomm.hardware.gobilda.*
+import com.qualcomm.robotcore.hardware.*
+import org.firstinspires.ftc.robotcore.external.navigation.*
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.*
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit.*
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
-import org.firstinspires.ftc.teamcode.util.Globals
+import org.firstinspires.ftc.teamcode.component.*
+import org.firstinspires.ftc.teamcode.component.Component.Direction.*
+import org.firstinspires.ftc.teamcode.hardware.HardwareMap
+import org.firstinspires.ftc.teamcode.util.*
+import org.psilynx.psikit.core.wpi.math.*
+import java.util.*
 import kotlin.math.*
 
 object Drivetrain: Subsystem<Drivetrain>() {
@@ -91,6 +82,14 @@ object Drivetrain: Subsystem<Drivetrain>() {
         frontRight.effort = (y + x*FRONT_STRAFE_MODIFIER - turn)/denominator
         backLeft.effort =   (y + x                       + turn)/denominator
         backRight.effort =  (y - x                       - turn)/denominator
+    }
+
+    fun tankDrive(y: Double, turn: Double) {
+        val denominator: Double = max(abs(y)+abs(turn), 1.0)
+        frontLeft.effort = (y + turn)/denominator
+        frontRight.effort = (y - turn)/denominator
+        backLeft.effort = (y + turn)/denominator
+        backRight.effort = (y - turn)/denominator
     }
 
     fun fieldCentricDrive(x: Double, y: Double, turn: Double) {

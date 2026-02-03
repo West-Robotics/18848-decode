@@ -5,6 +5,7 @@ import org.firstinspires.ftc.teamcode.command.*
 import org.firstinspires.ftc.teamcode.command.internal.*
 import org.firstinspires.ftc.teamcode.command.internal.group.*
 import org.firstinspires.ftc.teamcode.subsystems.*
+import org.firstinspires.ftc.teamcode.subsystems.Launcher.spinFromDistance
 import org.firstinspires.ftc.teamcode.util.*
 import kotlin.math.*
 
@@ -13,7 +14,7 @@ class TestTeleop : CommandOpMode() {
     override fun onStart() {
 
         val drive = TeleOpDrive(
-            { driver.left_stick.x.sq },
+//            { driver.left_stick.x.sq },
             { -driver.left_stick.y.sq },
             { driver.right_stick.x.sq },
             0.9

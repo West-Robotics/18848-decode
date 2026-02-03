@@ -15,7 +15,7 @@ class Teleop: CommandOpMode() {
     override fun onStart() {
 
         val drive = TeleOpDrive(
-            { driver.left_stick.x.cube },
+//            { driver.left_stick.x.cube },
             { -driver.left_stick.y.cube },
             { driver.right_stick.x.cube },
             0.95

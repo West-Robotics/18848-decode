@@ -5,7 +5,7 @@ import org.firstinspires.ftc.teamcode.subsystems.*
 import kotlin.math.*
 
 class TeleOpDrive(
-    val xSupplier: () -> Double,
+//    val xSupplier: () -> Double,
     val ySupplier: () -> Double,
     val turnSupplier: () -> Double,
     val max_change: Double? = null
@@ -18,16 +18,16 @@ class TeleOpDrive(
 
     override fun execute(dt: Double) {
         if (max_change == null) {
-            Drivetrain.setSpeed(
-                xSupplier(),
+            Drivetrain.tankDrive(
+//                xSupplier(),
                 ySupplier(),
                 turnSupplier(),
             )
         } else {
             val true_max_change = max_change * dt * 100
 
-            Drivetrain.setSpeed(
-                limit(xSupplier(), last_x, true_max_change).also { last_x = it },
+            Drivetrain.tankDrive(
+//                limit(xSupplier(), last_x, true_max_change).also { last_x = it },
                 limit(ySupplier(), last_y, true_max_change).also { last_y = it },
                 // limit(turnSupplier(), last_turn, true_max_change).also { last_turn = it },
                 turnSupplier(),
