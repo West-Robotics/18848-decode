@@ -1,15 +1,12 @@
 package org.firstinspires.ftc.teamcode.hardware
 
-import com.qualcomm.robotcore.hardware.DcMotor
-import com.qualcomm.robotcore.hardware.DcMotorEx
+import com.qualcomm.hardware.gobilda.*
+import com.qualcomm.robotcore.hardware.*
 import com.qualcomm.robotcore.hardware.HardwareMap
-import com.qualcomm.robotcore.hardware.ServoImplEx
-import com.qualcomm.robotcore.hardware.AnalogInput
-import com.qualcomm.robotcore.hardware.DigitalChannel
 import org.firstinspires.ftc.teamcode.component.*
-import org.firstinspires.ftc.teamcode.component.Component.Direction
-import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver
-import kotlin.jvm.java
+import org.firstinspires.ftc.teamcode.component.CRServo
+import org.firstinspires.ftc.teamcode.component.Component.*
+import org.firstinspires.ftc.teamcode.component.Servo
 
 object HardwareMap {
     var hardwareMap: HardwareMap? = null
@@ -22,9 +19,9 @@ object HardwareMap {
     val spinnerLeft = motor(4)
     val spinnerRight = motor(5)
 
-    val lift1 = servo(5)
-    val lift2 = servo(8)
-    val lift3 = servo(10)
+    val lift1 = servo(11)
+    val lift2 = servo(7)
+    val lift3 = servo(8)
 
     val sensors: List<DigitalSensorConstructor> = listOf(
         digitalsensor(0),
@@ -39,8 +36,8 @@ object HardwareMap {
     val right_light = pwmlight(11)
 
     val intakewheel = motor(6)
-    val midtakewheel = crservo(2)
-    val kicker = crservo(0)
+    val midtakewheel = crservo(9)
+    val kicker = crservo(10)
     val kicker_sensor = analogdistancesensor(0)
 
     val pinpoint = gobuildapinpoint(0)
