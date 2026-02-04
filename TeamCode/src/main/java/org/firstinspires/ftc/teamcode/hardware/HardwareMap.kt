@@ -32,8 +32,8 @@ object HardwareMap {
         digitalsensor(5),
     )
 
-    val left_light = pwmlight(4)
-    val right_light = pwmlight(11)
+    val left_light = pwmlight(3)
+    val right_light = pwmlight(4)
 
     val intakewheel = motor(6)
     val midtakewheel = crservo(9)

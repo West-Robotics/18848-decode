@@ -8,11 +8,18 @@ import kotlin.math.*
 
 fun ShootingState(): Command {
     return (
-            IntakeWheel.spin()
-            with MidtakeWheel.spin()
-            with Launcher.run {
-                spinFromDistance(Drivetrain.distanceTo(Globals.alliance.goal))
-            }
+//            IntakeWheel.spin()
+//            with MidtakeWheel.spin()
+//            with Launcher.run {
+//                spinFromDistance(Drivetrain.distanceTo(Globals.alliance.goal))
+//            }
+            ParallelCommandGroup(
+                IntakeWheel.spin(),
+                MidtakeWheel.spin(),
+                Launcher.run {
+                    spinFromDistance(Drivetrain.distanceTo((Globals.alliance.goal)))
+                }
+            )
         ) races (
             TurnCommand(Drivetrain.angleTo(Globals.alliance.goal) + PI)
             then DeferredCommand(Lifts, Kicker) {
@@ -57,7 +64,7 @@ fun ShootingState(): Command {
                 out
             }
         ) withEnd {
-            Lifts.resetLifts(Lifts.LiftPos.HOLD).command()
+            Lifts.resetLifts(Lifts.LiftPos.HOLD).run()
             Launcher.speed = 0.0
             IntakeWheel.speed = 0.0
             MidtakeWheel.speed = 0.0

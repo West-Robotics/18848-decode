@@ -85,11 +85,13 @@ object Drivetrain: Subsystem<Drivetrain>() {
     }
 
     fun tankDrive(y: Double, turn: Double) {
-        val denominator: Double = max(abs(y)+abs(turn), 1.0)
-        frontLeft.effort = (y + turn)/denominator
-        frontRight.effort = (y - turn)/denominator
-        backLeft.effort = (y + turn)/denominator
-        backRight.effort = (y - turn)/denominator
+//        val denominator: Double = max(abs(y)+abs(turn), 1.0)
+        val denominator = 1.0
+        frontLeft.effort = ((y + turn)/denominator).also { log("frontLeft effort") value it }
+        frontRight.effort = ((y - turn)/denominator).also { log("frontRight effort") value it }
+        backLeft.effort = ((y + turn)/denominator).also { log("backLeft effort") value it }
+        backRight.effort = ((y - turn)/denominator).also { log("backRight effort") value it }
+        components.forEach { it.write() }
     }
 
     fun fieldCentricDrive(x: Double, y: Double, turn: Double) {
@@ -127,8 +129,7 @@ object Drivetrain: Subsystem<Drivetrain>() {
     }
 
     override fun disable() {
-        // components.filter { it is Motor }.forEach { (it as Motor).effort = 0.0 }
-        this.setSpeed(0.0)
+         components.filter { it is Motor }.forEach { (it as Motor).effort = 0.0 }
     }
 
     override fun reset() {

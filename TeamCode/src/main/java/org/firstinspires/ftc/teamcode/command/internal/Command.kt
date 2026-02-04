@@ -27,17 +27,17 @@ open class Command(
     open fun schedule() = CommandScheduler.schedule(this)
     open fun cancel() = CommandScheduler.end(this)
 
-    infix fun withInit(function: () -> Unit) = this.apply { initialize = function}
-    infix fun withInit(function: InstantCommand) = this.apply { initialize = function.command }
-    infix fun withExecute(function: (Double) -> Unit) = this.apply { execute = function }
-    infix fun withExecute(function: InstantCommand) = this.apply { execute = { function.command() } }
-    infix fun withEnd(function: (Boolean) -> Unit) = this.apply { end = function }
-    infix fun withEnd(function: InstantCommand) = this.apply { end = { function.command() } }
-    infix fun until(function: () -> Boolean) = this.apply { isFinished = function }
-    infix fun withName(name: String) = this.apply { this.name = { name } }
-    infix fun withName(name: () -> String) = this.apply { this.name = name }
-    infix fun withPriority(priority: Priority) = this.apply { this.priority = priority }
-    infix fun during(state: OpModeState) = this.apply { runStates = mutableSetOf(state) }
+    infix fun withInit(function: () -> Unit) = copy(initialize = function)
+    infix fun withInit(function: InstantCommand) = copy(initialize = function.command)
+    infix fun withExecute(function: (Double) -> Unit) = copy(execute = function)
+    infix fun withExecute(function: InstantCommand) = copy(execute = { function.command() })
+    infix fun withEnd(function: (Boolean) -> Unit) = copy(end = function)
+    infix fun withEnd(function: InstantCommand) = copy(end = { function.command() })
+    infix fun until(function: () -> Boolean) = copy(isFinished = function)
+    infix fun withName(name: String) = copy(name = { name })
+    infix fun withName(name: () -> String) = copy(name = name)
+    infix fun withPriority(priority: Priority) = copy(priority = priority)
+    infix fun during(state: OpModeState) = copy(runStates = mutableSetOf(state))
 
     fun during(vararg newrunStates: OpModeState) = copy(
         runStates = newrunStates.toMutableSet()
@@ -69,5 +69,5 @@ open class Command(
 //        description = description
     )
 
-    override fun toString() = "${name()}"
+    override fun toString() = name()
 }

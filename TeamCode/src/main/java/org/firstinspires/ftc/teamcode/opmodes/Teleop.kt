@@ -19,7 +19,7 @@ class Teleop: CommandOpMode() {
             { -driver.left_stick.y.cube },
             { driver.right_stick.x.cube },
             0.95
-            // null,
+//             null,
         ).also { it.schedule() }
 
         var zone: Zone = BACKZONE
@@ -35,7 +35,7 @@ class Teleop: CommandOpMode() {
         }
         // Telemetry.show_commands = true
 
-        Lights.display(Lights.DisplayType.ALIGNED_WITH_GOAL, Lights.DisplayType.BALLS_HELD).schedule()
+//        Lights.display(Lights.DisplayType.ALIGNED_WITH_GOAL, Lights.DisplayType.BALLS_HELD).schedule()
 
         driver.apply {
             // a.whileTrue(Kicker.gyrate(0.5))

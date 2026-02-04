@@ -54,7 +54,7 @@ class TestTeleop : CommandOpMode() {
                     )
                     then Kicker.pushOne()
                 ) withEnd {
-                    Lifts.resetLifts(Lifts.LiftPos.HOLD).command()
+                    Lifts.resetLifts(Lifts.LiftPos.HOLD).run()
                     Launcher.speed = 0.0
                     MidtakeWheel.speed = 0.0
                     IntakeWheel.speed = 0.0

@@ -1,22 +1,20 @@
 package org.firstinspires.ftc.teamcode.command
 
 
-import com.qualcomm.robotcore.util.ElapsedTime
-import org.firstinspires.ftc.teamcode.command.internal.*
-import org.firstinspires.ftc.teamcode.subsystems.*
-import org.firstinspires.ftc.teamcode.component.*
-import org.firstinspires.ftc.teamcode.RobotConstants.DRIVE_P
-import org.firstinspires.ftc.teamcode.RobotConstants.DRIVE_I
-import org.firstinspires.ftc.teamcode.RobotConstants.DRIVE_D
-import org.firstinspires.ftc.teamcode.RobotConstants.TURN_P
-import org.firstinspires.ftc.teamcode.RobotConstants.TURN_I
-import org.firstinspires.ftc.teamcode.RobotConstants.TURN_D
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit.*
+import com.qualcomm.robotcore.util.*
+import org.firstinspires.ftc.robotcore.external.navigation.*
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.*
-import org.firstinspires.ftc.robotcore.external.navigation.Pose2D
-import org.firstinspires.ftc.teamcode.util.log
-import org.firstinspires.ftc.teamcode.util.PIDController
-import org.firstinspires.ftc.teamcode.util.toPsiKit
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit.*
+import org.firstinspires.ftc.teamcode.RobotConstants.DRIVE_D
+import org.firstinspires.ftc.teamcode.RobotConstants.DRIVE_I
+import org.firstinspires.ftc.teamcode.RobotConstants.DRIVE_P
+import org.firstinspires.ftc.teamcode.RobotConstants.TURN_D
+import org.firstinspires.ftc.teamcode.RobotConstants.TURN_I
+import org.firstinspires.ftc.teamcode.RobotConstants.TURN_P
+import org.firstinspires.ftc.teamcode.command.internal.*
+import org.firstinspires.ftc.teamcode.component.*
+import org.firstinspires.ftc.teamcode.subsystems.*
+import org.firstinspires.ftc.teamcode.util.*
 import kotlin.math.*
 
 
@@ -51,7 +49,7 @@ class TurnCommand(val targetAngle: Double, val errormargin: Double = 0.05) : Com
         }
     }
 
-    override fun isFinished() = timer.seconds() >= 3.0 && abs(error) <= errormargin
+    override fun isFinished() = timer.seconds() >= 1.0 && abs(error) <= errormargin
 
     override fun end(interrupted: Boolean) {
         Drivetrain.setSpeed(0.0)
