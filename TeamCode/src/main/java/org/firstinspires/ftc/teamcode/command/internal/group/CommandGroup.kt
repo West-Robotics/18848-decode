@@ -15,9 +15,7 @@ abstract class CommandGroup(vararg commandsInGroup: Command) : Command(name = { 
     }
 
     open fun addCommands(vararg commands: Command) {
-        for (command in commands) {
-            addCommand(command)
-        }
+        commands.forEach(::addCommand)
     }
 
     override fun initialize() {

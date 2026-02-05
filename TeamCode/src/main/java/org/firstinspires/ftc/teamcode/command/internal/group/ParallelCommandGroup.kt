@@ -5,6 +5,11 @@ import org.firstinspires.ftc.teamcode.command.internal.*
 open class ParallelCommandGroup(vararg commandsInGroup: Command) : CommandGroup(*commandsInGroup) {
     var finished = BooleanArray(commands.size) { false }
 
+    override fun addCommand(command: Command) {
+        if (command.requirements.intersect(requirements).isNotEmpty()) return
+        super.addCommand(command)
+    }
+
     override fun initialize() {
         finished = BooleanArray(commands.size) { false }
         commands.forEach { it.initialize() }
