@@ -87,10 +87,14 @@ object Drivetrain: Subsystem<Drivetrain>() {
     fun tankDrive(y: Double, turn: Double) {
 //        val denominator: Double = max(abs(y)+abs(turn), 1.0)
         val denominator = 1.0
-        frontLeft.effort = ((y + turn)/denominator).also { log("frontLeft effort") value it }
-        frontRight.effort = ((y - turn)/denominator).also { log("frontRight effort") value it }
-        backLeft.effort = ((y + turn)/denominator).also { log("backLeft effort") value it }
-        backRight.effort = ((y - turn)/denominator).also { log("backRight effort") value it }
+        frontLeft.effort = ((y + turn)/denominator)
+        frontRight.effort = ((y - turn)/denominator)
+        backLeft.effort = ((y + turn)/denominator)
+        backRight.effort = ((y - turn)/denominator)
+        log("frontLeft effort") value frontLeft.effort
+        log("backLeft effort") value backLeft.effort
+        log("frontRight effort") value frontRight.effort
+        log("backRight effort") value backRight.effort
         components.forEach { it.write() }
     }
 

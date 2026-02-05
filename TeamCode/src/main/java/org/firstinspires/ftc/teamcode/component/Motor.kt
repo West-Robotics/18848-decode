@@ -1,14 +1,10 @@
 package org.firstinspires.ftc.teamcode.component
 
-import com.qualcomm.robotcore.hardware.DcMotor
-import com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior
-import com.qualcomm.robotcore.hardware.DcMotorEx
-import com.qualcomm.robotcore.hardware.DcMotorSimple
-import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit
-import org.firstinspires.ftc.teamcode.util.log
-import org.firstinspires.ftc.teamcode.util.Globals
-import kotlin.math.abs
-import kotlin.math.sign
+import com.qualcomm.robotcore.hardware.*
+import com.qualcomm.robotcore.hardware.DcMotor.*
+import org.firstinspires.ftc.robotcore.external.navigation.*
+import org.firstinspires.ftc.teamcode.util.*
+import kotlin.math.*
 
 class Motor(
     private val deviceSupplier: () -> DcMotorEx?,
@@ -45,7 +41,8 @@ class Motor(
 
     var effort = 0.0
         set(value) {
-            if (abs(value - field) > eps) field = value
+//            if (abs(value - field) > eps) field = value
+            field = value
         }
 
     override fun write() {
