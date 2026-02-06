@@ -69,5 +69,30 @@ open class Command(
 //        description = description
     )
 
+    class Builder {
+        var initialize: () -> Unit = { }
+        var execute: (Double) -> Unit = { }
+        var end: (Boolean) -> Unit = { }
+        var isFinished: () -> Boolean = { false }
+        var requirements: MutableSet<Subsystem<*>> = mutableSetOf()
+        var name: () -> String = { "Command" }
+        var priority: Priority = Priority.MEDIUM
+        var runStates: MutableSet<OpModeState> = mutableSetOf(OpModeState.ACTIVE)
+        fun build() = Command(
+            initialize = initialize,
+            execute = execute,
+            end = end,
+            isFinished = isFinished,
+            requirements = requirements,
+            name = name,
+            priority = priority,
+            runStates = runStates,
+        )
+    }
+
+    companion object {
+        fun build(builder: Builder.() -> Unit) = Builder().apply(builder).build()
+    }
+
     override fun toString() = name()
 }

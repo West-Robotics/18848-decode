@@ -3,8 +3,7 @@ package org.firstinspires.ftc.teamcode.component
 import com.qualcomm.robotcore.hardware.*
 import com.qualcomm.robotcore.hardware.DcMotor.*
 import org.firstinspires.ftc.robotcore.external.navigation.*
-import org.firstinspires.ftc.teamcode.util.*
-import kotlin.math.*
+import kotlin.math.abs
 
 class Motor(
     private val deviceSupplier: () -> DcMotorEx?,
@@ -41,13 +40,13 @@ class Motor(
 
     var effort = 0.0
         set(value) {
-//            if (abs(value - field) > eps) field = value
-            field = value
+            if (abs(value - field) > eps) field = value
+//            field = value
         }
 
     override fun write() {
         if (abs(lasteffort - effort) > eps) {
-            motor.power = (effort * direction.dir) / Globals.voltage * 13
+            motor.power = (effort * direction.dir) //  * (13 / Globals.voltage)
             lasteffort = effort
         }
     }

@@ -102,38 +102,38 @@ class MainAuto: CommandOpMode() {
             -108.0,
         )
 
-        (
+        SequentialCommandGroup(
             // initiate servos (there is a serious delay the first time you run the servos)
-            Kicker.gyrate(0.1).withTimeout(0.1)
-            then Lifts.resetLifts(HOLD)
+            Kicker.gyrate(0.1).withTimeout(0.1),
+            Lifts.resetLifts(HOLD),
 
-            // launch preloads
-            then MoveToPointCommand(launch)
-            then ShootingState()
+            // launch preloads,
+            MoveToPointCommand(launch),
+            ShootingState(),
 
-            // goto first spike
-            then TurnToFaceCommand(spike1)
-            then Lifts.resetLifts(LOW)
-            then ( // intake
-                (IntakeWheel.spin() with MidtakeWheel.reverse()) races
-                MoveToPointCommand(spike1)
-            ) then Lifts.resetLifts(HOLD)
-            // and launch first spike balls
-            then MoveToPointCommand(launch, REVERSE)
-            then TurnCommand(launch.getHeading(RADIANS))
-            then ShootingState()
+            // goto first spike,
+            TurnToFaceCommand(spike1),
+            Lifts.resetLifts(LOW),
+            RaceCommandGroup( // intake,
+                (IntakeWheel.spin() with MidtakeWheel.reverse()),
+                MoveToPointCommand(spike1),
+            ), Lifts.resetLifts(HOLD),
+            // and launch first spike balls,
+            MoveToPointCommand(launch, REVERSE),
+            TurnCommand(launch.getHeading(RADIANS)),
+            ShootingState(),
 
-            // goto second spike
-            then TurnToFaceCommand(spike2)
-            then Lifts.resetLifts(LOW)
-            then ( // intake
-                (IntakeWheel.spin() with MidtakeWheel.reverse()) races
-                MoveToPointCommand(spike2)
-            ) then Lifts.resetLifts(HOLD)
-            // launch second spike balls
-            then MoveToPointCommand(launch, REVERSE)
-            then TurnCommand(launch.getHeading(RADIANS))
-            then ShootingState()
+            // goto second spike,
+            TurnToFaceCommand(spike2),
+            Lifts.resetLifts(LOW),
+            RaceCommandGroup( // intake,
+                (IntakeWheel.spin() with MidtakeWheel.reverse()),
+                MoveToPointCommand(spike2),
+            ), Lifts.resetLifts(HOLD),
+            // launch second spike balls,
+            MoveToPointCommand(launch, REVERSE),
+            TurnCommand(launch.getHeading(RADIANS)),
+            ShootingState(),
         ).schedule() // dont forget to schedule it!
     }
 }

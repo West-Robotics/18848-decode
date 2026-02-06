@@ -46,10 +46,10 @@ object Drivetrain: Subsystem<Drivetrain>() {
         pinpoint.xDirection = GoBildaPinpointDriver.EncoderDirection.REVERSED
         pinpoint.yDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD
         pinpoint.podType = GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD
-        // pinpoint.yOffset = -22.5
-        // pinpoint.xOffset = -65.5
-        pinpoint.yOffset = -110.0
-        pinpoint.xOffset = 42.5
+//        pinpoint.yOffset = -22.5
+//        pinpoint.xOffset = -65.5
+        pinpoint.yOffset = -140.0
+        pinpoint.xOffset = 45.5
         components.filter { it is Motor }.forEach { (it as Motor).setZPB(DcMotor.ZeroPowerBehavior.BRAKE) }
     }
 
@@ -120,7 +120,7 @@ object Drivetrain: Subsystem<Drivetrain>() {
     fun angleTo(point: Pose2D) = (atan2(
         point.getY(METER) - Drivetrain.pos.getY(METER),
         point.getX(METER) - Drivetrain.pos.getX(METER),
-    )/*+ PI/4*/).let {
+    ) + PI).let {
         var out = it
         while (out < -PI || out > PI) {
             if (out < -PI) {
