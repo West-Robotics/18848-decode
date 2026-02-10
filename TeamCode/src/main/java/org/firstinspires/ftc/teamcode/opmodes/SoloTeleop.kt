@@ -6,15 +6,23 @@ import org.firstinspires.ftc.teamcode.command.internal.*
 import org.firstinspires.ftc.teamcode.command.internal.group.*
 import org.firstinspires.ftc.teamcode.component.*
 import org.firstinspires.ftc.teamcode.subsystems.*
+import org.firstinspires.ftc.teamcode.subsystems.Drivetrain.tankDrive
+import org.firstinspires.ftc.teamcode.util.*
 
 @TeleOp(name = "solo?")
 class SoloTeleop: CommandOpMode() {
+    override fun onInit() {
+        Drivetrain
+        Globals
+        SelectorCommand(gamepad1, telemetry).schedule()
+    }
     override fun onStart() {
-        val drive = TeleOpDrive(
-            { -driver.left_stick.y.sq },
-            { driver.right_stick.x.sq },
-//            0.9
-        )
+        val drive = Drivetrain.run {
+            tankDrive(
+                -driver.left_stick.y.sq,
+                driver.right_stick.x.sq,
+            )
+        }
 
 //        Telemetry.show_commands = true
         Telemetry.addAll {
@@ -42,7 +50,11 @@ class SoloTeleop: CommandOpMode() {
             a.whileTrue(Kicker.gyrate(0.5))
             b.whileTrue(Kicker.gyrate(-0.5))
 
-            left_trigger.onTrue(prime())
+            right_bumper.onTrue(prime())
+            left_trigger.whileTrue(
+                IntakeWheel.spin()
+                with MidtakeWheel.reverse()
+            )
 
             right_trigger.onTrue(
                 AdvancingCommandGroup(
@@ -51,11 +63,8 @@ class SoloTeleop: CommandOpMode() {
                 ).also { it.schedule() }
             )
 
-            right_bumper.whileTrue(MidtakeWheel.spin())
+            x.whileTrue(MidtakeWheel.spin())
 
-            left_bumper.whileTrue(
-                drive.slowmode()
-            )
         }
     }
 }

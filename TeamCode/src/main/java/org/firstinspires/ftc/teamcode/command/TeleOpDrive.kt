@@ -20,8 +20,8 @@ class TeleOpDrive(
         if (max_change == null) {
             Drivetrain.tankDrive(
 //                xSupplier(),
-                ySupplier(),
-                turnSupplier(),
+                ySupplier() * if (slow_mode) 0.5 else 1.0,
+                turnSupplier() * if (slow_mode) 0.5 else 1.0,
             )
         } else {
             val true_max_change = max_change * dt * 100

@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.*
 import org.firstinspires.ftc.teamcode.command.*
 import org.firstinspires.ftc.teamcode.command.internal.group.*
 import org.firstinspires.ftc.teamcode.subsystems.*
+import org.firstinspires.ftc.teamcode.subsystems.Drivetrain.tankDrive
 import org.firstinspires.ftc.teamcode.subsystems.Launcher.speed
 import org.firstinspires.ftc.teamcode.subsystems.Launcher.spinFromDistance
 import org.firstinspires.ftc.teamcode.subsystems.Zone.*
@@ -15,12 +16,15 @@ class Teleop: CommandOpMode() {
     override fun onStart() {
 
         val drive = TeleOpDrive(
-//            { driver.left_stick.x.cube },
             { -driver.left_stick.y.cube },
             { driver.right_stick.x.cube },
-            0.95
-//             null,
         ).also { it.schedule() }
+        Drivetrain.run {
+            tankDrive(
+                -driver.left_stick.y.cube,
+                driver.right_stick.x.cube
+            )
+        }
 
         var zone: Zone = BACKZONE
         var auto_zone: Boolean = false
@@ -33,7 +37,7 @@ class Teleop: CommandOpMode() {
             // "color sensor 2" ids ColorSensors.sensors[1]::color
             // "color sensor 3" ids ColorSensors.sensors[2]::color
         }
-        // Telemetry.show_commands = true
+         Telemetry.show_commands = true
 
 //        Lights.display(Lights.DisplayType.ALIGNED_WITH_GOAL, Lights.DisplayType.BALLS_HELD).schedule()
 

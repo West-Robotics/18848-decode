@@ -35,5 +35,5 @@ object Kicker: Subsystem<Kicker>() {
         gyrate(speed) races ( Wait(0.5) then WaitUntilCommand { abs(sensor.position - start_pos) < 0.050 })
     }
 
-    fun pushOne(speed: Double = 0.5) = gyrate(speed) races ( Wait(0.5) then WaitUntilCommand { sensor.position > 0.75 } )
+    fun pushOne(speed: Double = 0.5) = gyrate(speed) races ( WaitUntilCommand { sensor.position >= 0.5 } then WaitUntilCommand { sensor.position <= 0.5 } )
 }

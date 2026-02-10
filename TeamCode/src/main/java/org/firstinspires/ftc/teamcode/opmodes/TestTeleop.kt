@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opmodes
 import com.qualcomm.robotcore.eventloop.opmode.*
 import org.firstinspires.ftc.teamcode.command.*
 import org.firstinspires.ftc.teamcode.subsystems.*
+import org.firstinspires.ftc.teamcode.subsystems.Drivetrain.tankDrive
 
 @TeleOp(name = "testing!")
 class TestTeleop : CommandOpMode() {
@@ -41,6 +42,8 @@ class TestTeleop : CommandOpMode() {
             b.whileTrue(Kicker.gyrate(-0.5))
 
             left_trigger.onTrue(prime())
+
+            y.onTrue(Kicker.pushOne())
 
 
             right_trigger.whileTrue(MidtakeWheel.spin())

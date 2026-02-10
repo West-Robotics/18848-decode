@@ -23,33 +23,35 @@ class MainAuto: CommandOpMode() {
             "kicker pos" ids Kicker.sensor::position
         }
 
-        fun launch_all() = (
-            Launcher.run { speed = Zone.NEAR_FRONT.launcher_speed }
-            with IntakeWheel.spin()
-            with MidtakeWheel.spin()
-        ) races (
+        fun launch_all() = RaceCommandGroup(
+            ParallelCommandGroup(
+                Launcher.run { speed = Zone.NEAR_FRONT.launcher_speed },
+            IntakeWheel.spin(),
+            MidtakeWheel.spin(),
+            ),
+            SequentialCommandGroup(
             (
                 Lifts.raise(1)
                 with Wait(2.5)
-            )
-            then (
+            ),
+            (
                 Lifts.raise(3)
                 with Wait(0.5)
-            )
-            then (
+            ),
+            (
                 Kicker.pushOne()
                 with Wait(1.5)
-            )
-            then (
+            ),
+            (
                 Kicker.pushOne()
                 with Wait(0.5)
-            )
-            then (
+            ),
+            (
                 Lifts.raise(2)
                 with Wait(1.0)
-            )
-            then Kicker.pushOne()
-        ) withEnd {
+            ),
+            Kicker.pushOne(),
+        )) withEnd {
             Lifts.resetLifts(Lifts.LiftPos.HOLD).run()
             Launcher.speed = 0.0
             MidtakeWheel.speed = 0.0
@@ -109,7 +111,8 @@ class MainAuto: CommandOpMode() {
 
             // launch preloads,
             MoveToPointCommand(launch),
-            ShootingState(),
+//            ShootingState(),
+            launch_all(),
 
             // goto first spike,
             TurnToFaceCommand(spike1),
